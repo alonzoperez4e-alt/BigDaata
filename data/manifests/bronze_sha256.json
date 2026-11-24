@@ -1,0 +1,46 @@
+{
+  "generated_utc": "2026-11-24T14:33:38.596772+00:00",
+  "file_count": 8,
+  "files": [
+    {
+      "relative_path": "a1_despacho_programado/a1_despacho_programado.parquet",
+      "size_bytes": 10615656,
+      "sha256": "8465e941f952fa1db30bdea005b017c2c3984bd81bb74b2ea3ad8911148d3143"
+    },
+    {
+      "relative_path": "a2_despacho_ejecutado/a2_con_desviacion.parquet",
+      "size_bytes": 44953497,
+      "sha256": "d433e46dd8bd4a192e3de4ff98e3e46fc9cb1412121cc8d889f660e6de721ed0"
+    },
+    {
+      "relative_path": "a3_costos_variables/a3_costo_central_fecha.parquet",
+      "size_bytes": 477933,
+      "sha256": "0b985649a3f39f339064cbe9401e8b60abfd6158979aaf49ef467f29e2066257"
+    },
+    {
+      "relative_path": "a4_costos_marginales/a4_costos_marginales_30min.parquet",
+      "size_bytes": 82064469,
+      "sha256": "6da9ea86c9d50cc959ef2288413e543c89f38ba40bd2b241f8f6ced406c54a11"
+    },
+    {
+      "relative_path": "b1_mantenimientos/B1_mantenimientos.csv",
+      "size_bytes": 11429659,
+      "sha256": "d6f15397bcff8d39a4405169195f9f11784cd38b2e245358320ce7c91e219f0e"
+    },
+    {
+      "relative_path": "b2_potencia_indisponible/B2_potencia_indisponible.csv",
+      "size_bytes": 281272,
+      "sha256": "5b5a8967d41a0daf83aba7075018a924bf609e18e2378d69144fb5163ca26d06"
+    },
+    {
+      "relative_path": "b3_reprograma/B3_reprograma_diario.csv",
+      "size_bytes": 442605,
+      "sha256": "bddb7e8a7ab0ba02cbb82c28eacc4cc86a5719643aaa2f5ae07f5d0ca6d34f01"
+    },
+    {
+      "relative_path": "b4_pr06/B4_pr06_rdo.csv",
+      "size_bytes": 19479213,
+      "sha256": "516bd26673b43d9af7a73cdfa834c7d6c383a272ec34a934206c48a46d55d50c"
+    }
+  ]
+}
