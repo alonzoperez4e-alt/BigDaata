@@ -1,3 +1,4 @@
+from pathlib import Path
 """Pipeline COES-SEIN: Bronze -> Silver -> Gold.
 Uso:  LAKE_ROOT=lake_test python pipeline.py            (local)
       LAKE_ROOT=s3://mi-bucket python pipeline.py       (AWS; en Glue se usa s3://)
@@ -163,14 +164,66 @@ def guardar_reporte():
     else:
         os.makedirs(f"{ROOT}/logs", exist_ok=True); open(ruta, "w").write(json.dumps(REPORT, indent=2))
 
+
+def escribir_atomico_json(ruta_str: str, payload: dict) -> None:
+    if ruta_str.startswith("s3://"):
+        spark.createDataFrame([(json.dumps(payload, indent=2),)], ["j"]).coalesce(1).write.mode("overwrite").text(ruta_str + ".d")
+        return
+    destino = Path(ruta_str)
+    destino.parent.mkdir(parents=True, exist_ok=True)
+    tmp = destino.with_suffix(destino.suffix + ".tmp")
+    tmp.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    os.replace(tmp, destino)
+
+def guardar_reporte_etapa(etapa_tag: str):
+    REPORT["fin"] = dt.datetime.now().isoformat(timespec="seconds")
+    ruta = f"{ROOT}/logs/run_{ESCALA}_{etapa_tag}.json"
+    escribir_atomico_json(ruta, REPORT)
+
 if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(add_help=False)
+    parser.add_argument("--input", default=None)
+    parser.add_argument("--output", default=None)
+    parser.add_argument("--profile", default=None)
+    parser.add_argument("--stage", default=None)
+    args, _ = parser.parse_known_args()
+    if args.input:
+        BRONZE = args.input.rstrip("/")
+    if args.output:
+        ROOT = args.output.rstrip("/")
+        SILVER, GOLD, LOGS = (f"{ROOT}/{z}" for z in ("silver", "gold", "logs"))
+    if args.stage:
+        st = args.stage.strip().lower()
+        if st == "silver":
+            ETAPAS = ["silver_a", "silver_b"]
+        elif st == "gold":
+            ETAPAS = ["gold"]
+        elif st == "all":
+            ETAPAS = ["silver_a", "silver_b", "gold"]
+        else:
+            ETAPAS = [x.strip() for x in st.split(",") if x.strip()]
+
     t0 = time.perf_counter()
-    REPORT["broadcast"] = USE_BROADCAST; REPORT["etapas_solicitadas"] = list(ETAPAS)
+    REPORT["broadcast"] = USE_BROADCAST
+    REPORT["etapas_solicitadas"] = list(ETAPAS)
     try:
-        for nombre, fn in (("silver_a", silver_a), ("silver_b", silver_b), ("gold", gold)):
-            if nombre in ETAPAS:
-                fn(); REPORT["total_segundos"] = round(time.perf_counter() - t0, 2); guardar_reporte()
+        silver_etapas = [e for e in ("silver_a", "silver_b") if e in ETAPAS]
+        for nombre, fn in (("silver_a", silver_a), ("silver_b", silver_b)):
+            if nombre in silver_etapas:
+                fn()
+        if silver_etapas:
+            REPORT["total_segundos"] = round(time.perf_counter() - t0, 2)
+            guardar_reporte_etapa("silver")
+        if "gold" in ETAPAS:
+            gold()
+            REPORT["total_segundos"] = round(time.perf_counter() - t0, 2)
+            guardar_reporte_etapa("gold")
     except Exception as e:
-        REPORT["error"] = f"{type(e).__name__}: {str(e)[:300]}"; REPORT["total_segundos"] = round(time.perf_counter() - t0, 2)
-        guardar_reporte(); print("FALLO:", REPORT["error"]); raise
-    print(json.dumps(REPORT, indent=2)); spark.stop()
+        REPORT["error"] = f"{type(e).__name__}: {str(e)[:300]}"
+        REPORT["total_segundos"] = round(time.perf_counter() - t0, 2)
+        guardar_reporte_etapa("error")
+        print("FALLO:", REPORT["error"])
+        raise
+    print(json.dumps(REPORT, indent=2))
+    spark.stop()

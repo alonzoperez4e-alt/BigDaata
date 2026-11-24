@@ -11,3 +11,6 @@ logs/
 *.pem
 *.key
 .DS_Store
+spark-warehouse/
+derby.log
+metastore_db/

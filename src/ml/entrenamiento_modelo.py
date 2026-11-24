@@ -1,3 +1,4 @@
+import argparse, glob
 import os
 import pandas as pd
 import numpy as np
@@ -18,8 +19,7 @@ print("ENTRENAMIENTO Y EVALUACIÓN DEL MODELO BASE (SUBSECCIÓN 4.2)")
 print("=" * 65)
 
 # 1. CARGA DEL DATASET ANALÍTICO GENERADO EN 4.1
-ruta_data = "dataset_analitico_eda.parquet"
-df = pd.read_parquet(ruta_data)
+parser=argparse.ArgumentParser(add_help=False); parser.add_argument("--input", default="data/sample/gold"); parser.add_argument("--output", default="data/sample/ml_out"); args,_=parser.parse_known_args(); os.makedirs(args.output, exist_ok=True); os.makedirs("evidencias_modelo", exist_ok=True); dc=os.path.join(args.input,"despacho_central_30min"); files=glob.glob(os.path.join(dc,"**","*.parquet"), recursive=True) if os.path.exists(dc) else glob.glob(os.path.join(args.input,"**","*.parquet"), recursive=True); df=pd.concat([pd.read_parquet(f) for f in files], ignore_index=True); df["label_rdo"]=(df["desviacion_mw"].abs()>10.0).astype(int) if "label_rdo" not in df.columns and "desviacion_mw" in df.columns else df.get("label_rdo", 0)
 df["fecha_hora"] = pd.to_datetime(df["fecha_hora"])
 df = df.sort_values("fecha_hora").reset_index(drop=True)
 
@@ -28,6 +28,9 @@ df["hora"] = df["fecha_hora"].dt.hour
 df["dia_semana"] = df["fecha_hora"].dt.dayofweek
 df["mes"] = df["fecha_hora"].dt.month
 # Rampa de demanda operativa (diferencia con el bloque anterior de 30 min)
+if "generacion_total_mw" not in df.columns:
+    base_col = "potencia_ejecutada_mw" if "potencia_ejecutada_mw" in df.columns else "potencia_programada_mw"
+    df["generacion_total_mw"] = df[base_col] if base_col in df.columns else 0.0
 df["rampa_demanda_mw"] = df["generacion_total_mw"].diff().fillna(0)
 
 # Asegurar tipo numérico para el predictor forzado de B1
@@ -53,6 +56,15 @@ fecha_corte = pd.Timestamp("2024-01-01 00:00")
 train_mask = df["fecha_hora"] < fecha_corte
 test_mask = df["fecha_hora"] >= fecha_corte
 
+if test_mask.sum() == 0 and len(df) > 1:
+    split_idx = int(len(df) * 0.8)
+    train_mask = pd.Series(False, index=df.index); train_mask.iloc[:split_idx] = True
+    test_mask = ~train_mask
+if "bloque_30min" not in df.columns and "fecha_hora" in df.columns:
+    df["bloque_30min"] = df["fecha_hora"].dt.hour * 2 + (df["fecha_hora"].dt.minute // 30)
+for c in features:
+    if c not in df.columns:
+        df[c] = 0.0
 X_train = df.loc[train_mask, features]
 y_train = df.loc[train_mask, target]
 
@@ -125,5 +137,5 @@ plt.tight_layout()
 plt.savefig("evidencias_modelo/fig_4_2_matriz_confusion_baseline.png", dpi=300)
 plt.close()
 
-print("\n✓ Evidencia guardada en: evidencias_modelo/fig_4_2_matriz_confusion_baseline.png")
+print("\n[OK] Evidencia guardada en: evidencias_modelo/fig_4_2_matriz_confusion_baseline.png")
 print("=" * 65)

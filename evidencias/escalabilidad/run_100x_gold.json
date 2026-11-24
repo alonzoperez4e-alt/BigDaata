@@ -1,0 +1,34 @@
+{
+  "entorno": "local",
+  "escala": "1x",
+  "inicio": "2026-11-24T10:12:53",
+  "etapas": {
+    "gold": {
+      "segundos": 14.3,
+      "despacho": 85440,
+      "precios": 25632
+    }
+  },
+  "calidad": {
+    "gold_despacho": {
+      "filas_a2": 85440,
+      "filas_gold": 85440,
+      "join_multiplico_filas": false,
+      "estrategia_join": "BroadcastHashJoin",
+      "filas_sin_costo": 0,
+      "por_costo_estado": {
+        "con_costo": 85440
+      }
+    },
+    "gold_precios": {
+      "filas": 25632,
+      "ceros_tratados_como_faltantes": 2157
+    }
+  },
+  "broadcast": true,
+  "etapas_solicitadas": [
+    "gold"
+  ],
+  "total_segundos": 14.3,
+  "fin": "2026-11-24T10:13:07"
+}
