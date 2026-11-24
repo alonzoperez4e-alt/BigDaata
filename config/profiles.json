@@ -1,0 +1,20 @@
+{
+  "local_dev": {
+    "master": "local[8]",
+    "driver_memory": "4g",
+    "shuffle_partitions": 8,
+    "broadcast_threshold_bytes": 10485760,
+    "local_dir": "/var/tmp/spark-local"
+  },
+  "local_scale_100x": {
+    "master": "local[8]",
+    "driver_memory": "4g",
+    "shuffle_partitions": 800,
+    "broadcast_threshold_bytes": -1,
+    "local_dir": "/var/tmp/spark-local"
+  },
+  "distributed_managed": {
+    "shuffle_partitions": 200,
+    "broadcast_threshold_bytes": 10485760
+  }
+}
