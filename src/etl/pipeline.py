@@ -23,6 +23,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 from src.etl.gold_observabilidad import construir_gold_observabilidad
 from src.etl.gold_senales_externas import construir_senales_externas
+from src.etl.gold_feature_store import construir_gold_feature_store
 PROFILES_PATH = REPO_ROOT / "config" / "profiles.json"
 
 # ---- Esquemas estrictos (sin inferencia) ----
@@ -253,7 +254,15 @@ def silver_b(spark: SparkSession, bronze: str, silver: str, report: dict) -> dic
     return out
 
 
-def gold(spark: SparkSession, silver: str, gold_dir: str, report: dict, use_broadcast: bool) -> dict:
+BYTES_ESTIMADOS_POR_FILA_A3 = 164
+
+def gold(
+    spark: SparkSession,
+    silver: str,
+    gold_dir: str,
+    report: dict,
+    broadcast_threshold_bytes: int,
+) -> dict:
     a2 = spark.read.parquet(f"{silver}/a2_despacho_ejecutado")
     a3 = spark.read.parquet(f"{silver}/a3_costos_variables").select(
         F.col("fecha").alias("fecha_despacho"),
@@ -263,10 +272,18 @@ def gold(spark: SparkSession, silver: str, gold_dir: str, report: dict, use_broa
         "costo_variable_s_kwh",
     )
     a2 = a2.withColumn("fecha_despacho", F.to_date(F.expr("fecha_hora - interval 1 minute")))
-    if not use_broadcast:
+
+    n_a3 = a3.count()
+    a3_bytes_estimados = n_a3 * BYTES_ESTIMADOS_POR_FILA_A3
+    usar_broadcast = (
+        (os.environ.get("BROADCAST", "1") != "0")
+        and (broadcast_threshold_bytes >= 0)
+        and (a3_bytes_estimados <= broadcast_threshold_bytes)
+    )
+    if not usar_broadcast:
         spark.conf.set("spark.sql.autoBroadcastJoinThreshold", -1)
 
-    g = a2.join(F.broadcast(a3) if use_broadcast else a3, ["central", "fecha_despacho"], "left")
+    g = a2.join(F.broadcast(a3) if usar_broadcast else a3, ["central", "fecha_despacho"], "left")
     plan = g._jdf.queryExecution().executedPlan().toString()
     estrategia = (
         "BroadcastHashJoin"
@@ -295,6 +312,9 @@ def gold(spark: SparkSession, silver: str, gold_dir: str, report: dict, use_broa
         "estrategia_join": estrategia,
         "filas_sin_costo": g.filter("sin_costo_variable").count(),
         "por_costo_estado": {r["costo_estado"]: r["count"] for r in g.groupBy("costo_estado").count().collect()},
+        "a3_bytes_estimados": a3_bytes_estimados,
+        "broadcast_threshold_bytes": broadcast_threshold_bytes,
+        "broadcast_activado_adaptativo": usar_broadcast,
     }
 
     a4 = spark.read.parquet(f"{silver}/a4_costos_marginales")
@@ -313,6 +333,9 @@ def gold(spark: SparkSession, silver: str, gold_dir: str, report: dict, use_broa
     report["calidad"]["gold_observabilidad"] = obs_metrics
     senales_metrics = construir_senales_externas(spark, silver, gold_dir, write_parquet_optimizado)
     report["calidad"]["gold_senales_externas"] = senales_metrics
+    fs_metrics = construir_gold_feature_store(spark, silver, gold_dir, write_parquet_optimizado)
+    report["linaje_gold"] = fs_metrics.pop("linaje")
+    report["calidad"]["gold_feature_store"] = fs_metrics
     return {
         "despacho": n_g,
         "precios": n_p,
@@ -320,6 +343,7 @@ def gold(spark: SparkSession, silver: str, gold_dir: str, report: dict, use_broa
         "precios_troncales": senales_metrics["gold_precios_troncales_30min"]["filas"],
         "eventos_criticos": senales_metrics["gold_eventos_criticos_30min"]["filas"],
         "contexto_auditoria": senales_metrics["gold_contexto_auditoria_30min"]["filas"],
+        "feature_store": fs_metrics["filas"],
     }
 
 
@@ -386,7 +410,7 @@ def main() -> None:
             escribir_atomico_json(spark, f"{logs}/run_{escala}_silver.json", report)
 
         if "gold" in etapas:
-            ejecutar_etapa("gold", gold, spark, silver, gold_dir, report, use_broadcast)
+            ejecutar_etapa("gold", gold, spark, silver, gold_dir, report, broadcast_bytes)
             report["total_segundos"] = round(time.perf_counter() - t0, 2)
             report["fin"] = dt.datetime.now().isoformat(timespec="seconds")
             escribir_atomico_json(spark, f"{logs}/run_{escala}_gold.json", report)

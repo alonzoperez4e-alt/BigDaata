@@ -1,0 +1,38 @@
+{
+  "fuente_oficial": "coes_pipeline\\lake_real\\gold\\gold_feature_store_30min",
+  "target": "evento_termico_nop (ventana t+4..t+8)",
+  "modo_split": "estricto_2024",
+  "n_train": 24831,
+  "n_test": 10256,
+  "positivos_train": 4273,
+  "positivos_test": 1292,
+  "auc_roc": 0.4534,
+  "pr_auc": 0.1218,
+  "f1": 0.1715,
+  "precision": 0.109,
+  "recall": 0.4025,
+  "matriz_confusion": {
+    "TN": 4712,
+    "FP": 4252,
+    "FN": 772,
+    "TP": 520
+  },
+  "importancia_variables": {
+    "term_cara_ejec_mw": 0.7676,
+    "cmg_troncal_mediana": 0.1283,
+    "mes": 0.0362,
+    "bloque_30min": 0.0184,
+    "term_cara_prog_mw": 0.0167,
+    "cmg_spread_p90_p50": 0.0105,
+    "n_mantenimientos_prog_termicos_activos": 0.0065,
+    "dia_semana": 0.0055,
+    "rampa_4": 0.0054,
+    "rampa_1": 0.0038,
+    "n_forzados_termicos_activos": 0.0011,
+    "es_finde": 0.0,
+    "gen_total_mw": 0.0,
+    "term_cara_share": 0.0,
+    "n_forzados_transmision_activos": 0.0,
+    "n_forzados_termicos_inicio_3h": 0.0
+  }
+}
