@@ -1,0 +1,283 @@
+{
+  "entorno": "local",
+  "perfil": "local_dev",
+  "particionamiento": "anio",
+  "escala": "1x",
+  "inicio": "2026-11-24T23:15:24",
+  "broadcast": true,
+  "etapas_solicitadas": [
+    "gold"
+  ],
+  "etapas": {
+    "gold": {
+      "segundos": 43.83,
+      "despacho": 6533616,
+      "precios": 9587472,
+      "observabilidad": 52608,
+      "precios_troncales": 52608,
+      "eventos_criticos": 52608,
+      "contexto_auditoria": 52608,
+      "feature_store": 52608
+    }
+  },
+  "calidad": {
+    "gold_despacho": {
+      "filas_a2": 6533616,
+      "filas_gold": 6533616,
+      "join_multiplico_filas": false,
+      "estrategia_join": "BroadcastHashJoin",
+      "filas_sin_costo": 4982016,
+      "por_costo_estado": {
+        "con_costo": 1551600,
+        "fecha_sin_costo": 245664,
+        "central_sin_costo_en_a3": 4736352
+      },
+      "a3_bytes_estimados": 10457296,
+      "broadcast_threshold_bytes": 10485760,
+      "broadcast_activado_adaptativo": true
+    },
+    "gold_precios": {
+      "filas": 9587472,
+      "ceros_tratados_como_faltantes": 269627
+    },
+    "gold_observabilidad": {
+      "filas": 52608,
+      "etiqueta_observable_true": 36336,
+      "etiqueta_observable_en_pr06": 34652,
+      "bloques_censurados": 16272,
+      "censurados_con_etiqueta_no_nula": 0,
+      "bloques_evento_termico_nop": 4207,
+      "inicios_termico_nop": 373,
+      "distribucion_motivo_censura": {
+        "OK": 34652,
+        "SIN_A1": 11664,
+        "SIN_PR06": 1684,
+        "SIN_A1_Y_A3": 1392,
+        "SIN_A3": 3216
+      },
+      "resumen_por_anio": {
+        "2021": {
+          "bloques_etiquetables": 912,
+          "bloques_evento": 43,
+          "prevalencia_pct": 4.71,
+          "inicios": 2
+        },
+        "2022": {
+          "bloques_etiquetables": 13104,
+          "bloques_evento": 1302,
+          "prevalencia_pct": 9.94,
+          "inicios": 103
+        },
+        "2023": {
+          "bloques_etiquetables": 11616,
+          "bloques_evento": 1875,
+          "prevalencia_pct": 16.14,
+          "inicios": 187
+        },
+        "2024": {
+          "bloques_etiquetables": 10704,
+          "bloques_evento": 987,
+          "prevalencia_pct": 9.22,
+          "inicios": 81
+        }
+      }
+    },
+    "gold_senales_externas": {
+      "gold_precios_troncales_30min": {
+        "filas": 52608,
+        "barras_troncales_identificadas": 84,
+        "bloques_con_precio": 52608,
+        "cmg_mediana_prom_s_kwh": 0.1788,
+        "spread_p90_p50_prom_s_kwh": 0.017,
+        "barras_validas_prom_por_bloque": 78.26
+      },
+      "gold_eventos_criticos_30min": {
+        "filas": 52608,
+        "indicadores": {
+          "n_forzados_termicos_activos": {
+            "bloques_mayor_a_0": 19265,
+            "pct_bloques_activos": 36.62,
+            "max_simultaneos": 12
+          },
+          "n_forzados_transmision_activos": {
+            "bloques_mayor_a_0": 11031,
+            "pct_bloques_activos": 20.97,
+            "max_simultaneos": 8
+          },
+          "n_forzados_termicos_inicio_3h": {
+            "bloques_mayor_a_0": 5463,
+            "pct_bloques_activos": 10.38,
+            "max_simultaneos": 12
+          },
+          "n_mantenimientos_prog_termicos_activos": {
+            "bloques_mayor_a_0": 52608,
+            "pct_bloques_activos": 100.0,
+            "max_simultaneos": 34
+          }
+        }
+      },
+      "gold_contexto_auditoria_30min": {
+        "filas": 52608,
+        "bloques_con_label_rdo_1": 13146,
+        "bloques_sin_pr06": 2212,
+        "bloques_con_reprograma_dia": 52416
+      }
+    },
+    "gold_feature_store": {
+      "filas": 52608,
+      "duplicados_fecha_hora": 0,
+      "columnas_totales": 29,
+      "columnas_prohibidas_presentes": [],
+      "resumen_economico_por_anio": {
+        "2021": {
+          "energia_nop_mwh": 1529.3,
+          "exposicion_bruta_millones_soles": 0.4,
+          "sobrecosto_neto_millones_soles": 0.24,
+          "term_cara_prog_prom_mw": 10.59
+        },
+        "2022": {
+          "energia_nop_mwh": 110963.14,
+          "exposicion_bruta_millones_soles": 75.03,
+          "sobrecosto_neto_millones_soles": 15.11,
+          "term_cara_prog_prom_mw": 42.72
+        },
+        "2023": {
+          "energia_nop_mwh": 178791.82,
+          "exposicion_bruta_millones_soles": 175.6,
+          "sobrecosto_neto_millones_soles": 48.19,
+          "term_cara_prog_prom_mw": 92.65
+        },
+        "2024": {
+          "energia_nop_mwh": 22076.46,
+          "exposicion_bruta_millones_soles": 19.08,
+          "sobrecosto_neto_millones_soles": 15.22,
+          "term_cara_prog_prom_mw": 50.05
+        }
+      }
+    }
+  },
+  "linaje_gold": {
+    "script": "src/etl/gold_feature_store.py",
+    "version": "2.4.0",
+    "columnas": {
+      "fecha_hora": "grilla_maestra (sequence 30min)",
+      "fecha_despacho": "grilla_maestra (to_date(fecha_hora - 1 min))",
+      "anio": "grilla_maestra (year(fecha_despacho))",
+      "gen_total_mw": "gold/despacho_central_30min (A2 sum potencia_ejecutada_mw)",
+      "prog_total_mw": "gold/despacho_central_30min (A1/A2 sum potencia_programada_mw; NULL si sin programa)",
+      "brecha_despacho_mw": "derivada (gen_total_mw - prog_total_mw)",
+      "term_cara_ejec_mw": "gold/despacho_central_30min (A2+A3 sum potencia_ejecutada_mw en combustibles caros)",
+      "term_cara_prog_mw": "gold/despacho_central_30min (A1+A3 sum potencia_programada_mw en combustibles caros)",
+      "term_cara_share": "derivada (term_cara_ejec_mw / gen_total_mw)",
+      "energia_nop_mwh": "gold/despacho_central_30min (A1+A2+A3 energia termica cara no programada >5MW, solo observables)",
+      "exposicion_bruta_soles": "gold/despacho_central_30min (energia_nop_mwh * 1000 * costo_variable_s_kwh, solo observables)",
+      "sobrecosto_neto_estimado_soles": "derivada (exposicion_bruta_soles - energia_nop_mwh * 1000 * cmg_troncal_mediana)",
+      "cmg_troncal_mediana": "gold/gold_precios_troncales_30min (A4 220/500kV P50 sobre costo_marginal_limpio)",
+      "cmg_troncal_p90": "gold/gold_precios_troncales_30min (A4 220/500kV P90 sobre costo_marginal_limpio)",
+      "cmg_spread_p90_p50": "gold/gold_precios_troncales_30min (P90 - P50 congestion nodal)",
+      "n_barras_troncales_validas": "gold/gold_precios_troncales_30min (conteo barras 220/500kV validas)",
+      "n_forzados_termicos_activos": "gold/gold_eventos_criticos_30min (B1 FORZADO termico activo en t)",
+      "n_forzados_transmision_activos": "gold/gold_eventos_criticos_30min (B1 FORZADO transmision activo en t)",
+      "n_forzados_termicos_inicio_3h": "gold/gold_eventos_criticos_30min (B1 FORZADO termico iniciado en [t-3h, t])",
+      "n_mantenimientos_prog_termicos_activos": "gold/gold_eventos_criticos_30min (B1 PROGRAMADO termico activo en t)",
+      "tiene_a1": "gold/gold_observabilidad_etiqueta_30min",
+      "tiene_a2": "gold/gold_observabilidad_etiqueta_30min",
+      "tiene_a3": "gold/gold_observabilidad_etiqueta_30min",
+      "tiene_pr06": "gold/gold_observabilidad_etiqueta_30min",
+      "etiqueta_observable": "gold/gold_observabilidad_etiqueta_30min (tiene_a1 & tiene_a2 & tiene_a3)",
+      "motivo_censura": "gold/gold_observabilidad_etiqueta_30min",
+      "evento_termico_nop": "gold/gold_observabilidad_etiqueta_30min (target proxy; NULL si censurado)",
+      "inicio_termico_nop": "gold/gold_observabilidad_etiqueta_30min (target inicio; NULL si censurado)",
+      "n_centrales_term_nop": "gold/gold_observabilidad_etiqueta_30min"
+    }
+  },
+  "contratos_gold": {
+    "estado_global": "PASS",
+    "contratos_fallidos": [],
+    "conteos_tablas_gold": {
+      "despacho_central_30min": 6533616,
+      "precios_barra_30min": 9587472,
+      "gold_observabilidad_etiqueta_30min": 52608,
+      "gold_precios_troncales_30min": 52608,
+      "gold_eventos_criticos_30min": 52608,
+      "gold_contexto_auditoria_30min": 52608,
+      "gold_feature_store_30min": 52608
+    },
+    "distribucion_motivo_censura": {
+      "OK": 34652,
+      "SIN_A1": 11664,
+      "SIN_A1_Y_A3": 1392,
+      "SIN_A3": 3216,
+      "SIN_PR06": 1684
+    },
+    "archivos_parquet_gold": {
+      "despacho_central_30min": {
+        "archivos_parquet": 4,
+        "tiene_particion_mes": false
+      },
+      "precios_barra_30min": {
+        "archivos_parquet": 11,
+        "tiene_particion_mes": false
+      },
+      "gold_observabilidad_etiqueta_30min": {
+        "archivos_parquet": 4,
+        "tiene_particion_mes": false
+      },
+      "gold_precios_troncales_30min": {
+        "archivos_parquet": 4,
+        "tiene_particion_mes": false
+      },
+      "gold_eventos_criticos_30min": {
+        "archivos_parquet": 4,
+        "tiene_particion_mes": false
+      },
+      "gold_contexto_auditoria_30min": {
+        "archivos_parquet": 4,
+        "tiene_particion_mes": false
+      },
+      "gold_feature_store_30min": {
+        "archivos_parquet": 4,
+        "tiene_particion_mes": false
+      }
+    },
+    "total_archivos_parquet_gold": 35,
+    "contratos": {
+      "1_completitud_grilla": {
+        "status": "PASS",
+        "filas_esperadas": 52608,
+        "filas_observadas": 52608,
+        "duplicados_fecha_hora": 0
+      },
+      "2_no_multiplicacion_despacho": {
+        "status": "PASS",
+        "filas_silver_a2": 6533616,
+        "filas_gold_despacho": 6533616
+      },
+      "3_integridad_censura": {
+        "status": "PASS",
+        "violaciones_feature_store": 0,
+        "violaciones_observabilidad": 0
+      },
+      "4_barrera_antifuga_esquema": {
+        "status": "PASS",
+        "columnas_prohibidas_encontradas": []
+      },
+      "5_consistencia_cobertura_historica": {
+        "status": "PASS",
+        "modo": "completo_1x",
+        "etiqueta_observable_total": 36336,
+        "etiqueta_observable_en_pr06": 34652,
+        "esperado_en_pr06_1x": 34652,
+        "bloques_recuperados_sin_pr06": 1684
+      },
+      "6_atomicidad_y_particion_anual": {
+        "status": "PASS",
+        "tablas_gold_verificadas": 7,
+        "total_archivos_parquet_gold": 35,
+        "tablas_con_particion_mes_residual": []
+      }
+    }
+  },
+  "total_segundos": 45.62,
+  "fin": "2026-11-24T23:16:10"
+}

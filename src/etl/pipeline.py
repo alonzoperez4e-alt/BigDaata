@@ -24,6 +24,7 @@ if str(REPO_ROOT) not in sys.path:
 from src.etl.gold_observabilidad import construir_gold_observabilidad
 from src.etl.gold_senales_externas import construir_senales_externas
 from src.etl.gold_feature_store import construir_gold_feature_store
+from src.etl.quality_checks import exigir_contratos_gold, validar_contratos_gold
 PROFILES_PATH = REPO_ROOT / "config" / "profiles.json"
 
 # ---- Esquemas estrictos (sin inferencia) ----
@@ -410,10 +411,13 @@ def main() -> None:
             escribir_atomico_json(spark, f"{logs}/run_{escala}_silver.json", report)
 
         if "gold" in etapas:
-            ejecutar_etapa("gold", gold, spark, silver, gold_dir, report, broadcast_bytes)
-            report["total_segundos"] = round(time.perf_counter() - t0, 2)
-            report["fin"] = dt.datetime.now().isoformat(timespec="seconds")
-            escribir_atomico_json(spark, f"{logs}/run_{escala}_gold.json", report)
+         ejecutar_etapa("gold", gold, spark, silver, gold_dir, report, broadcast_bytes)
+         contratos = validar_contratos_gold(spark, silver, gold_dir, escala=escala)
+         report["contratos_gold"] = contratos
+         report["total_segundos"] = round(time.perf_counter() - t0, 2)
+         report["fin"] = dt.datetime.now().isoformat(timespec="seconds")
+         escribir_atomico_json(spark, f"{logs}/run_{escala}_gold.json", report)
+         exigir_contratos_gold(contratos)
     except Exception as e:
         report["error"] = f"{type(e).__name__}: {str(e)[:300]}"
         report["total_segundos"] = round(time.perf_counter() - t0, 2)

@@ -1,0 +1,20 @@
+============================= test session starts =============================
+platform win32 -- Python 3.10.11, pytest-9.2.0, pluggy-1.7.0 -- C:\Users\Joan\OneDrive\Documentos\Big Data\BigDaata\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Joan\OneDrive\Documentos\Big Data\BigDaata
+collecting ... collected 6 items
+
+tests/test_gold_contracts.py::test_contratos_gold_end_to_end[sample] PASSED [ 16%]
+tests/test_gold_contracts.py::test_contratos_gold_end_to_end[completo_1x] PASSED [ 33%]
+tests/test_gold_contracts.py::test_reporte_atomico_gold_json[sample] PASSED [ 50%]
+tests/test_gold_contracts.py::test_reporte_atomico_gold_json[completo_1x] PASSED [ 66%]
+tests/test_gold_contracts.py::test_regresion_barrera_antifuga_bloquea_columnas_prohibidas PASSED [ 83%]
+tests/test_gold_contracts.py::test_regresion_exigir_contratos_lanza_error_si_falla PASSED [100%]
+
+============================= 6 passed in 10.93s ==============================
+CORRECTO: el proceso con PID 54416 (proceso secundario de PID 59256)
+ha sido terminado.
+CORRECTO: el proceso con PID 59256 (proceso secundario de PID 62716)
+ha sido terminado.
+CORRECTO: el proceso con PID 62716 (proceso secundario de PID 20128)
+ha sido terminado.

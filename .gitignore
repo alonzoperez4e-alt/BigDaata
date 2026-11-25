@@ -14,3 +14,4 @@ logs/
 spark-warehouse/
 derby.log
 metastore_db/
+.pytest_cache/
