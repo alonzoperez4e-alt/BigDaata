@@ -1,0 +1,1861 @@
+{
+  "input": "lake_v2/gold/ml_features_30min",
+  "embargo_horas": 4,
+  "meses_baja_cobertura_excluidos": [
+    "2024-01",
+    "2024-04"
+  ],
+  "n_boot": 1000,
+  "seed": 42,
+  "tabla_mensual_2024": [
+    {
+      "anio_mes": "2024-01",
+      "baja_cobertura": true,
+      "bloques_totales": 1488,
+      "y_ventana_2_4h": {
+        "bloques_etiquetables": 480,
+        "pct_cobertura": 32.26,
+        "positivos": 83,
+        "prevalencia": 0.172917
+      },
+      "y_inicio_ventana_2_4h": {
+        "bloques_etiquetables": 480,
+        "pct_cobertura": 32.26,
+        "positivos": 40,
+        "prevalencia": 0.083333
+      }
+    },
+    {
+      "anio_mes": "2024-02",
+      "baja_cobertura": false,
+      "bloques_totales": 1392,
+      "y_ventana_2_4h": {
+        "bloques_etiquetables": 1008,
+        "pct_cobertura": 72.41,
+        "positivos": 91,
+        "prevalencia": 0.090278
+      },
+      "y_inicio_ventana_2_4h": {
+        "bloques_etiquetables": 1008,
+        "pct_cobertura": 72.41,
+        "positivos": 35,
+        "prevalencia": 0.034722
+      }
+    },
+    {
+      "anio_mes": "2024-03",
+      "baja_cobertura": false,
+      "bloques_totales": 1488,
+      "y_ventana_2_4h": {
+        "bloques_etiquetables": 912,
+        "pct_cobertura": 61.29,
+        "positivos": 13,
+        "prevalencia": 0.014254
+      },
+      "y_inicio_ventana_2_4h": {
+        "bloques_etiquetables": 912,
+        "pct_cobertura": 61.29,
+        "positivos": 10,
+        "prevalencia": 0.010965
+      }
+    },
+    {
+      "anio_mes": "2024-04",
+      "baja_cobertura": true,
+      "bloques_totales": 1440,
+      "y_ventana_2_4h": {
+        "bloques_etiquetables": 534,
+        "pct_cobertura": 37.08,
+        "positivos": 0,
+        "prevalencia": 0.0
+      },
+      "y_inicio_ventana_2_4h": {
+        "bloques_etiquetables": 534,
+        "pct_cobertura": 37.08,
+        "positivos": 0,
+        "prevalencia": 0.0
+      }
+    },
+    {
+      "anio_mes": "2024-05",
+      "baja_cobertura": false,
+      "bloques_totales": 1488,
+      "y_ventana_2_4h": {
+        "bloques_etiquetables": 816,
+        "pct_cobertura": 54.84,
+        "positivos": 68,
+        "prevalencia": 0.083333
+      },
+      "y_inicio_ventana_2_4h": {
+        "bloques_etiquetables": 816,
+        "pct_cobertura": 54.84,
+        "positivos": 45,
+        "prevalencia": 0.055147
+      }
+    },
+    {
+      "anio_mes": "2024-06",
+      "baja_cobertura": false,
+      "bloques_totales": 1440,
+      "y_ventana_2_4h": {
+        "bloques_etiquetables": 1156,
+        "pct_cobertura": 80.28,
+        "positivos": 180,
+        "prevalencia": 0.155709
+      },
+      "y_inicio_ventana_2_4h": {
+        "bloques_etiquetables": 1152,
+        "pct_cobertura": 80.0,
+        "positivos": 107,
+        "prevalencia": 0.092882
+      }
+    },
+    {
+      "anio_mes": "2024-07",
+      "baja_cobertura": false,
+      "bloques_totales": 1488,
+      "y_ventana_2_4h": {
+        "bloques_etiquetables": 1296,
+        "pct_cobertura": 87.1,
+        "positivos": 74,
+        "prevalencia": 0.057099
+      },
+      "y_inicio_ventana_2_4h": {
+        "bloques_etiquetables": 1296,
+        "pct_cobertura": 87.1,
+        "positivos": 50,
+        "prevalencia": 0.03858
+      }
+    },
+    {
+      "anio_mes": "2024-08",
+      "baja_cobertura": false,
+      "bloques_totales": 1488,
+      "y_ventana_2_4h": {
+        "bloques_etiquetables": 1056,
+        "pct_cobertura": 70.97,
+        "positivos": 75,
+        "prevalencia": 0.071023
+      },
+      "y_inicio_ventana_2_4h": {
+        "bloques_etiquetables": 1056,
+        "pct_cobertura": 70.97,
+        "positivos": 18,
+        "prevalencia": 0.017045
+      }
+    },
+    {
+      "anio_mes": "2024-09",
+      "baja_cobertura": false,
+      "bloques_totales": 1440,
+      "y_ventana_2_4h": {
+        "bloques_etiquetables": 1154,
+        "pct_cobertura": 80.14,
+        "positivos": 177,
+        "prevalencia": 0.15338
+      },
+      "y_inicio_ventana_2_4h": {
+        "bloques_etiquetables": 1152,
+        "pct_cobertura": 80.0,
+        "positivos": 40,
+        "prevalencia": 0.034722
+      }
+    },
+    {
+      "anio_mes": "2024-10",
+      "baja_cobertura": false,
+      "bloques_totales": 1488,
+      "y_ventana_2_4h": {
+        "bloques_etiquetables": 1200,
+        "pct_cobertura": 80.65,
+        "positivos": 85,
+        "prevalencia": 0.070833
+      },
+      "y_inicio_ventana_2_4h": {
+        "bloques_etiquetables": 1200,
+        "pct_cobertura": 80.65,
+        "positivos": 35,
+        "prevalencia": 0.029167
+      }
+    },
+    {
+      "anio_mes": "2024-11",
+      "baja_cobertura": false,
+      "bloques_totales": 1440,
+      "y_ventana_2_4h": {
+        "bloques_etiquetables": 1100,
+        "pct_cobertura": 76.39,
+        "positivos": 446,
+        "prevalencia": 0.405455
+      },
+      "y_inicio_ventana_2_4h": {
+        "bloques_etiquetables": 1098,
+        "pct_cobertura": 76.25,
+        "positivos": 20,
+        "prevalencia": 0.018215
+      }
+    }
+  ],
+  "resultados_por_target": {
+    "y_ventana_2_4h": {
+      "fold_1_2023_s1": {
+        "descripcion": "2023 S1",
+        "val_start": "2023-01-01 00:30:00",
+        "val_end": "2023-06-30 23:30:00",
+        "splits": {
+          "train": {
+            "bloques_totales": 19000,
+            "bloques_etiquetables": 14026,
+            "pct_cobertura": 73.82,
+            "positivos": 1757,
+            "prevalencia": 0.125267,
+            "min_fecha_hora": "2021-12-01T16:30:00",
+            "max_fecha_hora": "2022-12-29T16:00:00"
+          },
+          "val": {
+            "bloques_totales": 8687,
+            "bloques_etiquetables": 5819,
+            "pct_cobertura": 66.99,
+            "positivos": 660,
+            "prevalencia": 0.113422,
+            "min_fecha_hora": "2023-01-06T16:30:00",
+            "max_fecha_hora": "2023-06-30T18:30:00"
+          }
+        },
+        "baselines": {
+          "baseline_tasa_horaria": {
+            "n_obs": 5819,
+            "n_positivos": 660,
+            "n_dias": 154,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.119863,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.139574,
+                "ic_95": [
+                  0.096014,
+                  0.187527
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.58437,
+                "ic_95": [
+                  0.539087,
+                  0.62964
+                ]
+              },
+              "brier_score": {
+                "valor": 0.099767,
+                "ic_95": [
+                  0.073327,
+                  0.126242
+                ]
+              },
+              "precision": {
+                "valor": 0.133333,
+                "ic_95": [
+                  0.091719,
+                  0.178065
+                ]
+              },
+              "recall": {
+                "valor": 0.733333,
+                "ic_95": [
+                  0.669095,
+                  0.792168
+                ]
+              },
+              "f1": {
+                "valor": 0.225641,
+                "ic_95": [
+                  0.161722,
+                  0.286779
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.113422,
+                "ic_95": [
+                  0.077074,
+                  0.149305
+                ]
+              }
+            }
+          },
+          "baseline_siempre_positivo": {
+            "n_obs": 5819,
+            "n_positivos": 660,
+            "n_dias": 154,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.0,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.113422,
+                "ic_95": [
+                  0.077074,
+                  0.149305
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.5,
+                "ic_95": [
+                  0.5,
+                  0.5
+                ]
+              },
+              "brier_score": {
+                "valor": 0.100697,
+                "ic_95": [
+                  0.073456,
+                  0.127591
+                ]
+              },
+              "precision": {
+                "valor": 0.113422,
+                "ic_95": [
+                  0.077074,
+                  0.149305
+                ]
+              },
+              "recall": {
+                "valor": 1.0,
+                "ic_95": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "f1": {
+                "valor": 0.203735,
+                "ic_95": [
+                  0.143117,
+                  0.259819
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.113422,
+                "ic_95": [
+                  0.077074,
+                  0.149305
+                ]
+              }
+            },
+            "probabilidad_constante_train": 0.125267
+          }
+        }
+      },
+      "fold_2_2023_s2": {
+        "descripcion": "2023 S2 (regimen extremo 24.7%)",
+        "val_start": "2023-07-01 00:30:00",
+        "val_end": "2023-12-31 23:30:00",
+        "splits": {
+          "train": {
+            "bloques_totales": 27688,
+            "bloques_etiquetables": 19838,
+            "pct_cobertura": 71.65,
+            "positivos": 2413,
+            "prevalencia": 0.121635,
+            "min_fecha_hora": "2021-12-01T16:30:00",
+            "max_fecha_hora": "2023-06-30T15:00:00"
+          },
+          "val": {
+            "bloques_totales": 8831,
+            "bloques_etiquetables": 5816,
+            "pct_cobertura": 65.86,
+            "positivos": 1919,
+            "prevalencia": 0.329952,
+            "min_fecha_hora": "2023-06-30T19:30:00",
+            "max_fecha_hora": "2023-11-18T16:00:00"
+          }
+        },
+        "baselines": {
+          "baseline_tasa_horaria": {
+            "n_obs": 5816,
+            "n_positivos": 1919,
+            "n_dias": 137,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.116223,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.379007,
+                "ic_95": [
+                  0.316083,
+                  0.442177
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.579193,
+                "ic_95": [
+                  0.551663,
+                  0.607705
+                ]
+              },
+              "brier_score": {
+                "valor": 0.261601,
+                "ic_95": [
+                  0.220717,
+                  0.301754
+                ]
+              },
+              "precision": {
+                "valor": 0.372331,
+                "ic_95": [
+                  0.31182,
+                  0.433543
+                ]
+              },
+              "recall": {
+                "valor": 0.681605,
+                "ic_95": [
+                  0.653988,
+                  0.712174
+                ]
+              },
+              "f1": {
+                "valor": 0.481591,
+                "ic_95": [
+                  0.426159,
+                  0.533371
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.329952,
+                "ic_95": [
+                  0.275353,
+                  0.383461
+                ]
+              }
+            }
+          },
+          "baseline_siempre_positivo": {
+            "n_obs": 5816,
+            "n_positivos": 1919,
+            "n_dias": 137,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.0,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.329952,
+                "ic_95": [
+                  0.275353,
+                  0.383461
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.5,
+                "ic_95": [
+                  0.5,
+                  0.5
+                ]
+              },
+              "brier_score": {
+                "valor": 0.264479,
+                "ic_95": [
+                  0.223163,
+                  0.304971
+                ]
+              },
+              "precision": {
+                "valor": 0.329952,
+                "ic_95": [
+                  0.275353,
+                  0.383461
+                ]
+              },
+              "recall": {
+                "valor": 1.0,
+                "ic_95": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "f1": {
+                "valor": 0.496186,
+                "ic_95": [
+                  0.431807,
+                  0.55435
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.329952,
+                "ic_95": [
+                  0.275353,
+                  0.383461
+                ]
+              }
+            },
+            "probabilidad_constante_train": 0.121635
+          }
+        }
+      },
+      "fold_3_2024_h1": {
+        "descripcion": "2024 H1 (ene-may con ene/abr < 50% cobertura)",
+        "val_start": "2024-01-01 00:30:00",
+        "val_end": "2024-05-31 23:30:00",
+        "splits": {
+          "train": {
+            "bloques_totales": 36520,
+            "bloques_etiquetables": 25662,
+            "pct_cobertura": 70.27,
+            "positivos": 4336,
+            "prevalencia": 0.168966,
+            "min_fecha_hora": "2021-12-01T16:30:00",
+            "max_fecha_hora": "2023-11-18T16:00:00"
+          },
+          "val": {
+            "bloques_totales": 7295,
+            "bloques_etiquetables": 3749,
+            "pct_cobertura": 51.39,
+            "positivos": 255,
+            "prevalencia": 0.068018,
+            "min_fecha_hora": "2024-01-20T16:30:00",
+            "max_fecha_hora": "2024-05-31T18:30:00"
+          }
+        },
+        "baselines": {
+          "baseline_tasa_horaria": {
+            "n_obs": 3749,
+            "n_positivos": 255,
+            "n_dias": 107,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.144195,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.078315,
+                "ic_95": [
+                  0.040288,
+                  0.122472
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.554528,
+                "ic_95": [
+                  0.494162,
+                  0.605566
+                ]
+              },
+              "brier_score": {
+                "valor": 0.073934,
+                "ic_95": [
+                  0.053013,
+                  0.095058
+                ]
+              },
+              "precision": {
+                "valor": 0.075445,
+                "ic_95": [
+                  0.039464,
+                  0.114744
+                ]
+              },
+              "recall": {
+                "valor": 0.831373,
+                "ic_95": [
+                  0.737102,
+                  0.912454
+                ]
+              },
+              "f1": {
+                "valor": 0.138336,
+                "ic_95": [
+                  0.075616,
+                  0.201791
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.068018,
+                "ic_95": [
+                  0.03573,
+                  0.101241
+                ]
+              }
+            }
+          },
+          "baseline_siempre_positivo": {
+            "n_obs": 3749,
+            "n_positivos": 255,
+            "n_dias": 107,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.0,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.068018,
+                "ic_95": [
+                  0.03573,
+                  0.101241
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.5,
+                "ic_95": [
+                  0.5,
+                  0.5
+                ]
+              },
+              "brier_score": {
+                "valor": 0.073582,
+                "ic_95": [
+                  0.052205,
+                  0.095578
+                ]
+              },
+              "precision": {
+                "valor": 0.068018,
+                "ic_95": [
+                  0.03573,
+                  0.101241
+                ]
+              },
+              "recall": {
+                "valor": 1.0,
+                "ic_95": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "f1": {
+                "valor": 0.127373,
+                "ic_95": [
+                  0.068994,
+                  0.183867
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.068018,
+                "ic_95": [
+                  0.03573,
+                  0.101241
+                ]
+              }
+            },
+            "probabilidad_constante_train": 0.168966
+          }
+        }
+      },
+      "test_final_2024": {
+        "descripcion": "Evaluacion oficial ciega 2024",
+        "val_start": "2024-01-01 00:30:00",
+        "val_end": "2024-12-01 00:00:00",
+        "splits": {
+          "train": {
+            "bloques_totales": 36520,
+            "bloques_etiquetables": 25662,
+            "pct_cobertura": 70.27,
+            "positivos": 4336,
+            "prevalencia": 0.168966,
+            "min_fecha_hora": "2021-12-01T16:30:00",
+            "max_fecha_hora": "2023-11-18T16:00:00"
+          },
+          "val": {
+            "bloques_totales": 16080,
+            "bloques_etiquetables": 10712,
+            "pct_cobertura": 66.62,
+            "positivos": 1292,
+            "prevalencia": 0.120612,
+            "min_fecha_hora": "2024-01-20T16:30:00",
+            "max_fecha_hora": "2024-11-30T17:00:00"
+          }
+        },
+        "baselines": {
+          "baseline_tasa_horaria": {
+            "n_obs": 10712,
+            "n_positivos": 1292,
+            "n_dias": 281,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.144195,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.137143,
+                "ic_95": [
+                  0.10417,
+                  0.173062
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.547735,
+                "ic_95": [
+                  0.525357,
+                  0.572505
+                ]
+              },
+              "brier_score": {
+                "valor": 0.10841,
+                "ic_95": [
+                  0.088765,
+                  0.130198
+                ]
+              },
+              "precision": {
+                "valor": 0.129418,
+                "ic_95": [
+                  0.097798,
+                  0.16462
+                ]
+              },
+              "recall": {
+                "valor": 0.804954,
+                "ic_95": [
+                  0.773713,
+                  0.837565
+                ]
+              },
+              "f1": {
+                "valor": 0.222985,
+                "ic_95": [
+                  0.174341,
+                  0.274375
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.120612,
+                "ic_95": [
+                  0.09081,
+                  0.153841
+                ]
+              }
+            }
+          },
+          "baseline_siempre_positivo": {
+            "n_obs": 10712,
+            "n_positivos": 1292,
+            "n_dias": 281,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.0,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.120612,
+                "ic_95": [
+                  0.09081,
+                  0.153841
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.5,
+                "ic_95": [
+                  0.5,
+                  0.5
+                ]
+              },
+              "brier_score": {
+                "valor": 0.108403,
+                "ic_95": [
+                  0.088672,
+                  0.130403
+                ]
+              },
+              "precision": {
+                "valor": 0.120612,
+                "ic_95": [
+                  0.09081,
+                  0.153841
+                ]
+              },
+              "recall": {
+                "valor": 1.0,
+                "ic_95": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "f1": {
+                "valor": 0.215262,
+                "ic_95": [
+                  0.1665,
+                  0.26666
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.120612,
+                "ic_95": [
+                  0.09081,
+                  0.153841
+                ]
+              }
+            },
+            "probabilidad_constante_train": 0.168966
+          }
+        },
+        "sensibilidad_cobertura_2024": {
+          "2024_global": {
+            "baseline_tasa_horaria": {
+              "n_obs": 10712,
+              "n_positivos": 1292,
+              "n_dias": 281,
+              "n_boot": 1000,
+              "n_boot_validos_auc": 1000,
+              "threshold": 0.144195,
+              "metricas": {
+                "pr_auc": {
+                  "valor": 0.137143,
+                  "ic_95": [
+                    0.10417,
+                    0.173062
+                  ]
+                },
+                "auc_roc": {
+                  "valor": 0.547735,
+                  "ic_95": [
+                    0.525357,
+                    0.572505
+                  ]
+                },
+                "brier_score": {
+                  "valor": 0.10841,
+                  "ic_95": [
+                    0.088765,
+                    0.130198
+                  ]
+                },
+                "precision": {
+                  "valor": 0.129418,
+                  "ic_95": [
+                    0.097798,
+                    0.16462
+                  ]
+                },
+                "recall": {
+                  "valor": 0.804954,
+                  "ic_95": [
+                    0.773713,
+                    0.837565
+                  ]
+                },
+                "f1": {
+                  "valor": 0.222985,
+                  "ic_95": [
+                    0.174341,
+                    0.274375
+                  ]
+                },
+                "prevalencia": {
+                  "valor": 0.120612,
+                  "ic_95": [
+                    0.09081,
+                    0.153841
+                  ]
+                }
+              }
+            },
+            "baseline_siempre_positivo": {
+              "n_obs": 10712,
+              "n_positivos": 1292,
+              "n_dias": 281,
+              "n_boot": 1000,
+              "n_boot_validos_auc": 1000,
+              "threshold": 0.0,
+              "metricas": {
+                "pr_auc": {
+                  "valor": 0.120612,
+                  "ic_95": [
+                    0.09081,
+                    0.153841
+                  ]
+                },
+                "auc_roc": {
+                  "valor": 0.5,
+                  "ic_95": [
+                    0.5,
+                    0.5
+                  ]
+                },
+                "brier_score": {
+                  "valor": 0.108403,
+                  "ic_95": [
+                    0.088672,
+                    0.130403
+                  ]
+                },
+                "precision": {
+                  "valor": 0.120612,
+                  "ic_95": [
+                    0.09081,
+                    0.153841
+                  ]
+                },
+                "recall": {
+                  "valor": 1.0,
+                  "ic_95": [
+                    1.0,
+                    1.0
+                  ]
+                },
+                "f1": {
+                  "valor": 0.215262,
+                  "ic_95": [
+                    0.1665,
+                    0.26666
+                  ]
+                },
+                "prevalencia": {
+                  "valor": 0.120612,
+                  "ic_95": [
+                    0.09081,
+                    0.153841
+                  ]
+                }
+              },
+              "probabilidad_constante_train": 0.168966
+            }
+          },
+          "2024_sin_meses_baja_cobertura": {
+            "baseline_tasa_horaria": {
+              "n_obs": 9698,
+              "n_positivos": 1209,
+              "n_dias": 251,
+              "n_boot": 1000,
+              "n_boot_validos_auc": 1000,
+              "threshold": 0.144195,
+              "metricas": {
+                "pr_auc": {
+                  "valor": 0.141075,
+                  "ic_95": [
+                    0.107194,
+                    0.181793
+                  ]
+                },
+                "auc_roc": {
+                  "valor": 0.544396,
+                  "ic_95": [
+                    0.525197,
+                    0.567844
+                  ]
+                },
+                "brier_score": {
+                  "valor": 0.111153,
+                  "ic_95": [
+                    0.090538,
+                    0.137177
+                  ]
+                },
+                "precision": {
+                  "valor": 0.133004,
+                  "ic_95": [
+                    0.100183,
+                    0.172789
+                  ]
+                },
+                "recall": {
+                  "valor": 0.800662,
+                  "ic_95": [
+                    0.773776,
+                    0.831362
+                  ]
+                },
+                "f1": {
+                  "valor": 0.228114,
+                  "ic_95": [
+                    0.178569,
+                    0.283047
+                  ]
+                },
+                "prevalencia": {
+                  "valor": 0.124665,
+                  "ic_95": [
+                    0.093101,
+                    0.163707
+                  ]
+                }
+              }
+            },
+            "baseline_siempre_positivo": {
+              "n_obs": 9698,
+              "n_positivos": 1209,
+              "n_dias": 251,
+              "n_boot": 1000,
+              "n_boot_validos_auc": 1000,
+              "threshold": 0.0,
+              "metricas": {
+                "pr_auc": {
+                  "valor": 0.124665,
+                  "ic_95": [
+                    0.093101,
+                    0.163707
+                  ]
+                },
+                "auc_roc": {
+                  "valor": 0.5,
+                  "ic_95": [
+                    0.5,
+                    0.5
+                  ]
+                },
+                "brier_score": {
+                  "valor": 0.111086,
+                  "ic_95": [
+                    0.090189,
+                    0.136934
+                  ]
+                },
+                "precision": {
+                  "valor": 0.124665,
+                  "ic_95": [
+                    0.093101,
+                    0.163707
+                  ]
+                },
+                "recall": {
+                  "valor": 1.0,
+                  "ic_95": [
+                    1.0,
+                    1.0
+                  ]
+                },
+                "f1": {
+                  "valor": 0.221692,
+                  "ic_95": [
+                    0.170343,
+                    0.281354
+                  ]
+                },
+                "prevalencia": {
+                  "valor": 0.124665,
+                  "ic_95": [
+                    0.093101,
+                    0.163707
+                  ]
+                }
+              },
+              "probabilidad_constante_train": 0.168966
+            }
+          }
+        }
+      }
+    },
+    "y_inicio_ventana_2_4h": {
+      "fold_1_2023_s1": {
+        "descripcion": "2023 S1",
+        "val_start": "2023-01-01 00:30:00",
+        "val_end": "2023-06-30 23:30:00",
+        "splits": {
+          "train": {
+            "bloques_totales": 19000,
+            "bloques_etiquetables": 14020,
+            "pct_cobertura": 73.79,
+            "positivos": 523,
+            "prevalencia": 0.037304,
+            "min_fecha_hora": "2021-12-01T16:30:00",
+            "max_fecha_hora": "2022-12-29T16:00:00"
+          },
+          "val": {
+            "bloques_totales": 8687,
+            "bloques_etiquetables": 5815,
+            "pct_cobertura": 66.94,
+            "positivos": 270,
+            "prevalencia": 0.046432,
+            "min_fecha_hora": "2023-01-06T16:30:00",
+            "max_fecha_hora": "2023-06-30T18:30:00"
+          }
+        },
+        "baselines": {
+          "baseline_tasa_horaria": {
+            "n_obs": 5815,
+            "n_positivos": 270,
+            "n_dias": 154,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.054795,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.05948,
+                "ic_95": [
+                  0.041918,
+                  0.08608
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.588717,
+                "ic_95": [
+                  0.521644,
+                  0.65159
+                ]
+              },
+              "brier_score": {
+                "valor": 0.044203,
+                "ic_95": [
+                  0.032387,
+                  0.056189
+                ]
+              },
+              "precision": {
+                "valor": 0.062574,
+                "ic_95": [
+                  0.035714,
+                  0.09643
+                ]
+              },
+              "recall": {
+                "valor": 0.196296,
+                "ic_95": [
+                  0.121696,
+                  0.292308
+                ]
+              },
+              "f1": {
+                "valor": 0.094897,
+                "ic_95": [
+                  0.056171,
+                  0.144212
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.046432,
+                "ic_95": [
+                  0.033478,
+                  0.059816
+                ]
+              }
+            }
+          },
+          "baseline_siempre_positivo": {
+            "n_obs": 5815,
+            "n_positivos": 270,
+            "n_dias": 154,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.0,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.046432,
+                "ic_95": [
+                  0.033478,
+                  0.059816
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.5,
+                "ic_95": [
+                  0.5,
+                  0.5
+                ]
+              },
+              "brier_score": {
+                "valor": 0.044359,
+                "ic_95": [
+                  0.032372,
+                  0.056745
+                ]
+              },
+              "precision": {
+                "valor": 0.046432,
+                "ic_95": [
+                  0.033478,
+                  0.059816
+                ]
+              },
+              "recall": {
+                "valor": 1.0,
+                "ic_95": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "f1": {
+                "valor": 0.088743,
+                "ic_95": [
+                  0.064786,
+                  0.11288
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.046432,
+                "ic_95": [
+                  0.033478,
+                  0.059816
+                ]
+              }
+            },
+            "probabilidad_constante_train": 0.037304
+          }
+        }
+      },
+      "fold_2_2023_s2": {
+        "descripcion": "2023 S2 (regimen extremo 24.7%)",
+        "val_start": "2023-07-01 00:30:00",
+        "val_end": "2023-12-31 23:30:00",
+        "splits": {
+          "train": {
+            "bloques_totales": 27688,
+            "bloques_etiquetables": 19828,
+            "pct_cobertura": 71.61,
+            "positivos": 789,
+            "prevalencia": 0.039792,
+            "min_fecha_hora": "2021-12-01T16:30:00",
+            "max_fecha_hora": "2023-06-30T15:00:00"
+          },
+          "val": {
+            "bloques_totales": 8831,
+            "bloques_etiquetables": 5811,
+            "pct_cobertura": 65.8,
+            "positivos": 648,
+            "prevalencia": 0.111513,
+            "min_fecha_hora": "2023-06-30T19:30:00",
+            "max_fecha_hora": "2023-11-18T16:00:00"
+          }
+        },
+        "baselines": {
+          "baseline_tasa_horaria": {
+            "n_obs": 5811,
+            "n_positivos": 648,
+            "n_dias": 137,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.058111,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.1358,
+                "ic_95": [
+                  0.109748,
+                  0.16512
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.567575,
+                "ic_95": [
+                  0.529286,
+                  0.605142
+                ]
+              },
+              "brier_score": {
+                "valor": 0.103609,
+                "ic_95": [
+                  0.085618,
+                  0.120636
+                ]
+              },
+              "precision": {
+                "valor": 0.163223,
+                "ic_95": [
+                  0.124975,
+                  0.202338
+                ]
+              },
+              "recall": {
+                "valor": 0.243827,
+                "ic_95": [
+                  0.199695,
+                  0.287975
+                ]
+              },
+              "f1": {
+                "valor": 0.195545,
+                "ic_95": [
+                  0.155654,
+                  0.232392
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.111513,
+                "ic_95": [
+                  0.091802,
+                  0.13007
+                ]
+              }
+            }
+          },
+          "baseline_siempre_positivo": {
+            "n_obs": 5811,
+            "n_positivos": 648,
+            "n_dias": 137,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.0,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.111513,
+                "ic_95": [
+                  0.091802,
+                  0.13007
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.5,
+                "ic_95": [
+                  0.5,
+                  0.5
+                ]
+              },
+              "brier_score": {
+                "valor": 0.104221,
+                "ic_95": [
+                  0.086079,
+                  0.121302
+                ]
+              },
+              "precision": {
+                "valor": 0.111513,
+                "ic_95": [
+                  0.091802,
+                  0.13007
+                ]
+              },
+              "recall": {
+                "valor": 1.0,
+                "ic_95": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "f1": {
+                "valor": 0.20065,
+                "ic_95": [
+                  0.168165,
+                  0.230198
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.111513,
+                "ic_95": [
+                  0.091802,
+                  0.13007
+                ]
+              }
+            },
+            "probabilidad_constante_train": 0.039792
+          }
+        }
+      },
+      "fold_3_2024_h1": {
+        "descripcion": "2024 H1 (ene-may con ene/abr < 50% cobertura)",
+        "val_start": "2024-01-01 00:30:00",
+        "val_end": "2024-05-31 23:30:00",
+        "splits": {
+          "train": {
+            "bloques_totales": 36520,
+            "bloques_etiquetables": 25647,
+            "pct_cobertura": 70.23,
+            "positivos": 1441,
+            "prevalencia": 0.056186,
+            "min_fecha_hora": "2021-12-01T16:30:00",
+            "max_fecha_hora": "2023-11-18T16:00:00"
+          },
+          "val": {
+            "bloques_totales": 7295,
+            "bloques_etiquetables": 3749,
+            "pct_cobertura": 51.39,
+            "positivos": 130,
+            "prevalencia": 0.034676,
+            "min_fecha_hora": "2024-01-20T16:30:00",
+            "max_fecha_hora": "2024-05-31T18:30:00"
+          }
+        },
+        "baselines": {
+          "baseline_tasa_horaria": {
+            "n_obs": 3749,
+            "n_positivos": 130,
+            "n_dias": 107,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.074906,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.051027,
+                "ic_95": [
+                  0.025229,
+                  0.082224
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.635259,
+                "ic_95": [
+                  0.555301,
+                  0.705391
+                ]
+              },
+              "brier_score": {
+                "valor": 0.03376,
+                "ic_95": [
+                  0.020145,
+                  0.04727
+                ]
+              },
+              "precision": {
+                "valor": 0.053419,
+                "ic_95": [
+                  0.022831,
+                  0.084376
+                ]
+              },
+              "recall": {
+                "valor": 0.384615,
+                "ic_95": [
+                  0.255126,
+                  0.496389
+                ]
+              },
+              "f1": {
+                "valor": 0.093809,
+                "ic_95": [
+                  0.042084,
+                  0.141051
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.034676,
+                "ic_95": [
+                  0.01906,
+                  0.050508
+                ]
+              }
+            }
+          },
+          "baseline_siempre_positivo": {
+            "n_obs": 3749,
+            "n_positivos": 130,
+            "n_dias": 107,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.0,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.034676,
+                "ic_95": [
+                  0.01906,
+                  0.050508
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.5,
+                "ic_95": [
+                  0.5,
+                  0.5
+                ]
+              },
+              "brier_score": {
+                "valor": 0.033936,
+                "ic_95": [
+                  0.020075,
+                  0.047989
+                ]
+              },
+              "precision": {
+                "valor": 0.034676,
+                "ic_95": [
+                  0.01906,
+                  0.050508
+                ]
+              },
+              "recall": {
+                "valor": 1.0,
+                "ic_95": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "f1": {
+                "valor": 0.067028,
+                "ic_95": [
+                  0.037407,
+                  0.096159
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.034676,
+                "ic_95": [
+                  0.01906,
+                  0.050508
+                ]
+              }
+            },
+            "probabilidad_constante_train": 0.056186
+          }
+        }
+      },
+      "test_final_2024": {
+        "descripcion": "Evaluacion oficial ciega 2024",
+        "val_start": "2024-01-01 00:30:00",
+        "val_end": "2024-12-01 00:00:00",
+        "splits": {
+          "train": {
+            "bloques_totales": 36520,
+            "bloques_etiquetables": 25647,
+            "pct_cobertura": 70.23,
+            "positivos": 1441,
+            "prevalencia": 0.056186,
+            "min_fecha_hora": "2021-12-01T16:30:00",
+            "max_fecha_hora": "2023-11-18T16:00:00"
+          },
+          "val": {
+            "bloques_totales": 16080,
+            "bloques_etiquetables": 10704,
+            "pct_cobertura": 66.57,
+            "positivos": 400,
+            "prevalencia": 0.037369,
+            "min_fecha_hora": "2024-01-20T16:30:00",
+            "max_fecha_hora": "2024-11-30T16:00:00"
+          }
+        },
+        "baselines": {
+          "baseline_tasa_horaria": {
+            "n_obs": 10704,
+            "n_positivos": 400,
+            "n_dias": 281,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.074906,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.056177,
+                "ic_95": [
+                  0.040615,
+                  0.074512
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.621818,
+                "ic_95": [
+                  0.574846,
+                  0.668117
+                ]
+              },
+              "brier_score": {
+                "valor": 0.036153,
+                "ic_95": [
+                  0.028127,
+                  0.044693
+                ]
+              },
+              "precision": {
+                "valor": 0.056801,
+                "ic_95": [
+                  0.039584,
+                  0.07462
+                ]
+              },
+              "recall": {
+                "valor": 0.38,
+                "ic_95": [
+                  0.312845,
+                  0.449291
+                ]
+              },
+              "f1": {
+                "valor": 0.09883,
+                "ic_95": [
+                  0.071127,
+                  0.126461
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.037369,
+                "ic_95": [
+                  0.02811,
+                  0.047111
+                ]
+              }
+            }
+          },
+          "baseline_siempre_positivo": {
+            "n_obs": 10704,
+            "n_positivos": 400,
+            "n_dias": 281,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.0,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.037369,
+                "ic_95": [
+                  0.02811,
+                  0.047111
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.5,
+                "ic_95": [
+                  0.5,
+                  0.5
+                ]
+              },
+              "brier_score": {
+                "valor": 0.036327,
+                "ic_95": [
+                  0.028108,
+                  0.044974
+                ]
+              },
+              "precision": {
+                "valor": 0.037369,
+                "ic_95": [
+                  0.02811,
+                  0.047111
+                ]
+              },
+              "recall": {
+                "valor": 1.0,
+                "ic_95": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "f1": {
+                "valor": 0.072046,
+                "ic_95": [
+                  0.054683,
+                  0.089983
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.037369,
+                "ic_95": [
+                  0.02811,
+                  0.047111
+                ]
+              }
+            },
+            "probabilidad_constante_train": 0.056186
+          }
+        },
+        "sensibilidad_cobertura_2024": {
+          "2024_global": {
+            "baseline_tasa_horaria": {
+              "n_obs": 10704,
+              "n_positivos": 400,
+              "n_dias": 281,
+              "n_boot": 1000,
+              "n_boot_validos_auc": 1000,
+              "threshold": 0.074906,
+              "metricas": {
+                "pr_auc": {
+                  "valor": 0.056177,
+                  "ic_95": [
+                    0.040615,
+                    0.074512
+                  ]
+                },
+                "auc_roc": {
+                  "valor": 0.621818,
+                  "ic_95": [
+                    0.574846,
+                    0.668117
+                  ]
+                },
+                "brier_score": {
+                  "valor": 0.036153,
+                  "ic_95": [
+                    0.028127,
+                    0.044693
+                  ]
+                },
+                "precision": {
+                  "valor": 0.056801,
+                  "ic_95": [
+                    0.039584,
+                    0.07462
+                  ]
+                },
+                "recall": {
+                  "valor": 0.38,
+                  "ic_95": [
+                    0.312845,
+                    0.449291
+                  ]
+                },
+                "f1": {
+                  "valor": 0.09883,
+                  "ic_95": [
+                    0.071127,
+                    0.126461
+                  ]
+                },
+                "prevalencia": {
+                  "valor": 0.037369,
+                  "ic_95": [
+                    0.02811,
+                    0.047111
+                  ]
+                }
+              }
+            },
+            "baseline_siempre_positivo": {
+              "n_obs": 10704,
+              "n_positivos": 400,
+              "n_dias": 281,
+              "n_boot": 1000,
+              "n_boot_validos_auc": 1000,
+              "threshold": 0.0,
+              "metricas": {
+                "pr_auc": {
+                  "valor": 0.037369,
+                  "ic_95": [
+                    0.02811,
+                    0.047111
+                  ]
+                },
+                "auc_roc": {
+                  "valor": 0.5,
+                  "ic_95": [
+                    0.5,
+                    0.5
+                  ]
+                },
+                "brier_score": {
+                  "valor": 0.036327,
+                  "ic_95": [
+                    0.028108,
+                    0.044974
+                  ]
+                },
+                "precision": {
+                  "valor": 0.037369,
+                  "ic_95": [
+                    0.02811,
+                    0.047111
+                  ]
+                },
+                "recall": {
+                  "valor": 1.0,
+                  "ic_95": [
+                    1.0,
+                    1.0
+                  ]
+                },
+                "f1": {
+                  "valor": 0.072046,
+                  "ic_95": [
+                    0.054683,
+                    0.089983
+                  ]
+                },
+                "prevalencia": {
+                  "valor": 0.037369,
+                  "ic_95": [
+                    0.02811,
+                    0.047111
+                  ]
+                }
+              },
+              "probabilidad_constante_train": 0.056186
+            }
+          },
+          "2024_sin_meses_baja_cobertura": {
+            "baseline_tasa_horaria": {
+              "n_obs": 9690,
+              "n_positivos": 360,
+              "n_dias": 251,
+              "n_boot": 1000,
+              "n_boot_validos_auc": 1000,
+              "threshold": 0.074906,
+              "metricas": {
+                "pr_auc": {
+                  "valor": 0.056129,
+                  "ic_95": [
+                    0.039901,
+                    0.078156
+                  ]
+                },
+                "auc_roc": {
+                  "valor": 0.617864,
+                  "ic_95": [
+                    0.569783,
+                    0.667997
+                  ]
+                },
+                "brier_score": {
+                  "valor": 0.03598,
+                  "ic_95": [
+                    0.027683,
+                    0.04537
+                  ]
+                },
+                "precision": {
+                  "valor": 0.056106,
+                  "ic_95": [
+                    0.039653,
+                    0.076932
+                  ]
+                },
+                "recall": {
+                  "valor": 0.377778,
+                  "ic_95": [
+                    0.308054,
+                    0.451354
+                  ]
+                },
+                "f1": {
+                  "valor": 0.097701,
+                  "ic_95": [
+                    0.070849,
+                    0.130649
+                  ]
+                },
+                "prevalencia": {
+                  "valor": 0.037152,
+                  "ic_95": [
+                    0.027506,
+                    0.04792
+                  ]
+                }
+              }
+            },
+            "baseline_siempre_positivo": {
+              "n_obs": 9690,
+              "n_positivos": 360,
+              "n_dias": 251,
+              "n_boot": 1000,
+              "n_boot_validos_auc": 1000,
+              "threshold": 0.0,
+              "metricas": {
+                "pr_auc": {
+                  "valor": 0.037152,
+                  "ic_95": [
+                    0.027506,
+                    0.04792
+                  ]
+                },
+                "auc_roc": {
+                  "valor": 0.5,
+                  "ic_95": [
+                    0.5,
+                    0.5
+                  ]
+                },
+                "brier_score": {
+                  "valor": 0.036134,
+                  "ic_95": [
+                    0.027572,
+                    0.045692
+                  ]
+                },
+                "precision": {
+                  "valor": 0.037152,
+                  "ic_95": [
+                    0.027506,
+                    0.04792
+                  ]
+                },
+                "recall": {
+                  "valor": 1.0,
+                  "ic_95": [
+                    1.0,
+                    1.0
+                  ]
+                },
+                "f1": {
+                  "valor": 0.071642,
+                  "ic_95": [
+                    0.053539,
+                    0.091457
+                  ]
+                },
+                "prevalencia": {
+                  "valor": 0.037152,
+                  "ic_95": [
+                    0.027506,
+                    0.04792
+                  ]
+                }
+              },
+              "probabilidad_constante_train": 0.056186
+            }
+          }
+        }
+      }
+    }
+  }
+}
