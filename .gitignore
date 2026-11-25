@@ -21,4 +21,5 @@ data/sample/gold/
 data/sample/logs/
 data/sample/ml_out/
 lake_v2/
+lake_v2_gold.zip
 .venv_wsl/
