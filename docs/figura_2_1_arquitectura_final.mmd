@@ -1,0 +1,70 @@
+flowchart LR
+    subgraph S1["1. Fuentes Oficiales COES-SINAC"]
+        direction TB
+        A14["Parte A: A1 Despacho Prog, A2 Ejecutado, A3 Costos Var, A4 CMg 30m"]
+        B14["Parte B: B1 Mantenimientos, B2 Pot Indisp, B3 Reprograma, B4 PR-06"]
+    end
+
+    subgraph S2["2. Capa Bronze y Gobierno de Ingesta"]
+        direction TB
+        BRZ["lake_v2/bronze: Parquet/CSV originales"]
+        MAN["Manifiesto SHA-256 (8 archivos verificados)"]
+    end
+
+    subgraph S3["3. Capa Silver (PySpark 3.5.1 + Snappy)"]
+        direction TB
+        SLV["Esquemas estrictos, deduplicacion y particionamiento anual (anio)"]
+    end
+
+    subgraph S4["4. Capa Gold (7 Tablas Parquet Particionadas por anio)"]
+        direction TB
+        GLD_DET["despacho_central_30min (6 533 616) y precios_barra_30min (9 587 472)"]
+        GLD_OBS["gold_observabilidad_etiqueta_30min (52 608 bloques, NULL estricto en censura)"]
+        GLD_EXT["gold_precios_troncales, gold_eventos_criticos, gold_contexto_auditoria (52 608 c/u)"]
+        GLD_FS["gold_feature_store_30min (52 608 filas x 29 cols, reconciliado)"]
+    end
+
+    subgraph S5["5. Capa Analitica y ML (Walk-Forward + Explicabilidad)"]
+        direction TB
+        ML_FE["ml_features_30min (52 608 filas, 24 features, bloqueo FORBIDDEN_LEAKAGE_COLS)"]
+        ML_CV["walk_forward_cv (embargo 4 h) + RandomForestClassifier(maxDepth=5, numTrees=50)"]
+        ML_SHAP["TreeSHAP Top-5 + Recalibracion 60d (F1 / max_fp<=3/sem) + Backtest 2024"]
+        ML_OUT["3 Contratos ml_outputs: predicciones_alerta_30min (16 080), monitoreo_deriva_mensual (11), registro_modelos.json (rf_v1_2024_walkforward)"]
+    end
+
+    subgraph S6["6. Capa Semantica (lake_v2/serving/star_schema/)"]
+        direction TB
+        DIMS["4 Dimensiones: dim_tiempo_operativo (52 608), dim_central_combustible (171), dim_barra_troncal (84), dim_modelo_version (1)"]
+        FACTS["3 Hechos: fact_operacion_bloque_30min (52 608), fact_predicciones_alerta (16 080), fact_calidad_deriva_mensual (11)"]
+        SQL["semantic_views.sql: 4 vistas SQL estandar (reconciliacion < S/ 0,01)"]
+    end
+
+    subgraph S7["7. Dashboard Operativo-Analitico"]
+        direction TB
+        DDB["DuckDB in-memory (lectura exclusiva sobre star_schema)"]
+        UI["Streamlit + Plotly: 5 KPIs ejecutivos + 4 Vistas (Alerta 2-4h, Exposicion, Cobertura/Deriva, Auditoria)"]
+    end
+
+    A14 --> BRZ
+    B14 --> BRZ
+    BRZ --> MAN
+    MAN --> SLV
+    SLV --> GLD_DET
+    SLV --> GLD_OBS
+    SLV --> GLD_EXT
+    GLD_DET --> GLD_FS
+    GLD_OBS --> GLD_FS
+    GLD_EXT --> GLD_FS
+    GLD_FS --> ML_FE
+    ML_FE --> ML_CV
+    ML_CV --> ML_SHAP
+    ML_SHAP --> ML_OUT
+    GLD_DET --> DIMS
+    GLD_OBS --> FACTS
+    GLD_FS --> FACTS
+    ML_OUT --> DIMS
+    ML_OUT --> FACTS
+    DIMS --> SQL
+    FACTS --> SQL
+    SQL --> DDB
+    DDB --> UI
