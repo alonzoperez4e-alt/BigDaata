@@ -1,0 +1,227 @@
+{
+  "antes": {
+    "timestamp_utc": "2026-11-24T19:33:07.947759+00:00",
+    "particionamiento": "anio/mes",
+    "resumen_global": {
+      "total_archivos_parquet": 598,
+      "total_mib": 326.292,
+      "tamanio_medio_mib": 0.546
+    },
+    "silver": {
+      "total_archivos": 267,
+      "total_mib": 133.755,
+      "tamanio_medio_mib": 0.501,
+      "tablas": {
+        "a1_despacho_programado": {
+          "archivos": 38,
+          "total_mib": 10.684,
+          "tamanio_medio_mib": 0.281
+        },
+        "a2_despacho_ejecutado": {
+          "archivos": 42,
+          "total_mib": 43.888,
+          "tamanio_medio_mib": 1.045
+        },
+        "a3_costos_variables": {
+          "archivos": 35,
+          "total_mib": 0.536,
+          "tamanio_medio_mib": 0.015
+        },
+        "a4_costos_marginales": {
+          "archivos": 43,
+          "total_mib": 74.134,
+          "tamanio_medio_mib": 1.724
+        },
+        "b1_mantenimientos": {
+          "archivos": 36,
+          "total_mib": 3.099,
+          "tamanio_medio_mib": 0.086
+        },
+        "b2_potencia_indisponible": {
+          "archivos": 1,
+          "total_mib": 0.007,
+          "tamanio_medio_mib": 0.007
+        },
+        "b3_reprograma": {
+          "archivos": 36,
+          "total_mib": 0.255,
+          "tamanio_medio_mib": 0.007
+        },
+        "b4_pr06": {
+          "archivos": 36,
+          "total_mib": 1.152,
+          "tamanio_medio_mib": 0.032
+        }
+      }
+    },
+    "gold": {
+      "total_archivos": 331,
+      "total_mib": 192.537,
+      "tamanio_medio_mib": 0.582,
+      "tablas": {
+        "despacho_central_30min": {
+          "archivos": 288,
+          "total_mib": 47.188,
+          "tamanio_medio_mib": 0.164
+        },
+        "precios_barra_30min": {
+          "archivos": 43,
+          "total_mib": 145.349,
+          "tamanio_medio_mib": 3.38
+        }
+      }
+    },
+    "lectura_mes_especifico": {
+      "silver_a2_despacho_ejecutado": {
+        "mes_evaluado": "2023-08",
+        "filas_leidas": 199584,
+        "repeticiones": 5,
+        "tiempos_s": [
+          0.4723,
+          0.4828,
+          0.4873,
+          0.4745,
+          0.3894
+        ],
+        "mediana_s": 0.4745
+      },
+      "gold_precios_barra_30min": {
+        "mes_evaluado": "2023-08",
+        "filas_leidas": 261888,
+        "repeticiones": 5,
+        "tiempos_s": [
+          0.4144,
+          0.3545,
+          0.2882,
+          0.2998,
+          0.34
+        ],
+        "mediana_s": 0.34
+      }
+    }
+  },
+  "despues": {
+    "timestamp_utc": "2026-11-24T19:38:11.428111+00:00",
+    "particionamiento": "anio",
+    "resumen_global": {
+      "total_archivos_parquet": 51,
+      "total_mib": 323.083,
+      "tamanio_medio_mib": 6.335
+    },
+    "silver": {
+      "total_archivos": 36,
+      "total_mib": 132.162,
+      "tamanio_medio_mib": 3.671,
+      "tablas": {
+        "a1_despacho_programado": {
+          "archivos": 4,
+          "total_mib": 10.184,
+          "tamanio_medio_mib": 2.546
+        },
+        "a2_despacho_ejecutado": {
+          "archivos": 4,
+          "total_mib": 44.447,
+          "tamanio_medio_mib": 11.112
+        },
+        "a3_costos_variables": {
+          "archivos": 4,
+          "total_mib": 0.311,
+          "tamanio_medio_mib": 0.078
+        },
+        "a4_costos_marginales": {
+          "archivos": 11,
+          "total_mib": 73.523,
+          "tamanio_medio_mib": 6.684
+        },
+        "b1_mantenimientos": {
+          "archivos": 4,
+          "total_mib": 2.601,
+          "tamanio_medio_mib": 0.65
+        },
+        "b2_potencia_indisponible": {
+          "archivos": 1,
+          "total_mib": 0.006,
+          "tamanio_medio_mib": 0.006
+        },
+        "b3_reprograma": {
+          "archivos": 4,
+          "total_mib": 0.126,
+          "tamanio_medio_mib": 0.032
+        },
+        "b4_pr06": {
+          "archivos": 4,
+          "total_mib": 0.964,
+          "tamanio_medio_mib": 0.241
+        }
+      }
+    },
+    "gold": {
+      "total_archivos": 15,
+      "total_mib": 190.921,
+      "tamanio_medio_mib": 12.728,
+      "tablas": {
+        "despacho_central_30min": {
+          "archivos": 4,
+          "total_mib": 46.159,
+          "tamanio_medio_mib": 11.54
+        },
+        "precios_barra_30min": {
+          "archivos": 11,
+          "total_mib": 144.762,
+          "tamanio_medio_mib": 13.16
+        }
+      }
+    },
+    "lectura_mes_especifico": {
+      "silver_a2_despacho_ejecutado": {
+        "mes_evaluado": "2023-08",
+        "filas_leidas": 199584,
+        "repeticiones": 5,
+        "tiempos_s": [
+          0.4912,
+          0.456,
+          0.4441,
+          0.37,
+          0.4365
+        ],
+        "mediana_s": 0.4441
+      },
+      "gold_precios_barra_30min": {
+        "mes_evaluado": "2023-08",
+        "filas_leidas": 261888,
+        "repeticiones": 5,
+        "tiempos_s": [
+          0.4223,
+          0.4322,
+          0.3697,
+          0.314,
+          0.3367
+        ],
+        "mediana_s": 0.3697
+      }
+    }
+  },
+  "comparativa": {
+    "reduccion_archivos_pct": 91.47,
+    "archivos_silver_antes_vs_despues": [
+      267,
+      36
+    ],
+    "archivos_gold_antes_vs_despues": [
+      331,
+      15
+    ],
+    "tamanio_medio_mib_antes_vs_despues": [
+      0.546,
+      6.335
+    ],
+    "mediana_lectura_a2_s_antes_vs_despues": [
+      0.4745,
+      0.4441
+    ],
+    "mediana_lectura_precios_s_antes_vs_despues": [
+      0.34,
+      0.3697
+    ]
+  }
+}
