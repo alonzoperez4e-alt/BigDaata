@@ -15,3 +15,8 @@ spark-warehouse/
 derby.log
 metastore_db/
 .pytest_cache/
+
+data/sample/silver/
+data/sample/gold/
+data/sample/logs/
+data/sample/ml_out/
