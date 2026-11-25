@@ -1,0 +1,100 @@
+"""
+Tarea 4.2 – Pruebas de la capa de consultas del Dashboard (`src/dashboard/queries.py`).
+"""
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+import pytest
+
+from src.dashboard.queries import (
+    get_auditoria_modelo,
+    get_cobertura_y_deriva,
+    get_exposicion_normalizada,
+    get_kpis_ejecutivos,
+    get_serie_alerta_30min,
+)
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+QUERIES_FILE = REPO_ROOT / "src" / "dashboard" / "queries.py"
+SUMMARY_JSON = REPO_ROOT / "evidencias_serving" / "star_schema_summary.json"
+RECON_TOL = 0.01
+
+
+def test_queries_no_direct_medallion_references():
+    """queries.py no debe referenciar directamente bronze/, silver/ ni gold/."""
+    source = QUERIES_FILE.read_text(encoding="utf-8").lower()
+    for forbidden in ("bronze/", "silver/", "gold/"):
+        assert forbidden not in source, (
+            f"Referencia prohibida '{forbidden}' encontrada en src/dashboard/queries.py"
+        )
+
+
+@pytest.mark.parametrize(
+    "strategy", ["recalibrado_60d_max_fp_3_sem", "recalibrado_60d_f1"]
+)
+def test_kpis_ejecutivos_validos(strategy):
+    kpis = get_kpis_ejecutivos(strategy=strategy, alpha=0.10)
+    assert kpis["tp"] > 0
+    assert kpis["fp"] >= 0
+    assert kpis["dias_observables_2024"] > 0
+    assert kpis["exposicion_bruta_dia_obs_2024"] > 0
+    assert kpis["sobrecosto_neto_dia_obs_2024"] > 0
+    assert kpis["ahorro_neto_soles"] > 0
+
+
+def test_reconciliacion_economica_vs_summary():
+    """Totales anuales y globales en queries.py deben cuadrar (< 0.01 S/) con star_schema_summary.json."""
+    summary = json.loads(SUMMARY_JSON.read_text(encoding="utf-8"))
+    detalle = summary["validaciones"]["reconciliacion_contable"]["detalle"]
+
+    df_anual = get_exposicion_normalizada("anual")
+    assert set(df_anual["anio"].tolist()) == {2021, 2022, 2023, 2024}
+
+    for _, row in df_anual.iterrows():
+        yr = str(int(row["anio"]))
+        exp_expected = detalle[yr]["exposicion_bruta_esperada"]
+        sob_expected = detalle[yr]["sobrecosto_esperado"]
+        assert abs(row["exposicion_bruta_anual"] - exp_expected) < RECON_TOL
+        assert abs(row["sobrecosto_neto_anual"] - sob_expected) < RECON_TOL
+
+    kpis = get_kpis_ejecutivos()
+    assert abs(kpis["exposicion_bruta_2024_soles"] - detalle["2024"]["exposicion_bruta_esperada"]) < RECON_TOL
+    assert abs(kpis["sobrecosto_neto_2024_soles"] - detalle["2024"]["sobrecosto_esperado"]) < RECON_TOL
+
+
+def test_cobertura_y_deriva_alertas_enero_abril_2024():
+    """2024-01 y 2024-04 deben marcar alerta_baja_cobertura == True (<50%)."""
+    df_cov = get_cobertura_y_deriva()
+    assert len(df_cov) == 11
+
+    alert_months = set(df_cov[df_cov["alerta_baja_cobertura"] == True]["anio_mes"].tolist())
+    assert alert_months == {"2024-01", "2024-04"}
+
+    jan = df_cov[df_cov["anio_mes"] == "2024-01"].iloc[0]
+    apr = df_cov[df_cov["anio_mes"] == "2024-04"].iloc[0]
+    assert jan["pct_bloques_etiquetables"] == pytest.approx(32.26, abs=0.01)
+    assert apr["pct_bloques_etiquetables"] == pytest.approx(37.08, abs=0.01)
+    assert jan["estado_operativo_modelo"] == "MODO_MONITOREO_DESCRIPTIVO"
+    assert apr["estado_operativo_modelo"] == "MODO_MONITOREO_DESCRIPTIVO"
+
+
+def test_serie_alerta_30min_normaliza_timestamps_y_censura():
+    df = get_serie_alerta_30min("2024-01-01", "2024-01-07", strategy="recalibrado_60d_max_fp_3_sem")
+    assert not df.empty
+    assert str(df["fecha_hora"].dtype).startswith("datetime64")
+
+    no_obs = df[df["etiqueta_observable"] == False]
+    if not no_obs.empty:
+        assert no_obs["evento_termico_nop"].isna().all()
+        assert no_obs["inicio_termico_nop"].isna().all()
+
+
+def test_auditoria_modelo_retorna_11_meses():
+    df_aud = get_auditoria_modelo("recalibrado_60d_max_fp_3_sem")
+    assert len(df_aud) == 11
+    assert "pr_auc_modelo" in df_aud.columns
+    assert "pr_auc_baseline" in df_aud.columns
+    assert "fp_por_semana_estrategia" in df_aud.columns
+
