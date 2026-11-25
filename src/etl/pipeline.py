@@ -22,6 +22,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 from src.etl.gold_observabilidad import construir_gold_observabilidad
+from src.etl.gold_senales_externas import construir_senales_externas
 PROFILES_PATH = REPO_ROOT / "config" / "profiles.json"
 
 # ---- Esquemas estrictos (sin inferencia) ----
@@ -310,7 +311,16 @@ def gold(spark: SparkSession, silver: str, gold_dir: str, report: dict, use_broa
     }
     obs_metrics = construir_gold_observabilidad(spark, silver, gold_dir, write_parquet_optimizado)
     report["calidad"]["gold_observabilidad"] = obs_metrics
-    return {"despacho": n_g, "precios": n_p, "observabilidad": obs_metrics["filas"]}
+    senales_metrics = construir_senales_externas(spark, silver, gold_dir, write_parquet_optimizado)
+    report["calidad"]["gold_senales_externas"] = senales_metrics
+    return {
+        "despacho": n_g,
+        "precios": n_p,
+        "observabilidad": obs_metrics["filas"],
+        "precios_troncales": senales_metrics["gold_precios_troncales_30min"]["filas"],
+        "eventos_criticos": senales_metrics["gold_eventos_criticos_30min"]["filas"],
+        "contexto_auditoria": senales_metrics["gold_contexto_auditoria_30min"]["filas"],
+    }
 
 
 def main() -> None:
