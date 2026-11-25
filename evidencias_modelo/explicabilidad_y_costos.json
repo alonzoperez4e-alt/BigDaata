@@ -1,0 +1,434 @@
+{
+  "target": "y_ventana_2_4h",
+  "total_bloques_2024": 16080,
+  "output_parquet": "lake_v2\\gold\\ml_outputs\\predicciones_alerta_30min_shap.parquet",
+  "fidelidad_surrogate": {
+    "modelo_referencia": "Spark MLlib RandomForestClassifier(maxDepth=5, numTrees=50)",
+    "surrogate": "scikit-learn RandomForestClassifier(max_depth=5, n_estimators=50, random_state=42)",
+    "n_train": 25662,
+    "n_pos": 4336,
+    "n_neg": 21326,
+    "w_pos": 2.959179,
+    "w_neg": 0.60166,
+    "n_obs_2024": 10712,
+    "correlacion_spearman": 0.905362,
+    "auc_roc_spark": 0.796977,
+    "auc_roc_sklearn": 0.80832,
+    "delta_auc_roc": 0.011343,
+    "pr_auc_spark": 0.458695,
+    "pr_auc_sklearn": 0.487951,
+    "delta_pr_auc": 0.029256
+  },
+  "shap_global_2024": {
+    "base_value": 0.501272,
+    "top5": [
+      {
+        "rank": 1,
+        "feature": "ratio_term_ejec_vs_prog",
+        "familia": "A (Desviacion y regimen termico)",
+        "mean_abs_shap": 0.10233,
+        "correlacion_valor_shap": 0.0649,
+        "signo_efecto": "positivo"
+      },
+      {
+        "rank": 2,
+        "feature": "term_cara_share",
+        "familia": "A (Desviacion y regimen termico)",
+        "mean_abs_shap": 0.087272,
+        "correlacion_valor_shap": 0.5444,
+        "signo_efecto": "positivo"
+      },
+      {
+        "rank": 3,
+        "feature": "cmg_troncal_p90_t",
+        "familia": "B (Estres nodal A4 220/500 kV)",
+        "mean_abs_shap": 0.057167,
+        "correlacion_valor_shap": 0.774,
+        "signo_efecto": "positivo"
+      },
+      {
+        "rank": 4,
+        "feature": "cmg_troncal_mediana_t",
+        "familia": "B (Estres nodal A4 220/500 kV)",
+        "mean_abs_shap": 0.039912,
+        "correlacion_valor_shap": 0.6683,
+        "signo_efecto": "positivo"
+      },
+      {
+        "rank": 5,
+        "feature": "persistencia_term_nop_2h",
+        "familia": "D (Memoria y estacionalidad ciclica)",
+        "mean_abs_shap": 0.039101,
+        "correlacion_valor_shap": 0.9291,
+        "signo_efecto": "positivo"
+      }
+    ],
+    "ranking_completo": [
+      {
+        "rank": 1,
+        "feature": "ratio_term_ejec_vs_prog",
+        "familia": "A (Desviacion y regimen termico)",
+        "mean_abs_shap": 0.10233,
+        "correlacion_valor_shap": 0.0649,
+        "signo_efecto": "positivo"
+      },
+      {
+        "rank": 2,
+        "feature": "term_cara_share",
+        "familia": "A (Desviacion y regimen termico)",
+        "mean_abs_shap": 0.087272,
+        "correlacion_valor_shap": 0.5444,
+        "signo_efecto": "positivo"
+      },
+      {
+        "rank": 3,
+        "feature": "cmg_troncal_p90_t",
+        "familia": "B (Estres nodal A4 220/500 kV)",
+        "mean_abs_shap": 0.057167,
+        "correlacion_valor_shap": 0.774,
+        "signo_efecto": "positivo"
+      },
+      {
+        "rank": 4,
+        "feature": "cmg_troncal_mediana_t",
+        "familia": "B (Estres nodal A4 220/500 kV)",
+        "mean_abs_shap": 0.039912,
+        "correlacion_valor_shap": 0.6683,
+        "signo_efecto": "positivo"
+      },
+      {
+        "rank": 5,
+        "feature": "persistencia_term_nop_2h",
+        "familia": "D (Memoria y estacionalidad ciclica)",
+        "mean_abs_shap": 0.039101,
+        "correlacion_valor_shap": 0.9291,
+        "signo_efecto": "positivo"
+      },
+      {
+        "rank": 6,
+        "feature": "cmg_spread_p90_p50_t",
+        "familia": "B (Estres nodal A4 220/500 kV)",
+        "mean_abs_shap": 0.03433,
+        "correlacion_valor_shap": 0.5696,
+        "signo_efecto": "positivo"
+      },
+      {
+        "rank": 7,
+        "feature": "brecha_term_cara_mw",
+        "familia": "A (Desviacion y regimen termico)",
+        "mean_abs_shap": 0.016151,
+        "correlacion_valor_shap": 0.238,
+        "signo_efecto": "positivo"
+      },
+      {
+        "rank": 8,
+        "feature": "mes_cos",
+        "familia": "D (Memoria y estacionalidad ciclica)",
+        "mean_abs_shap": 0.009131,
+        "correlacion_valor_shap": -0.8421,
+        "signo_efecto": "negativo"
+      },
+      {
+        "rank": 9,
+        "feature": "hora_cos",
+        "familia": "D (Memoria y estacionalidad ciclica)",
+        "mean_abs_shap": 0.007356,
+        "correlacion_valor_shap": -0.8101,
+        "signo_efecto": "negativo"
+      },
+      {
+        "rank": 10,
+        "feature": "mes_sin",
+        "familia": "D (Memoria y estacionalidad ciclica)",
+        "mean_abs_shap": 0.007246,
+        "correlacion_valor_shap": -0.451,
+        "signo_efecto": "negativo"
+      },
+      {
+        "rank": 11,
+        "feature": "n_mantenimientos_prog_termicos_activos",
+        "familia": "C (Confiabilidad B1)",
+        "mean_abs_shap": 0.003762,
+        "correlacion_valor_shap": 0.4454,
+        "signo_efecto": "positivo"
+      },
+      {
+        "rank": 12,
+        "feature": "rampa_gen_2h",
+        "familia": "A (Desviacion y regimen termico)",
+        "mean_abs_shap": 0.003552,
+        "correlacion_valor_shap": 0.1777,
+        "signo_efecto": "positivo"
+      },
+      {
+        "rank": 13,
+        "feature": "hora_sin",
+        "familia": "D (Memoria y estacionalidad ciclica)",
+        "mean_abs_shap": 0.00345,
+        "correlacion_valor_shap": 0.6247,
+        "signo_efecto": "positivo"
+      },
+      {
+        "rank": 14,
+        "feature": "rampa_cmg_4h",
+        "familia": "B (Estres nodal A4 220/500 kV)",
+        "mean_abs_shap": 0.003021,
+        "correlacion_valor_shap": 0.0341,
+        "signo_efecto": "mixto_o_neutro"
+      },
+      {
+        "rank": 15,
+        "feature": "gen_total_mw",
+        "familia": "A (Desviacion y regimen termico)",
+        "mean_abs_shap": 0.002408,
+        "correlacion_valor_shap": 0.0658,
+        "signo_efecto": "positivo"
+      },
+      {
+        "rank": 16,
+        "feature": "n_forzados_termicos_activos",
+        "familia": "C (Confiabilidad B1)",
+        "mean_abs_shap": 0.001229,
+        "correlacion_valor_shap": 0.6583,
+        "signo_efecto": "positivo"
+      },
+      {
+        "rank": 17,
+        "feature": "cmg_zscore_24h",
+        "familia": "B (Estres nodal A4 220/500 kV)",
+        "mean_abs_shap": 0.001098,
+        "correlacion_valor_shap": 0.2883,
+        "signo_efecto": "positivo"
+      },
+      {
+        "rank": 18,
+        "feature": "rampa_gen_30m",
+        "familia": "A (Desviacion y regimen termico)",
+        "mean_abs_shap": 0.000713,
+        "correlacion_valor_shap": 0.2479,
+        "signo_efecto": "positivo"
+      },
+      {
+        "rank": 19,
+        "feature": "rampa_cmg_1h",
+        "familia": "B (Estres nodal A4 220/500 kV)",
+        "mean_abs_shap": 0.000482,
+        "correlacion_valor_shap": 0.1608,
+        "signo_efecto": "positivo"
+      },
+      {
+        "rank": 20,
+        "feature": "es_fin_de_semana",
+        "familia": "D (Memoria y estacionalidad ciclica)",
+        "mean_abs_shap": 0.000298,
+        "correlacion_valor_shap": -0.3347,
+        "signo_efecto": "negativo"
+      },
+      {
+        "rank": 21,
+        "feature": "n_forzados_termicos_inicio_3h",
+        "familia": "C (Confiabilidad B1)",
+        "mean_abs_shap": 0.000224,
+        "correlacion_valor_shap": 0.558,
+        "signo_efecto": "positivo"
+      },
+      {
+        "rank": 22,
+        "feature": "n_forzados_transmision_activos",
+        "familia": "C (Confiabilidad B1)",
+        "mean_abs_shap": 0.000141,
+        "correlacion_valor_shap": 0.2075,
+        "signo_efecto": "positivo"
+      },
+      {
+        "rank": 23,
+        "feature": "rampa_brecha_2h",
+        "familia": "A (Desviacion y regimen termico)",
+        "mean_abs_shap": 0.000122,
+        "correlacion_valor_shap": 0.0521,
+        "signo_efecto": "positivo"
+      },
+      {
+        "rank": 24,
+        "feature": "flag_a1_disponible_t",
+        "familia": "A (Desviacion y regimen termico)",
+        "mean_abs_shap": 0.0,
+        "correlacion_valor_shap": 0.0,
+        "signo_efecto": "mixto_o_neutro"
+      }
+    ],
+    "figuras": {
+      "top5_barras": "evidencias_modelo\\shap\\fig_4_3_shap_top5_global.png",
+      "beeswarm": "evidencias_modelo\\shap\\fig_4_3_shap_beeswarm_2024.png"
+    }
+  },
+  "analisis_economico_2024": {
+    "regimenes": {
+      "umbral_fijo_2023_s2": {
+        "regimen": "umbral_fijo_2023_s2",
+        "matriz_confusion_bloques": {
+          "TP": 1032,
+          "FP": 4087,
+          "TN": 5333,
+          "FN": 260,
+          "NO_VERIFICABLE": 5368,
+          "NO_VERIFICABLE_con_alerta": 210
+        },
+        "metricas_bloque": {
+          "precision": 0.2016,
+          "recall": 0.7988,
+          "f1": 0.3219
+        },
+        "fatiga_operador": {
+          "dias_observables_2024": 281,
+          "semanas_observables_2024": 40.14,
+          "fp_por_semana": 101.81,
+          "episodios_fp_totales": 338,
+          "episodios_fp_por_semana": 8.42
+        },
+        "episodios_reales_2024": {
+          "episodios_totales": 81,
+          "episodios_anticipados": 79,
+          "episodios_omitidos_fn": 2,
+          "recall_episodios": 0.9753,
+          "bloques_evento_en_anticipados": 983,
+          "bloques_evento_en_omitidos": 4
+        },
+        "exposicion_economica_soles": {
+          "exposicion_bruta_total_2024": 19079554.64,
+          "exposicion_bruta_anticipados": 19041926.59,
+          "exposicion_bruta_omitidos_fn": 37628.05,
+          "sobrecosto_neto_total_2024": 15223546.2,
+          "sobrecosto_neto_anticipados": 15188262.89,
+          "sobrecosto_neto_omitidos_fn": 35283.31,
+          "pct_exposicion_bruta_cubierta": 99.8,
+          "pct_sobrecosto_neto_cubierto": 99.77
+        }
+      },
+      "recalibrado_60d_f1": {
+        "regimen": "recalibrado_60d_f1",
+        "matriz_confusion_bloques": {
+          "TP": 759,
+          "FP": 753,
+          "TN": 8667,
+          "FN": 533,
+          "NO_VERIFICABLE": 5368,
+          "NO_VERIFICABLE_con_alerta": 78
+        },
+        "metricas_bloque": {
+          "precision": 0.502,
+          "recall": 0.5875,
+          "f1": 0.5414
+        },
+        "fatiga_operador": {
+          "dias_observables_2024": 281,
+          "semanas_observables_2024": 40.14,
+          "fp_por_semana": 18.76,
+          "episodios_fp_totales": 149,
+          "episodios_fp_por_semana": 3.71
+        },
+        "episodios_reales_2024": {
+          "episodios_totales": 81,
+          "episodios_anticipados": 55,
+          "episodios_omitidos_fn": 26,
+          "recall_episodios": 0.679,
+          "bloques_evento_en_anticipados": 763,
+          "bloques_evento_en_omitidos": 224
+        },
+        "exposicion_economica_soles": {
+          "exposicion_bruta_total_2024": 19079554.64,
+          "exposicion_bruta_anticipados": 15966327.02,
+          "exposicion_bruta_omitidos_fn": 3113227.62,
+          "sobrecosto_neto_total_2024": 15223546.2,
+          "sobrecosto_neto_anticipados": 12321451.23,
+          "sobrecosto_neto_omitidos_fn": 2902094.97,
+          "pct_exposicion_bruta_cubierta": 83.68,
+          "pct_sobrecosto_neto_cubierto": 80.94
+        }
+      },
+      "recalibrado_60d_max_fp_3_sem": {
+        "regimen": "recalibrado_60d_max_fp_3_sem",
+        "matriz_confusion_bloques": {
+          "TP": 472,
+          "FP": 79,
+          "TN": 9341,
+          "FN": 820,
+          "NO_VERIFICABLE": 5368,
+          "NO_VERIFICABLE_con_alerta": 24
+        },
+        "metricas_bloque": {
+          "precision": 0.8566,
+          "recall": 0.3653,
+          "f1": 0.5122
+        },
+        "fatiga_operador": {
+          "dias_observables_2024": 281,
+          "semanas_observables_2024": 40.14,
+          "fp_por_semana": 1.97,
+          "episodios_fp_totales": 33,
+          "episodios_fp_por_semana": 0.82
+        },
+        "episodios_reales_2024": {
+          "episodios_totales": 81,
+          "episodios_anticipados": 33,
+          "episodios_omitidos_fn": 48,
+          "recall_episodios": 0.4074,
+          "bloques_evento_en_anticipados": 636,
+          "bloques_evento_en_omitidos": 351
+        },
+        "exposicion_economica_soles": {
+          "exposicion_bruta_total_2024": 19079554.64,
+          "exposicion_bruta_anticipados": 9687645.92,
+          "exposicion_bruta_omitidos_fn": 9391908.72,
+          "sobrecosto_neto_total_2024": 15223546.2,
+          "sobrecosto_neto_anticipados": 6782883.76,
+          "sobrecosto_neto_omitidos_fn": 8440662.44,
+          "pct_exposicion_bruta_cubierta": 50.78,
+          "pct_sobrecosto_neto_cubierto": 44.56
+        }
+      },
+      "baseline_tasa_horaria": {
+        "regimen": "baseline_tasa_horaria",
+        "matriz_confusion_bloques": {
+          "TP": 1040,
+          "FP": 6996,
+          "TN": 2424,
+          "FN": 252,
+          "NO_VERIFICABLE": 5368,
+          "NO_VERIFICABLE_con_alerta": 4024
+        },
+        "metricas_bloque": {
+          "precision": 0.1294,
+          "recall": 0.805,
+          "f1": 0.223
+        },
+        "fatiga_operador": {
+          "dias_observables_2024": 281,
+          "semanas_observables_2024": 40.14,
+          "fp_por_semana": 174.28,
+          "episodios_fp_totales": 313,
+          "episodios_fp_por_semana": 7.8
+        },
+        "episodios_reales_2024": {
+          "episodios_totales": 81,
+          "episodios_anticipados": 79,
+          "episodios_omitidos_fn": 2,
+          "recall_episodios": 0.9753,
+          "bloques_evento_en_anticipados": 937,
+          "bloques_evento_en_omitidos": 50
+        },
+        "exposicion_economica_soles": {
+          "exposicion_bruta_total_2024": 19079554.64,
+          "exposicion_bruta_anticipados": 18577154.41,
+          "exposicion_bruta_omitidos_fn": 502400.23,
+          "sobrecosto_neto_total_2024": 15223546.2,
+          "sobrecosto_neto_anticipados": 14756978.28,
+          "sobrecosto_neto_omitidos_fn": 466567.92,
+          "pct_exposicion_bruta_cubierta": 97.37,
+          "pct_sobrecosto_neto_cubierto": 96.94
+        }
+      }
+    },
+    "conclusion_operativa": "En la operacion del SEIN, un Falso Negativo (omitir un episodio termico cara no programado) tiene costo economico directo elevado en exposicion bruta y sobrecosto neto estimado (en S/), mientras que un Falso Positivo implica costo de verificacion/pre-despacho preventivo y fatiga de operador. La recalibracion mensual 60d (F1) reduce los FP/semana frente al umbral fijo 2023-S2 manteniendo cobertura de episodios de alta exposicion, y la variante con techo max_fp_semana<=3.0 permite controlar estrictamente la fatiga semanal preservando precision alta."
+  }
+}
