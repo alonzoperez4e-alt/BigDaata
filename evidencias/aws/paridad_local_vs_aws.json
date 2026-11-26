@@ -1,0 +1,76 @@
+{
+  "estado": "PASS",
+  "tolerancia_soles": 0.01,
+  "checks": {
+    "gold": {
+      "estado_global_nube": "PASS",
+      "total_bloques_nube": 52608,
+      "etiqueta_observable_nube": 36336
+    },
+    "feature_engineering": {
+      "total_bloques_nube": 52608,
+      "n_etiquetables_ventana_nube": 36374,
+      "positivos_evento_2_4h_nube": 5628
+    },
+    "star_schema_tablas": {
+      "dim_tiempo_operativo": {
+        "local": 52608,
+        "nube": 52608,
+        "coincide": true
+      },
+      "dim_central_combustible": {
+        "local": 171,
+        "nube": 171,
+        "coincide": true
+      },
+      "dim_barra_troncal": {
+        "local": 84,
+        "nube": 84,
+        "coincide": true
+      },
+      "dim_modelo_version": {
+        "local": 1,
+        "nube": 1,
+        "coincide": true
+      },
+      "fact_operacion_bloque_30min": {
+        "local": 52608,
+        "nube": 52608,
+        "coincide": true
+      },
+      "fact_predicciones_alerta": {
+        "local": 16080,
+        "nube": 16080,
+        "coincide": true
+      },
+      "fact_calidad_deriva_mensual": {
+        "local": 11,
+        "nube": 11,
+        "coincide": true
+      }
+    },
+    "reconciliacion_economica": {
+      "2021": {
+        "diff_exposicion_soles": 0.0,
+        "diff_sobrecosto_soles": 0.0,
+        "ok": true
+      },
+      "2022": {
+        "diff_exposicion_soles": 0.0,
+        "diff_sobrecosto_soles": 0.0,
+        "ok": true
+      },
+      "2023": {
+        "diff_exposicion_soles": 0.0,
+        "diff_sobrecosto_soles": 0.0,
+        "ok": true
+      },
+      "2024": {
+        "diff_exposicion_soles": 0.0,
+        "diff_sobrecosto_soles": 0.0,
+        "ok": true
+      }
+    }
+  },
+  "errores": []
+}

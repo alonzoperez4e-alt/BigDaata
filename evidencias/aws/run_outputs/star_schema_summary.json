@@ -1,0 +1,96 @@
+{
+  "timestamp": "2026-11-26T05:32:14.068232",
+  "gold_input": "/tmp/coes_run/gold",
+  "serving_output": "/tmp/coes_run/serving/star_schema",
+  "tablas": {
+    "dim_tiempo_operativo": {
+      "filas": 52608,
+      "pk": "tiempo_key"
+    },
+    "dim_central_combustible": {
+      "filas": 171,
+      "pk": "central_id"
+    },
+    "dim_barra_troncal": {
+      "filas": 84,
+      "pk": "barra_id"
+    },
+    "dim_modelo_version": {
+      "filas": 1,
+      "pk": "model_version_id"
+    },
+    "fact_operacion_bloque_30min": {
+      "filas": 52608,
+      "fk": [
+        "tiempo_key"
+      ]
+    },
+    "fact_predicciones_alerta": {
+      "filas": 16080,
+      "fk": [
+        "tiempo_key",
+        "model_version_id"
+      ]
+    },
+    "fact_calidad_deriva_mensual": {
+      "filas": 11,
+      "fk": [
+        "anio_mes",
+        "model_version_id"
+      ]
+    }
+  },
+  "validaciones": {
+    "claves_huerfanas": {
+      "errores": [],
+      "ok": true
+    },
+    "null_targets": {
+      "bloques_no_observables": 16272,
+      "violaciones_null_evento": 0,
+      "violaciones_null_inicio": 0,
+      "ok": true
+    },
+    "reconciliacion_contable": {
+      "detalle": {
+        "2021": {
+          "exposicion_bruta_esperada": 404599.93,
+          "exposicion_bruta_actual": 404599.93,
+          "diff_exposicion": 0.003,
+          "sobrecosto_esperado": 239930.13,
+          "sobrecosto_actual": 239930.13,
+          "diff_sobrecosto": 0.0005,
+          "reconcilia_ok": "True"
+        },
+        "2022": {
+          "exposicion_bruta_esperada": 75030153.71,
+          "exposicion_bruta_actual": 75030153.71,
+          "diff_exposicion": 0.0006,
+          "sobrecosto_esperado": 15114059.99,
+          "sobrecosto_actual": 15114059.99,
+          "diff_sobrecosto": 0.0044,
+          "reconcilia_ok": "True"
+        },
+        "2023": {
+          "exposicion_bruta_esperada": 175600703.1,
+          "exposicion_bruta_actual": 175600703.1,
+          "diff_exposicion": 0.0028,
+          "sobrecosto_esperado": 48189150.53,
+          "sobrecosto_actual": 48189150.53,
+          "diff_sobrecosto": 0.0009,
+          "reconcilia_ok": "True"
+        },
+        "2024": {
+          "exposicion_bruta_esperada": 19079554.64,
+          "exposicion_bruta_actual": 19079554.64,
+          "diff_exposicion": 0.0001,
+          "sobrecosto_esperado": 15223546.2,
+          "sobrecosto_actual": 15223546.2,
+          "diff_sobrecosto": 0.0016,
+          "reconcilia_ok": "True"
+        }
+      },
+      "errores": []
+    }
+  }
+}

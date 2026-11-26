@@ -19,9 +19,56 @@ TABLAS_GOLD_OFICIALES = (
 )
 
 
-def _inspeccionar_parquets(ruta: str) -> dict:
-    if ruta.startswith("s3://"):
+def _inspeccionar_parquets_s3(ruta: str, spark: SparkSession | None = None) -> dict:
+    """Inspecciona archivos .parquet y particiones mes= en S3 via Hadoop FS o boto3."""
+    if spark is not None:
+        try:
+            jvm = spark._jvm
+            conf = spark._jsc.hadoopConfiguration()
+            uri = jvm.java.net.URI(ruta)
+            fs = jvm.org.apache.hadoop.fs.FileSystem.get(uri, conf)
+            hpath = jvm.org.apache.hadoop.fs.Path(ruta)
+            if not fs.exists(hpath):
+                return {"archivos_parquet": 0, "tiene_particion_mes": False}
+            it = fs.listFiles(hpath, True)
+            archivos = 0
+            tiene_mes = False
+            while it.hasNext():
+                fstatus = it.next()
+                pstr = fstatus.getPath().toString()
+                if pstr.endswith(".parquet"):
+                    archivos += 1
+                if "/mes=" in pstr:
+                    tiene_mes = True
+            return {"archivos_parquet": archivos, "tiene_particion_mes": tiene_mes}
+        except Exception:
+            pass
+
+    try:
+        import boto3
+
+        sin_pref = ruta[5:]
+        bucket, _, prefix = sin_pref.partition("/")
+        prefix = prefix.strip("/")
+        client = boto3.client("s3")
+        paginator = client.get_paginator("list_objects_v2")
+        archivos = 0
+        tiene_mes = False
+        for page in paginator.paginate(Bucket=bucket, Prefix=prefix + "/"):
+            for obj in page.get("Contents", []):
+                key = obj["Key"]
+                if key.endswith(".parquet"):
+                    archivos += 1
+                if "/mes=" in key:
+                    tiene_mes = True
+        return {"archivos_parquet": archivos, "tiene_particion_mes": tiene_mes}
+    except Exception:
         return {"archivos_parquet": None, "tiene_particion_mes": None}
+
+
+def _inspeccionar_parquets(ruta: str, spark: SparkSession | None = None) -> dict:
+    if ruta.startswith("s3://"):
+        return _inspeccionar_parquets_s3(ruta, spark=spark)
     p = Path(ruta)
     if not p.exists():
         return {"archivos_parquet": 0, "tiene_particion_mes": False}
@@ -55,7 +102,7 @@ def validar_contratos_gold(
     for tabla in TABLAS_GOLD_OFICIALES:
         ruta_t = f"{gold_dir}/{tabla}"
         conteos_gold[tabla] = spark.read.parquet(ruta_t).count()
-        info_p = _inspeccionar_parquets(ruta_t)
+        info_p = _inspeccionar_parquets(ruta_t, spark=spark)
         archivos_parquet_gold[tabla] = info_p
         if info_p["archivos_parquet"] is not None:
             total_parquets_gold += info_p["archivos_parquet"]

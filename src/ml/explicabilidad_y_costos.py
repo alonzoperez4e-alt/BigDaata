@@ -420,7 +420,7 @@ def main() -> None:
         "surrogate": "scikit-learn RandomForestClassifier(max_depth=5, n_estimators=50, random_state=42)",
         **info_train,
         "n_obs_2024": int(np.sum(obs_mask)),
-        "correlacion_spearman": round(float(spearman_res.statistic), 6),
+        "correlacion_spearman": round(float(getattr(spearman_res, "statistic", spearman_res[0])), 6),
         "auc_roc_spark": round(auc_spark, 6),
         "auc_roc_sklearn": round(auc_sk, 6),
         "delta_auc_roc": round(auc_sk - auc_spark, 6),

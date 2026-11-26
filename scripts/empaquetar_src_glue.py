@@ -79,7 +79,7 @@ def main():
     )
     args = parser.parse_args()
 
-    print(f"Empaquetando src/ → {args.out_zip} …")
+    print(f"Empaquetando src/ -> {args.out_zip} ...")
     build_zip(args.out_zip)
     zip_size = os.path.getsize(args.out_zip)
     print(f"  Zip generado: {zip_size:,} bytes")

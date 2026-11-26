@@ -77,14 +77,14 @@ SEMANA_7_BASELINE = {
 
 
 def crear_spark(app_name: str = "coes-ml-training") -> SparkSession:
-    """Inicializa SparkSession en UTC con configuracion segura para Windows."""
+    """Inicializa SparkSession en UTC con configuracion segura para Windows y Glue."""
     os.environ.setdefault("PYSPARK_PYTHON", sys.executable)
     os.environ.setdefault("PYSPARK_DRIVER_PYTHON", sys.executable)
+    builder = SparkSession.builder.appName(app_name)
+    if "JOB_NAME" not in os.environ:
+        builder = builder.master("local[4]").config("spark.driver.memory", "4g")
     spark = (
-        SparkSession.builder.appName(app_name)
-        .master("local[4]")
-        .config("spark.driver.memory", "4g")
-        .config("spark.sql.shuffle.partitions", "8")
+        builder.config("spark.sql.shuffle.partitions", "8")
         .config("spark.sql.session.timeZone", "UTC")
         .config("spark.sql.parquet.compression.codec", "snappy")
         .getOrCreate()

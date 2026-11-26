@@ -1,0 +1,30 @@
+﻿{
+    "RoleName": "AWSGlueServiceRole-COES",
+    "PolicyName": "coes-s3-least-privilege",
+    "PolicyDocument": {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Action": [
+                    "s3:ListBucket",
+                    "s3:GetBucketLocation"
+                ],
+                "Effect": "Allow",
+                "Resource": "arn:aws:s3:::coes-sein-bigdata-datalake",
+                "Sid": "ListBucketDataLake"
+            },
+            {
+                "Action": [
+                    "s3:GetObject",
+                    "s3:PutObject",
+                    "s3:DeleteObject",
+                    "s3:AbortMultipartUpload",
+                    "s3:ListMultipartUploadParts"
+                ],
+                "Effect": "Allow",
+                "Resource": "arn:aws:s3:::coes-sein-bigdata-datalake/*",
+                "Sid": "ReadWriteObjectsDataLake"
+            }
+        ]
+    }
+}

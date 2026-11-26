@@ -80,9 +80,31 @@ CSV_B = {
 }
 
 
+PERFILES_FALLBACK = {
+    "local_dev": {
+        "master": "local[8]",
+        "driver_memory": "4g",
+        "shuffle_partitions": 8,
+        "broadcast_threshold_bytes": 10485760,
+    },
+    "local_scale_100x": {
+        "master": "local[8]",
+        "driver_memory": "4g",
+        "shuffle_partitions": 800,
+        "broadcast_threshold_bytes": -1,
+    },
+    "distributed_managed": {
+        "shuffle_partitions": 200,
+        "broadcast_threshold_bytes": 10485760,
+    },
+}
+
+
 def cargar_perfil(profile_name: str | None) -> dict:
-    if not profile_name or not PROFILES_PATH.exists():
+    if not profile_name:
         return {}
+    if not PROFILES_PATH.exists():
+        return dict(PERFILES_FALLBACK.get(profile_name, PERFILES_FALLBACK["distributed_managed"]))
     perfiles = json.loads(PROFILES_PATH.read_text(encoding="utf-8"))
     if profile_name not in perfiles:
         raise ValueError(f"Perfil '{profile_name}' no existe en {PROFILES_PATH}. Disponibles: {list(perfiles)}")
@@ -362,7 +384,7 @@ def main() -> None:
     silver, gold_dir, logs = (f"{root}/{z}" for z in ("silver", "gold", "logs"))
     escala = os.environ.get("ESCALA", "1x")
 
-    perfil = {} if en_glue else cargar_perfil(args.profile)
+    perfil = cargar_perfil(args.profile)
     broadcast_bytes = int(perfil.get("broadcast_threshold_bytes", 10485760))
     use_broadcast = (os.environ.get("BROADCAST", "1") != "0") and (broadcast_bytes >= 0)
 

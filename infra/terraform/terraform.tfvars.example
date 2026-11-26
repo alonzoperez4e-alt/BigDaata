@@ -1,0 +1,9 @@
+# Plantilla de variables sin credenciales ni correos reales.
+# Copiar a terraform.tfvars (ignorado por Git) antes de plan/apply.
+
+aws_region             = "us-east-1"
+bucket_name            = "coes-sein-bigdata-datalake-ejemplo"
+budget_limit_usd       = 15
+alert_email            = "alerts@example.com"
+glue_worker_type       = "G.1X"
+glue_number_of_workers = 2

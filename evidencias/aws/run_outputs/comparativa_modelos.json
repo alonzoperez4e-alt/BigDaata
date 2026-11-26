@@ -1,0 +1,4435 @@
+{
+  "input": "s3://coes-sein-bigdata-datalake/gold/ml_features_30min",
+  "output": "/tmp/coes_run/gold/ml_outputs",
+  "n_boot": 1000,
+  "seed": 42,
+  "regla_seleccion_antifuga": [
+    "fold_1_2023_s1",
+    "fold_2_2023_s2"
+  ],
+  "predicciones_2024_parquet": "/tmp/coes_run/gold/ml_outputs/predicciones_test_2024.parquet",
+  "total_bloques_2024": 16080,
+  "targets": {
+    "y_ventana_2_4h": {
+      "target": "y_ventana_2_4h",
+      "n_features": 24,
+      "feature_cols": [
+        "flag_a1_disponible_t",
+        "brecha_term_cara_mw",
+        "ratio_term_ejec_vs_prog",
+        "term_cara_share",
+        "gen_total_mw",
+        "rampa_brecha_2h",
+        "rampa_gen_30m",
+        "rampa_gen_2h",
+        "cmg_troncal_mediana_t",
+        "cmg_troncal_p90_t",
+        "cmg_spread_p90_p50_t",
+        "rampa_cmg_1h",
+        "rampa_cmg_4h",
+        "cmg_zscore_24h",
+        "n_forzados_termicos_activos",
+        "n_forzados_transmision_activos",
+        "n_forzados_termicos_inicio_3h",
+        "n_mantenimientos_prog_termicos_activos",
+        "persistencia_term_nop_2h",
+        "hora_sin",
+        "hora_cos",
+        "mes_sin",
+        "mes_cos",
+        "es_fin_de_semana"
+      ],
+      "seleccion_pre2024": {
+        "folds_usados_seleccion": [
+          "fold_1_2023_s1",
+          "fold_2_2023_s2"
+        ],
+        "n_candidatos_evaluados": 12,
+        "mejores_por_familia": {
+          "GBTClassifier": {
+            "familia": "GBTClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 3,
+              "maxIter": 40,
+              "stepSize": 0.05
+            },
+            "pr_auc_val_promedio_pre2024": 0.507867,
+            "brecha_overfit_promedio": 0.247277,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.778338,
+                "pr_auc_val": 0.468246,
+                "brecha_overfit": 0.310092
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.731952,
+                "pr_auc_val": 0.547489,
+                "brecha_overfit": 0.184463
+              }
+            }
+          },
+          "RandomForestClassifier": {
+            "familia": "RandomForestClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 5,
+              "numTrees": 50
+            },
+            "pr_auc_val_promedio_pre2024": 0.645533,
+            "brecha_overfit_promedio": 0.117921,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.788353,
+                "pr_auc_val": 0.580923,
+                "brecha_overfit": 0.20743
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.738556,
+                "pr_auc_val": 0.710143,
+                "brecha_overfit": 0.028413
+              }
+            }
+          },
+          "LogisticRegression": {
+            "familia": "LogisticRegression",
+            "scale": true,
+            "params": {
+              "regParam": 0.01,
+              "elasticNetParam": 0.5
+            },
+            "pr_auc_val_promedio_pre2024": 0.625473,
+            "brecha_overfit_promedio": 0.060618,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.705609,
+                "pr_auc_val": 0.554798,
+                "brecha_overfit": 0.150811
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.666573,
+                "pr_auc_val": 0.696149,
+                "brecha_overfit": -0.029576
+              }
+            }
+          }
+        },
+        "ganador": {
+          "familia": "RandomForestClassifier",
+          "scale": false,
+          "params": {
+            "maxDepth": 5,
+            "numTrees": 50
+          },
+          "pr_auc_val_promedio_pre2024": 0.645533,
+          "brecha_overfit_promedio": 0.117921,
+          "folds_seleccion": {
+            "fold_1_2023_s1": {
+              "pr_auc_train": 0.788353,
+              "pr_auc_val": 0.580923,
+              "brecha_overfit": 0.20743
+            },
+            "fold_2_2023_s2": {
+              "pr_auc_train": 0.738556,
+              "pr_auc_val": 0.710143,
+              "brecha_overfit": 0.028413
+            }
+          }
+        },
+        "candidatos": [
+          {
+            "familia": "GBTClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 3,
+              "maxIter": 40,
+              "stepSize": 0.05
+            },
+            "pr_auc_val_promedio_pre2024": 0.507867,
+            "brecha_overfit_promedio": 0.247277,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.778338,
+                "pr_auc_val": 0.468246,
+                "brecha_overfit": 0.310092
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.731952,
+                "pr_auc_val": 0.547489,
+                "brecha_overfit": 0.184463
+              }
+            }
+          },
+          {
+            "familia": "GBTClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 3,
+              "maxIter": 60,
+              "stepSize": 0.1
+            },
+            "pr_auc_val_promedio_pre2024": 0.490653,
+            "brecha_overfit_promedio": 0.300533,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.819536,
+                "pr_auc_val": 0.424366,
+                "brecha_overfit": 0.39517
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.762837,
+                "pr_auc_val": 0.55694,
+                "brecha_overfit": 0.205897
+              }
+            }
+          },
+          {
+            "familia": "GBTClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 5,
+              "maxIter": 40,
+              "stepSize": 0.05
+            },
+            "pr_auc_val_promedio_pre2024": 0.492917,
+            "brecha_overfit_promedio": 0.350549,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.869563,
+                "pr_auc_val": 0.442799,
+                "brecha_overfit": 0.426764
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.817368,
+                "pr_auc_val": 0.543034,
+                "brecha_overfit": 0.274334
+              }
+            }
+          },
+          {
+            "familia": "GBTClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 5,
+              "maxIter": 60,
+              "stepSize": 0.1
+            },
+            "pr_auc_val_promedio_pre2024": 0.4461,
+            "brecha_overfit_promedio": 0.46641,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.931941,
+                "pr_auc_val": 0.397182,
+                "brecha_overfit": 0.534759
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.89308,
+                "pr_auc_val": 0.495018,
+                "brecha_overfit": 0.398062
+              }
+            }
+          },
+          {
+            "familia": "RandomForestClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 5,
+              "numTrees": 50
+            },
+            "pr_auc_val_promedio_pre2024": 0.645533,
+            "brecha_overfit_promedio": 0.117921,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.788353,
+                "pr_auc_val": 0.580923,
+                "brecha_overfit": 0.20743
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.738556,
+                "pr_auc_val": 0.710143,
+                "brecha_overfit": 0.028413
+              }
+            }
+          },
+          {
+            "familia": "RandomForestClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 5,
+              "numTrees": 100
+            },
+            "pr_auc_val_promedio_pre2024": 0.563394,
+            "brecha_overfit_promedio": 0.20136,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.787992,
+                "pr_auc_val": 0.418578,
+                "brecha_overfit": 0.369414
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.741517,
+                "pr_auc_val": 0.708211,
+                "brecha_overfit": 0.033307
+              }
+            }
+          },
+          {
+            "familia": "RandomForestClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 8,
+              "numTrees": 50
+            },
+            "pr_auc_val_promedio_pre2024": 0.614865,
+            "brecha_overfit_promedio": 0.254573,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.896384,
+                "pr_auc_val": 0.545787,
+                "brecha_overfit": 0.350596
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.842493,
+                "pr_auc_val": 0.683943,
+                "brecha_overfit": 0.15855
+              }
+            }
+          },
+          {
+            "familia": "RandomForestClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 8,
+              "numTrees": 100
+            },
+            "pr_auc_val_promedio_pre2024": 0.570454,
+            "brecha_overfit_promedio": 0.304178,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.900251,
+                "pr_auc_val": 0.450111,
+                "brecha_overfit": 0.450141
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.849013,
+                "pr_auc_val": 0.690798,
+                "brecha_overfit": 0.158214
+              }
+            }
+          },
+          {
+            "familia": "LogisticRegression",
+            "scale": true,
+            "params": {
+              "regParam": 0.01,
+              "elasticNetParam": 0.0
+            },
+            "pr_auc_val_promedio_pre2024": 0.62036,
+            "brecha_overfit_promedio": 0.062795,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.702436,
+                "pr_auc_val": 0.5529,
+                "brecha_overfit": 0.149537
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.663873,
+                "pr_auc_val": 0.68782,
+                "brecha_overfit": -0.023947
+              }
+            }
+          },
+          {
+            "familia": "LogisticRegression",
+            "scale": true,
+            "params": {
+              "regParam": 0.01,
+              "elasticNetParam": 0.5
+            },
+            "pr_auc_val_promedio_pre2024": 0.625473,
+            "brecha_overfit_promedio": 0.060618,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.705609,
+                "pr_auc_val": 0.554798,
+                "brecha_overfit": 0.150811
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.666573,
+                "pr_auc_val": 0.696149,
+                "brecha_overfit": -0.029576
+              }
+            }
+          },
+          {
+            "familia": "LogisticRegression",
+            "scale": true,
+            "params": {
+              "regParam": 0.1,
+              "elasticNetParam": 0.0
+            },
+            "pr_auc_val_promedio_pre2024": 0.616247,
+            "brecha_overfit_promedio": 0.056762,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.694467,
+                "pr_auc_val": 0.544995,
+                "brecha_overfit": 0.149472
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.651551,
+                "pr_auc_val": 0.687499,
+                "brecha_overfit": -0.035949
+              }
+            }
+          },
+          {
+            "familia": "LogisticRegression",
+            "scale": true,
+            "params": {
+              "regParam": 0.1,
+              "elasticNetParam": 0.5
+            },
+            "pr_auc_val_promedio_pre2024": 0.61847,
+            "brecha_overfit_promedio": 0.04794,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.685256,
+                "pr_auc_val": 0.547353,
+                "brecha_overfit": 0.137903
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.647563,
+                "pr_auc_val": 0.689587,
+                "brecha_overfit": -0.042023
+              }
+            }
+          }
+        ]
+      },
+      "modelo_ganador": {
+        "familia": "RandomForestClassifier",
+        "params": {
+          "maxDepth": 5,
+          "numTrees": 50
+        },
+        "scale": false,
+        "pesos_train_final": {
+          "n_tot": 25662,
+          "n_pos": 4336,
+          "n_neg": 21326,
+          "pos_rate": 0.168966,
+          "w_pos": 2.959179,
+          "w_neg": 0.60166
+        },
+        "pr_auc_train_final": 0.751966,
+        "pr_auc_test_final_raw": 0.458695,
+        "brecha_overfit_final": 0.293271,
+        "fold_3_2024_h1_diagnostico": {
+          "splits": {
+            "train": {
+              "bloques_totales": 36520,
+              "bloques_etiquetables": 25662,
+              "pct_cobertura": 70.27,
+              "positivos": 4336,
+              "prevalencia": 0.168966,
+              "min_fecha_hora": "2021-12-01T21:30:00",
+              "max_fecha_hora": "2023-11-18T21:00:00"
+            },
+            "val": {
+              "bloques_totales": 7295,
+              "bloques_etiquetables": 3749,
+              "pct_cobertura": 51.39,
+              "positivos": 255,
+              "prevalencia": 0.068018,
+              "min_fecha_hora": "2024-01-20T21:30:00",
+              "max_fecha_hora": "2024-05-31T23:30:00"
+            }
+          },
+          "pr_auc_train": 0.751966,
+          "pr_auc_val": 0.347005,
+          "brecha_overfit": 0.404961
+        }
+      },
+      "comparativa_familias_test_final_2024_raw": {
+        "GBTClassifier": {
+          "n_obs": 10712,
+          "n_positivos": 1292,
+          "n_dias": 281,
+          "n_boot": 1000,
+          "n_boot_validos_auc": 1000,
+          "threshold": 0.5,
+          "metricas": {
+            "pr_auc": {
+              "valor": 0.642222,
+              "ic_95": [
+                0.508291,
+                0.748376
+              ]
+            },
+            "auc_roc": {
+              "valor": 0.833547,
+              "ic_95": [
+                0.772203,
+                0.884559
+              ]
+            },
+            "brier_score": {
+              "valor": 0.163806,
+              "ic_95": [
+                0.152525,
+                0.175847
+              ]
+            },
+            "precision": {
+              "valor": 0.345805,
+              "ic_95": [
+                0.257429,
+                0.430416
+              ]
+            },
+            "recall": {
+              "valor": 0.736842,
+              "ic_95": [
+                0.640774,
+                0.813323
+              ]
+            },
+            "f1": {
+              "valor": 0.470705,
+              "ic_95": [
+                0.37303,
+                0.555474
+              ]
+            },
+            "prevalencia": {
+              "valor": 0.120612,
+              "ic_95": [
+                0.09081,
+                0.153841
+              ]
+            }
+          }
+        },
+        "RandomForestClassifier": {
+          "n_obs": 10712,
+          "n_positivos": 1292,
+          "n_dias": 281,
+          "n_boot": 1000,
+          "n_boot_validos_auc": 1000,
+          "threshold": 0.5,
+          "metricas": {
+            "pr_auc": {
+              "valor": 0.458695,
+              "ic_95": [
+                0.344067,
+                0.56446
+              ]
+            },
+            "auc_roc": {
+              "valor": 0.796977,
+              "ic_95": [
+                0.738526,
+                0.847021
+              ]
+            },
+            "brier_score": {
+              "valor": 0.201345,
+              "ic_95": [
+                0.189571,
+                0.213936
+              ]
+            },
+            "precision": {
+              "valor": 0.201602,
+              "ic_95": [
+                0.145612,
+                0.261745
+              ]
+            },
+            "recall": {
+              "valor": 0.798762,
+              "ic_95": [
+                0.72258,
+                0.863749
+              ]
+            },
+            "f1": {
+              "valor": 0.321947,
+              "ic_95": [
+                0.244308,
+                0.398806
+              ]
+            },
+            "prevalencia": {
+              "valor": 0.120612,
+              "ic_95": [
+                0.09081,
+                0.153841
+              ]
+            }
+          }
+        },
+        "LogisticRegression": {
+          "n_obs": 10712,
+          "n_positivos": 1292,
+          "n_dias": 281,
+          "n_boot": 1000,
+          "n_boot_validos_auc": 1000,
+          "threshold": 0.5,
+          "metricas": {
+            "pr_auc": {
+              "valor": 0.639445,
+              "ic_95": [
+                0.503371,
+                0.740055
+              ]
+            },
+            "auc_roc": {
+              "valor": 0.844366,
+              "ic_95": [
+                0.789665,
+                0.890494
+              ]
+            },
+            "brier_score": {
+              "valor": 0.095667,
+              "ic_95": [
+                0.087356,
+                0.104227
+              ]
+            },
+            "precision": {
+              "valor": 0.755492,
+              "ic_95": [
+                0.650982,
+                0.832222
+              ]
+            },
+            "recall": {
+              "valor": 0.612229,
+              "ic_95": [
+                0.485806,
+                0.710603
+              ]
+            },
+            "f1": {
+              "valor": 0.676357,
+              "ic_95": [
+                0.561208,
+                0.763151
+              ]
+            },
+            "prevalencia": {
+              "valor": 0.120612,
+              "ic_95": [
+                0.09081,
+                0.153841
+              ]
+            }
+          }
+        }
+      },
+      "test_final_2024": {
+        "splits": {
+          "train": {
+            "bloques_totales": 36520,
+            "bloques_etiquetables": 25662,
+            "pct_cobertura": 70.27,
+            "positivos": 4336,
+            "prevalencia": 0.168966,
+            "min_fecha_hora": "2021-12-01T21:30:00",
+            "max_fecha_hora": "2023-11-18T21:00:00"
+          },
+          "val": {
+            "bloques_totales": 16080,
+            "bloques_etiquetables": 10712,
+            "pct_cobertura": 66.62,
+            "positivos": 1292,
+            "prevalencia": 0.120612,
+            "min_fecha_hora": "2024-01-20T21:30:00",
+            "max_fecha_hora": "2024-11-30T22:00:00"
+          }
+        },
+        "umbral_fijo_heredado_2023_s2": 0.5,
+        "trazabilidad_recalibracion_60d": [
+          {
+            "anio_mes": "2024-01",
+            "pi_reciente": 0.020833,
+            "tau_mes": 0.16,
+            "n_obs_hist": 720,
+            "n_dias_hist": 17,
+            "fp_semana_hist": 3.2941,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 58
+          },
+          {
+            "anio_mes": "2024-02",
+            "pi_reciente": 0.172917,
+            "tau_mes": 0.22,
+            "n_obs_hist": 480,
+            "n_dias_hist": 12,
+            "fp_semana_hist": 43.1667,
+            "n_bloques_mes": 1392,
+            "n_alertas_mes": 205
+          },
+          {
+            "anio_mes": "2024-03",
+            "pi_reciente": 0.116935,
+            "tau_mes": 0.52,
+            "n_obs_hist": 1488,
+            "n_dias_hist": 37,
+            "fp_semana_hist": 12.2973,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 7
+          },
+          {
+            "anio_mes": "2024-04",
+            "pi_reciente": 0.054167,
+            "tau_mes": 0.32,
+            "n_obs_hist": 1920,
+            "n_dias_hist": 51,
+            "fp_semana_hist": 6.7255,
+            "n_bloques_mes": 1440,
+            "n_alertas_mes": 83
+          },
+          {
+            "anio_mes": "2024-05",
+            "pi_reciente": 0.00899,
+            "tau_mes": 0.05,
+            "n_obs_hist": 1446,
+            "n_dias_hist": 44,
+            "fp_semana_hist": 47.7273,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 489
+          },
+          {
+            "anio_mes": "2024-06",
+            "pi_reciente": 0.05037,
+            "tau_mes": 0.36,
+            "n_obs_hist": 1350,
+            "n_dias_hist": 44,
+            "fp_semana_hist": 3.0227,
+            "n_bloques_mes": 1440,
+            "n_alertas_mes": 78
+          },
+          {
+            "anio_mes": "2024-07",
+            "pi_reciente": 0.128497,
+            "tau_mes": 0.54,
+            "n_obs_hist": 1930,
+            "n_dias_hist": 55,
+            "fp_semana_hist": 10.0545,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 70
+          },
+          {
+            "anio_mes": "2024-08",
+            "pi_reciente": 0.105394,
+            "tau_mes": 0.46,
+            "n_obs_hist": 2410,
+            "n_dias_hist": 60,
+            "fp_semana_hist": 19.25,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 64
+          },
+          {
+            "anio_mes": "2024-09",
+            "pi_reciente": 0.066046,
+            "tau_mes": 0.35,
+            "n_obs_hist": 2256,
+            "n_dias_hist": 57,
+            "fp_semana_hist": 8.3509,
+            "n_bloques_mes": 1440,
+            "n_alertas_mes": 110
+          },
+          {
+            "anio_mes": "2024-10",
+            "pi_reciente": 0.116236,
+            "tau_mes": 0.46,
+            "n_obs_hist": 2168,
+            "n_dias_hist": 55,
+            "fp_semana_hist": 6.4909,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 7
+          },
+          {
+            "anio_mes": "2024-11",
+            "pi_reciente": 0.103463,
+            "tau_mes": 0.41,
+            "n_obs_hist": 2310,
+            "n_dias_hist": 56,
+            "fp_semana_hist": 5.875,
+            "n_bloques_mes": 1440,
+            "n_alertas_mes": 419
+          }
+        ],
+        "trazabilidad_recalibracion_60d_maxfp3": [
+          {
+            "anio_mes": "2024-01",
+            "pi_reciente": 0.020833,
+            "tau_mes": 0.17,
+            "n_obs_hist": 720,
+            "n_dias_hist": 17,
+            "fp_semana_hist": 2.4706,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 56
+          },
+          {
+            "anio_mes": "2024-02",
+            "pi_reciente": 0.172917,
+            "tau_mes": 0.76,
+            "n_obs_hist": 480,
+            "n_dias_hist": 12,
+            "fp_semana_hist": 2.3333,
+            "n_bloques_mes": 1392,
+            "n_alertas_mes": 42
+          },
+          {
+            "anio_mes": "2024-03",
+            "pi_reciente": 0.116935,
+            "tau_mes": 0.67,
+            "n_obs_hist": 1488,
+            "n_dias_hist": 37,
+            "fp_semana_hist": 2.4595,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 0
+          },
+          {
+            "anio_mes": "2024-04",
+            "pi_reciente": 0.054167,
+            "tau_mes": 0.42,
+            "n_obs_hist": 1920,
+            "n_dias_hist": 51,
+            "fp_semana_hist": 2.7451,
+            "n_bloques_mes": 1440,
+            "n_alertas_mes": 0
+          },
+          {
+            "anio_mes": "2024-05",
+            "pi_reciente": 0.00899,
+            "tau_mes": 0.95,
+            "n_obs_hist": 1446,
+            "n_dias_hist": 44,
+            "fp_semana_hist": 0.0,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 0
+          },
+          {
+            "anio_mes": "2024-06",
+            "pi_reciente": 0.05037,
+            "tau_mes": 0.37,
+            "n_obs_hist": 1350,
+            "n_dias_hist": 44,
+            "fp_semana_hist": 2.8636,
+            "n_bloques_mes": 1440,
+            "n_alertas_mes": 71
+          },
+          {
+            "anio_mes": "2024-07",
+            "pi_reciente": 0.128497,
+            "tau_mes": 0.66,
+            "n_obs_hist": 1930,
+            "n_dias_hist": 55,
+            "fp_semana_hist": 2.1636,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 17
+          },
+          {
+            "anio_mes": "2024-08",
+            "pi_reciente": 0.105394,
+            "tau_mes": 0.6,
+            "n_obs_hist": 2410,
+            "n_dias_hist": 60,
+            "fp_semana_hist": 2.6833,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 35
+          },
+          {
+            "anio_mes": "2024-09",
+            "pi_reciente": 0.066046,
+            "tau_mes": 0.46,
+            "n_obs_hist": 2256,
+            "n_dias_hist": 57,
+            "fp_semana_hist": 2.9474,
+            "n_bloques_mes": 1440,
+            "n_alertas_mes": 22
+          },
+          {
+            "anio_mes": "2024-10",
+            "pi_reciente": 0.116236,
+            "tau_mes": 0.52,
+            "n_obs_hist": 2168,
+            "n_dias_hist": 55,
+            "fp_semana_hist": 2.4182,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 1
+          },
+          {
+            "anio_mes": "2024-11",
+            "pi_reciente": 0.103463,
+            "tau_mes": 0.45,
+            "n_obs_hist": 2310,
+            "n_dias_hist": 56,
+            "fp_semana_hist": 3.0,
+            "n_bloques_mes": 1440,
+            "n_alertas_mes": 331
+          }
+        ],
+        "2024_global": {
+          "umbral_fijo_2023_s2": {
+            "n_obs": 10712,
+            "n_positivos": 1292,
+            "n_dias": 281,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.5,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.458695,
+                "ic_95": [
+                  0.344067,
+                  0.56446
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.796977,
+                "ic_95": [
+                  0.738526,
+                  0.847021
+                ]
+              },
+              "brier_score": {
+                "valor": 0.201345,
+                "ic_95": [
+                  0.189571,
+                  0.213936
+                ]
+              },
+              "precision": {
+                "valor": 0.201602,
+                "ic_95": [
+                  0.145612,
+                  0.261745
+                ]
+              },
+              "recall": {
+                "valor": 0.798762,
+                "ic_95": [
+                  0.72258,
+                  0.863749
+                ]
+              },
+              "f1": {
+                "valor": 0.321947,
+                "ic_95": [
+                  0.244308,
+                  0.398806
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.120612,
+                "ic_95": [
+                  0.09081,
+                  0.153841
+                ]
+              }
+            }
+          },
+          "recalibrado_mensual_60d": {
+            "n_obs": 10712,
+            "n_positivos": 1292,
+            "n_dias": 281,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": "por_fila",
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.347331,
+                "ic_95": [
+                  0.227413,
+                  0.46321
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.718864,
+                "ic_95": [
+                  0.641267,
+                  0.786852
+                ]
+              },
+              "brier_score": {
+                "valor": 0.124512,
+                "ic_95": [
+                  0.11324,
+                  0.136843
+                ]
+              },
+              "precision": {
+                "valor": 0.501984,
+                "ic_95": [
+                  0.379155,
+                  0.625907
+                ]
+              },
+              "recall": {
+                "valor": 0.587461,
+                "ic_95": [
+                  0.468852,
+                  0.688587
+                ]
+              },
+              "f1": {
+                "valor": 0.541369,
+                "ic_95": [
+                  0.421537,
+                  0.637603
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.120612,
+                "ic_95": [
+                  0.09081,
+                  0.153841
+                ]
+              }
+            }
+          },
+          "recalibrado_mensual_60d_maxfp3": {
+            "n_obs": 10712,
+            "n_positivos": 1292,
+            "n_dias": 281,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": "por_fila",
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.347331,
+                "ic_95": [
+                  0.227413,
+                  0.46321
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.718864,
+                "ic_95": [
+                  0.641267,
+                  0.786852
+                ]
+              },
+              "brier_score": {
+                "valor": 0.124512,
+                "ic_95": [
+                  0.11324,
+                  0.136843
+                ]
+              },
+              "precision": {
+                "valor": 0.856624,
+                "ic_95": [
+                  0.759862,
+                  0.922777
+                ]
+              },
+              "recall": {
+                "valor": 0.365325,
+                "ic_95": [
+                  0.246496,
+                  0.478127
+                ]
+              },
+              "f1": {
+                "valor": 0.512208,
+                "ic_95": [
+                  0.375981,
+                  0.624303
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.120612,
+                "ic_95": [
+                  0.09081,
+                  0.153841
+                ]
+              }
+            }
+          },
+          "baseline_tasa_horaria": {
+            "n_obs": 10712,
+            "n_positivos": 1292,
+            "n_dias": 281,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.144195,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.137143,
+                "ic_95": [
+                  0.10417,
+                  0.173062
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.547735,
+                "ic_95": [
+                  0.525357,
+                  0.572505
+                ]
+              },
+              "brier_score": {
+                "valor": 0.10841,
+                "ic_95": [
+                  0.088765,
+                  0.130198
+                ]
+              },
+              "precision": {
+                "valor": 0.129418,
+                "ic_95": [
+                  0.097798,
+                  0.16462
+                ]
+              },
+              "recall": {
+                "valor": 0.804954,
+                "ic_95": [
+                  0.773713,
+                  0.837565
+                ]
+              },
+              "f1": {
+                "valor": 0.222985,
+                "ic_95": [
+                  0.174341,
+                  0.274375
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.120612,
+                "ic_95": [
+                  0.09081,
+                  0.153841
+                ]
+              }
+            }
+          },
+          "baseline_siempre_positivo": {
+            "n_obs": 10712,
+            "n_positivos": 1292,
+            "n_dias": 281,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.0,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.120612,
+                "ic_95": [
+                  0.09081,
+                  0.153841
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.5,
+                "ic_95": [
+                  0.5,
+                  0.5
+                ]
+              },
+              "brier_score": {
+                "valor": 0.108403,
+                "ic_95": [
+                  0.088672,
+                  0.130403
+                ]
+              },
+              "precision": {
+                "valor": 0.120612,
+                "ic_95": [
+                  0.09081,
+                  0.153841
+                ]
+              },
+              "recall": {
+                "valor": 1.0,
+                "ic_95": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "f1": {
+                "valor": 0.215262,
+                "ic_95": [
+                  0.1665,
+                  0.26666
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.120612,
+                "ic_95": [
+                  0.09081,
+                  0.153841
+                ]
+              }
+            },
+            "probabilidad_constante_train": 0.168966
+          },
+          "semana_7_baseline": {
+            "auc_roc": 0.463,
+            "pr_auc": 0.119,
+            "f1": 0.192
+          }
+        },
+        "2024_sin_meses_baja_cobertura": {
+          "umbral_fijo_2023_s2": {
+            "n_obs": 9698,
+            "n_positivos": 1209,
+            "n_dias": 251,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.5,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.511264,
+                "ic_95": [
+                  0.379294,
+                  0.62984
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.821128,
+                "ic_95": [
+                  0.76397,
+                  0.867816
+                ]
+              },
+              "brier_score": {
+                "valor": 0.203832,
+                "ic_95": [
+                  0.190338,
+                  0.216267
+                ]
+              },
+              "precision": {
+                "valor": 0.210438,
+                "ic_95": [
+                  0.152101,
+                  0.280061
+                ]
+              },
+              "recall": {
+                "valor": 0.82713,
+                "ic_95": [
+                  0.749936,
+                  0.883589
+                ]
+              },
+              "f1": {
+                "valor": 0.335514,
+                "ic_95": [
+                  0.252496,
+                  0.424404
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.124665,
+                "ic_95": [
+                  0.093101,
+                  0.163707
+                ]
+              }
+            }
+          },
+          "recalibrado_mensual_60d": {
+            "n_obs": 9698,
+            "n_positivos": 1209,
+            "n_dias": 251,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": "por_fila",
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.362475,
+                "ic_95": [
+                  0.243101,
+                  0.499045
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.737283,
+                "ic_95": [
+                  0.660373,
+                  0.802409
+                ]
+              },
+              "brier_score": {
+                "valor": 0.127635,
+                "ic_95": [
+                  0.115809,
+                  0.140888
+                ]
+              },
+              "precision": {
+                "valor": 0.529797,
+                "ic_95": [
+                  0.405198,
+                  0.663153
+                ]
+              },
+              "recall": {
+                "valor": 0.602978,
+                "ic_95": [
+                  0.472084,
+                  0.705305
+                ]
+              },
+              "f1": {
+                "valor": 0.564023,
+                "ic_95": [
+                  0.43816,
+                  0.668657
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.124665,
+                "ic_95": [
+                  0.093101,
+                  0.163707
+                ]
+              }
+            }
+          },
+          "recalibrado_mensual_60d_maxfp3": {
+            "n_obs": 9698,
+            "n_positivos": 1209,
+            "n_dias": 251,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": "por_fila",
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.362475,
+                "ic_95": [
+                  0.243101,
+                  0.499045
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.737283,
+                "ic_95": [
+                  0.660373,
+                  0.802409
+                ]
+              },
+              "brier_score": {
+                "valor": 0.127635,
+                "ic_95": [
+                  0.115809,
+                  0.140888
+                ]
+              },
+              "precision": {
+                "valor": 0.887776,
+                "ic_95": [
+                  0.789867,
+                  0.94879
+                ]
+              },
+              "recall": {
+                "valor": 0.366419,
+                "ic_95": [
+                  0.236563,
+                  0.486545
+                ]
+              },
+              "f1": {
+                "valor": 0.518735,
+                "ic_95": [
+                  0.365839,
+                  0.637704
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.124665,
+                "ic_95": [
+                  0.093101,
+                  0.163707
+                ]
+              }
+            }
+          },
+          "baseline_tasa_horaria": {
+            "n_obs": 9698,
+            "n_positivos": 1209,
+            "n_dias": 251,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.144195,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.141075,
+                "ic_95": [
+                  0.107194,
+                  0.181793
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.544396,
+                "ic_95": [
+                  0.525197,
+                  0.567844
+                ]
+              },
+              "brier_score": {
+                "valor": 0.111153,
+                "ic_95": [
+                  0.090538,
+                  0.137177
+                ]
+              },
+              "precision": {
+                "valor": 0.133004,
+                "ic_95": [
+                  0.100183,
+                  0.172789
+                ]
+              },
+              "recall": {
+                "valor": 0.800662,
+                "ic_95": [
+                  0.773776,
+                  0.831362
+                ]
+              },
+              "f1": {
+                "valor": 0.228114,
+                "ic_95": [
+                  0.178569,
+                  0.283047
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.124665,
+                "ic_95": [
+                  0.093101,
+                  0.163707
+                ]
+              }
+            }
+          },
+          "baseline_siempre_positivo": {
+            "n_obs": 9698,
+            "n_positivos": 1209,
+            "n_dias": 251,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.0,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.124665,
+                "ic_95": [
+                  0.093101,
+                  0.163707
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.5,
+                "ic_95": [
+                  0.5,
+                  0.5
+                ]
+              },
+              "brier_score": {
+                "valor": 0.111086,
+                "ic_95": [
+                  0.090189,
+                  0.136934
+                ]
+              },
+              "precision": {
+                "valor": 0.124665,
+                "ic_95": [
+                  0.093101,
+                  0.163707
+                ]
+              },
+              "recall": {
+                "valor": 1.0,
+                "ic_95": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "f1": {
+                "valor": 0.221692,
+                "ic_95": [
+                  0.170343,
+                  0.281354
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.124665,
+                "ic_95": [
+                  0.093101,
+                  0.163707
+                ]
+              }
+            },
+            "probabilidad_constante_train": 0.168966
+          },
+          "semana_7_baseline": {
+            "auc_roc": 0.463,
+            "pr_auc": 0.119,
+            "f1": 0.192
+          }
+        }
+      }
+    },
+    "y_inicio_ventana_2_4h": {
+      "target": "y_inicio_ventana_2_4h",
+      "n_features": 24,
+      "feature_cols": [
+        "flag_a1_disponible_t",
+        "brecha_term_cara_mw",
+        "ratio_term_ejec_vs_prog",
+        "term_cara_share",
+        "gen_total_mw",
+        "rampa_brecha_2h",
+        "rampa_gen_30m",
+        "rampa_gen_2h",
+        "cmg_troncal_mediana_t",
+        "cmg_troncal_p90_t",
+        "cmg_spread_p90_p50_t",
+        "rampa_cmg_1h",
+        "rampa_cmg_4h",
+        "cmg_zscore_24h",
+        "n_forzados_termicos_activos",
+        "n_forzados_transmision_activos",
+        "n_forzados_termicos_inicio_3h",
+        "n_mantenimientos_prog_termicos_activos",
+        "persistencia_term_nop_2h",
+        "hora_sin",
+        "hora_cos",
+        "mes_sin",
+        "mes_cos",
+        "es_fin_de_semana"
+      ],
+      "seleccion_pre2024": {
+        "folds_usados_seleccion": [
+          "fold_1_2023_s1",
+          "fold_2_2023_s2"
+        ],
+        "n_candidatos_evaluados": 12,
+        "mejores_por_familia": {
+          "GBTClassifier": {
+            "familia": "GBTClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 3,
+              "maxIter": 40,
+              "stepSize": 0.05
+            },
+            "pr_auc_val_promedio_pre2024": 0.16001,
+            "brecha_overfit_promedio": 0.077952,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.27012,
+                "pr_auc_val": 0.100665,
+                "brecha_overfit": 0.169456
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.205802,
+                "pr_auc_val": 0.219355,
+                "brecha_overfit": -0.013552
+              }
+            }
+          },
+          "RandomForestClassifier": {
+            "familia": "RandomForestClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 5,
+              "numTrees": 50
+            },
+            "pr_auc_val_promedio_pre2024": 0.169518,
+            "brecha_overfit_promedio": 0.126675,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.350482,
+                "pr_auc_val": 0.118735,
+                "brecha_overfit": 0.231747
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.241903,
+                "pr_auc_val": 0.2203,
+                "brecha_overfit": 0.021603
+              }
+            }
+          },
+          "LogisticRegression": {
+            "familia": "LogisticRegression",
+            "scale": true,
+            "params": {
+              "regParam": 0.01,
+              "elasticNetParam": 0.5
+            },
+            "pr_auc_val_promedio_pre2024": 0.144389,
+            "brecha_overfit_promedio": -0.038002,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.107798,
+                "pr_auc_val": 0.114666,
+                "brecha_overfit": -0.006869
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.104975,
+                "pr_auc_val": 0.174111,
+                "brecha_overfit": -0.069136
+              }
+            }
+          }
+        },
+        "ganador": {
+          "familia": "RandomForestClassifier",
+          "scale": false,
+          "params": {
+            "maxDepth": 5,
+            "numTrees": 50
+          },
+          "pr_auc_val_promedio_pre2024": 0.169518,
+          "brecha_overfit_promedio": 0.126675,
+          "folds_seleccion": {
+            "fold_1_2023_s1": {
+              "pr_auc_train": 0.350482,
+              "pr_auc_val": 0.118735,
+              "brecha_overfit": 0.231747
+            },
+            "fold_2_2023_s2": {
+              "pr_auc_train": 0.241903,
+              "pr_auc_val": 0.2203,
+              "brecha_overfit": 0.021603
+            }
+          }
+        },
+        "candidatos": [
+          {
+            "familia": "GBTClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 3,
+              "maxIter": 40,
+              "stepSize": 0.05
+            },
+            "pr_auc_val_promedio_pre2024": 0.16001,
+            "brecha_overfit_promedio": 0.077952,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.27012,
+                "pr_auc_val": 0.100665,
+                "brecha_overfit": 0.169456
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.205802,
+                "pr_auc_val": 0.219355,
+                "brecha_overfit": -0.013552
+              }
+            }
+          },
+          {
+            "familia": "GBTClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 3,
+              "maxIter": 60,
+              "stepSize": 0.1
+            },
+            "pr_auc_val_promedio_pre2024": 0.159133,
+            "brecha_overfit_promedio": 0.191274,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.403108,
+                "pr_auc_val": 0.106112,
+                "brecha_overfit": 0.296996
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.297705,
+                "pr_auc_val": 0.212154,
+                "brecha_overfit": 0.085551
+              }
+            }
+          },
+          {
+            "familia": "GBTClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 5,
+              "maxIter": 40,
+              "stepSize": 0.05
+            },
+            "pr_auc_val_promedio_pre2024": 0.148692,
+            "brecha_overfit_promedio": 0.344492,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.5855,
+                "pr_auc_val": 0.096649,
+                "brecha_overfit": 0.488851
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.400867,
+                "pr_auc_val": 0.200735,
+                "brecha_overfit": 0.200132
+              }
+            }
+          },
+          {
+            "familia": "GBTClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 5,
+              "maxIter": 60,
+              "stepSize": 0.1
+            },
+            "pr_auc_val_promedio_pre2024": 0.131164,
+            "brecha_overfit_promedio": 0.661164,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.857195,
+                "pr_auc_val": 0.072145,
+                "brecha_overfit": 0.78505
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.727462,
+                "pr_auc_val": 0.190182,
+                "brecha_overfit": 0.537279
+              }
+            }
+          },
+          {
+            "familia": "RandomForestClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 5,
+              "numTrees": 50
+            },
+            "pr_auc_val_promedio_pre2024": 0.169518,
+            "brecha_overfit_promedio": 0.126675,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.350482,
+                "pr_auc_val": 0.118735,
+                "brecha_overfit": 0.231747
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.241903,
+                "pr_auc_val": 0.2203,
+                "brecha_overfit": 0.021603
+              }
+            }
+          },
+          {
+            "familia": "RandomForestClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 5,
+              "numTrees": 100
+            },
+            "pr_auc_val_promedio_pre2024": 0.169504,
+            "brecha_overfit_promedio": 0.128739,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.333474,
+                "pr_auc_val": 0.121789,
+                "brecha_overfit": 0.211686
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.263012,
+                "pr_auc_val": 0.217219,
+                "brecha_overfit": 0.045793
+              }
+            }
+          },
+          {
+            "familia": "RandomForestClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 8,
+              "numTrees": 50
+            },
+            "pr_auc_val_promedio_pre2024": 0.165161,
+            "brecha_overfit_promedio": 0.438147,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.686797,
+                "pr_auc_val": 0.106,
+                "brecha_overfit": 0.580797
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.519817,
+                "pr_auc_val": 0.224321,
+                "brecha_overfit": 0.295496
+              }
+            }
+          },
+          {
+            "familia": "RandomForestClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 8,
+              "numTrees": 100
+            },
+            "pr_auc_val_promedio_pre2024": 0.159526,
+            "brecha_overfit_promedio": 0.428417,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.665241,
+                "pr_auc_val": 0.105167,
+                "brecha_overfit": 0.560074
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.510646,
+                "pr_auc_val": 0.213886,
+                "brecha_overfit": 0.29676
+              }
+            }
+          },
+          {
+            "familia": "LogisticRegression",
+            "scale": true,
+            "params": {
+              "regParam": 0.01,
+              "elasticNetParam": 0.0
+            },
+            "pr_auc_val_promedio_pre2024": 0.144241,
+            "brecha_overfit_promedio": -0.034868,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.112018,
+                "pr_auc_val": 0.111185,
+                "brecha_overfit": 0.000833
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.106729,
+                "pr_auc_val": 0.177297,
+                "brecha_overfit": -0.070568
+              }
+            }
+          },
+          {
+            "familia": "LogisticRegression",
+            "scale": true,
+            "params": {
+              "regParam": 0.01,
+              "elasticNetParam": 0.5
+            },
+            "pr_auc_val_promedio_pre2024": 0.144389,
+            "brecha_overfit_promedio": -0.038002,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.107798,
+                "pr_auc_val": 0.114666,
+                "brecha_overfit": -0.006869
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.104975,
+                "pr_auc_val": 0.174111,
+                "brecha_overfit": -0.069136
+              }
+            }
+          },
+          {
+            "familia": "LogisticRegression",
+            "scale": true,
+            "params": {
+              "regParam": 0.1,
+              "elasticNetParam": 0.0
+            },
+            "pr_auc_val_promedio_pre2024": 0.143799,
+            "brecha_overfit_promedio": -0.036179,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.110817,
+                "pr_auc_val": 0.112795,
+                "brecha_overfit": -0.001978
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.104422,
+                "pr_auc_val": 0.174802,
+                "brecha_overfit": -0.070381
+              }
+            }
+          },
+          {
+            "familia": "LogisticRegression",
+            "scale": true,
+            "params": {
+              "regParam": 0.1,
+              "elasticNetParam": 0.5
+            },
+            "pr_auc_val_promedio_pre2024": 0.133326,
+            "brecha_overfit_promedio": -0.049188,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.081888,
+                "pr_auc_val": 0.105918,
+                "brecha_overfit": -0.024031
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.086388,
+                "pr_auc_val": 0.160733,
+                "brecha_overfit": -0.074345
+              }
+            }
+          }
+        ]
+      },
+      "modelo_ganador": {
+        "familia": "RandomForestClassifier",
+        "params": {
+          "maxDepth": 5,
+          "numTrees": 50
+        },
+        "scale": false,
+        "pesos_train_final": {
+          "n_tot": 25647,
+          "n_pos": 1441,
+          "n_neg": 24206,
+          "pos_rate": 0.056186,
+          "w_pos": 8.899028,
+          "w_neg": 0.529765
+        },
+        "pr_auc_train_final": 0.276606,
+        "pr_auc_test_final_raw": 0.047987,
+        "brecha_overfit_final": 0.22862,
+        "fold_3_2024_h1_diagnostico": {
+          "splits": {
+            "train": {
+              "bloques_totales": 36520,
+              "bloques_etiquetables": 25647,
+              "pct_cobertura": 70.23,
+              "positivos": 1441,
+              "prevalencia": 0.056186,
+              "min_fecha_hora": "2021-12-01T21:30:00",
+              "max_fecha_hora": "2023-11-18T21:00:00"
+            },
+            "val": {
+              "bloques_totales": 7295,
+              "bloques_etiquetables": 3749,
+              "pct_cobertura": 51.39,
+              "positivos": 130,
+              "prevalencia": 0.034676,
+              "min_fecha_hora": "2024-01-20T21:30:00",
+              "max_fecha_hora": "2024-05-31T23:30:00"
+            }
+          },
+          "pr_auc_train": 0.276606,
+          "pr_auc_val": 0.057475,
+          "brecha_overfit": 0.219131
+        }
+      },
+      "comparativa_familias_test_final_2024_raw": {
+        "GBTClassifier": {
+          "n_obs": 10704,
+          "n_positivos": 400,
+          "n_dias": 281,
+          "n_boot": 1000,
+          "n_boot_validos_auc": 1000,
+          "threshold": 0.5,
+          "metricas": {
+            "pr_auc": {
+              "valor": 0.049597,
+              "ic_95": [
+                0.033306,
+                0.078211
+              ]
+            },
+            "auc_roc": {
+              "valor": 0.544309,
+              "ic_95": [
+                0.479539,
+                0.613973
+              ]
+            },
+            "brier_score": {
+              "valor": 0.37291,
+              "ic_95": [
+                0.350321,
+                0.397708
+              ]
+            },
+            "precision": {
+              "valor": 0.038165,
+              "ic_95": [
+                0.027314,
+                0.04978
+              ]
+            },
+            "recall": {
+              "valor": 0.68,
+              "ic_95": [
+                0.568313,
+                0.793805
+              ]
+            },
+            "f1": {
+              "valor": 0.072273,
+              "ic_95": [
+                0.052466,
+                0.093246
+              ]
+            },
+            "prevalencia": {
+              "valor": 0.037369,
+              "ic_95": [
+                0.02811,
+                0.047111
+              ]
+            }
+          }
+        },
+        "RandomForestClassifier": {
+          "n_obs": 10704,
+          "n_positivos": 400,
+          "n_dias": 281,
+          "n_boot": 1000,
+          "n_boot_validos_auc": 1000,
+          "threshold": 0.5,
+          "metricas": {
+            "pr_auc": {
+              "valor": 0.047987,
+              "ic_95": [
+                0.033452,
+                0.071177
+              ]
+            },
+            "auc_roc": {
+              "valor": 0.562501,
+              "ic_95": [
+                0.494304,
+                0.628119
+              ]
+            },
+            "brier_score": {
+              "valor": 0.291751,
+              "ic_95": [
+                0.277255,
+                0.306942
+              ]
+            },
+            "precision": {
+              "valor": 0.039299,
+              "ic_95": [
+                0.028552,
+                0.051153
+              ]
+            },
+            "recall": {
+              "valor": 0.6725,
+              "ic_95": [
+                0.565887,
+                0.787209
+              ]
+            },
+            "f1": {
+              "valor": 0.074258,
+              "ic_95": [
+                0.05464,
+                0.095377
+              ]
+            },
+            "prevalencia": {
+              "valor": 0.037369,
+              "ic_95": [
+                0.02811,
+                0.047111
+              ]
+            }
+          }
+        },
+        "LogisticRegression": {
+          "n_obs": 10704,
+          "n_positivos": 400,
+          "n_dias": 281,
+          "n_boot": 1000,
+          "n_boot_validos_auc": 1000,
+          "threshold": 0.5,
+          "metricas": {
+            "pr_auc": {
+              "valor": 0.056594,
+              "ic_95": [
+                0.037829,
+                0.081933
+              ]
+            },
+            "auc_roc": {
+              "valor": 0.604393,
+              "ic_95": [
+                0.542973,
+                0.671253
+              ]
+            },
+            "brier_score": {
+              "valor": 0.172221,
+              "ic_95": [
+                0.164839,
+                0.179873
+              ]
+            },
+            "precision": {
+              "valor": 0.062031,
+              "ic_95": [
+                0.039045,
+                0.088017
+              ]
+            },
+            "recall": {
+              "valor": 0.31,
+              "ic_95": [
+                0.220233,
+                0.408025
+              ]
+            },
+            "f1": {
+              "valor": 0.103376,
+              "ic_95": [
+                0.066917,
+                0.141603
+              ]
+            },
+            "prevalencia": {
+              "valor": 0.037369,
+              "ic_95": [
+                0.02811,
+                0.047111
+              ]
+            }
+          }
+        }
+      },
+      "test_final_2024": {
+        "splits": {
+          "train": {
+            "bloques_totales": 36520,
+            "bloques_etiquetables": 25647,
+            "pct_cobertura": 70.23,
+            "positivos": 1441,
+            "prevalencia": 0.056186,
+            "min_fecha_hora": "2021-12-01T21:30:00",
+            "max_fecha_hora": "2023-11-18T21:00:00"
+          },
+          "val": {
+            "bloques_totales": 16080,
+            "bloques_etiquetables": 10704,
+            "pct_cobertura": 66.57,
+            "positivos": 400,
+            "prevalencia": 0.037369,
+            "min_fecha_hora": "2024-01-20T21:30:00",
+            "max_fecha_hora": "2024-11-30T21:00:00"
+          }
+        },
+        "umbral_fijo_heredado_2023_s2": 0.54,
+        "trazabilidad_recalibracion_60d": [
+          {
+            "anio_mes": "2024-01",
+            "pi_reciente": 0.018056,
+            "tau_mes": 0.35,
+            "n_obs_hist": 720,
+            "n_dias_hist": 17,
+            "fp_semana_hist": 7.4118,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 15
+          },
+          {
+            "anio_mes": "2024-02",
+            "pi_reciente": 0.083333,
+            "tau_mes": 0.53,
+            "n_obs_hist": 480,
+            "n_dias_hist": 12,
+            "fp_semana_hist": 32.0833,
+            "n_bloques_mes": 1392,
+            "n_alertas_mes": 170
+          },
+          {
+            "anio_mes": "2024-03",
+            "pi_reciente": 0.050403,
+            "tau_mes": 0.42,
+            "n_obs_hist": 1488,
+            "n_dias_hist": 37,
+            "fp_semana_hist": 25.9189,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 26
+          },
+          {
+            "anio_mes": "2024-04",
+            "pi_reciente": 0.023438,
+            "tau_mes": 0.26,
+            "n_obs_hist": 1920,
+            "n_dias_hist": 51,
+            "fp_semana_hist": 11.2549,
+            "n_bloques_mes": 1440,
+            "n_alertas_mes": 576
+          },
+          {
+            "anio_mes": "2024-05",
+            "pi_reciente": 0.006916,
+            "tau_mes": 0.05,
+            "n_obs_hist": 1446,
+            "n_dias_hist": 44,
+            "fp_semana_hist": 79.5455,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 1458
+          },
+          {
+            "anio_mes": "2024-06",
+            "pi_reciente": 0.033333,
+            "tau_mes": 0.61,
+            "n_obs_hist": 1350,
+            "n_dias_hist": 44,
+            "fp_semana_hist": 7.6364,
+            "n_bloques_mes": 1440,
+            "n_alertas_mes": 51
+          },
+          {
+            "anio_mes": "2024-07",
+            "pi_reciente": 0.07892,
+            "tau_mes": 0.37,
+            "n_obs_hist": 1926,
+            "n_dias_hist": 55,
+            "fp_semana_hist": 224.3818,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 1488
+          },
+          {
+            "anio_mes": "2024-08",
+            "pi_reciente": 0.065254,
+            "tau_mes": 0.32,
+            "n_obs_hist": 2406,
+            "n_dias_hist": 60,
+            "fp_semana_hist": 261.2167,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 1484
+          },
+          {
+            "anio_mes": "2024-09",
+            "pi_reciente": 0.030142,
+            "tau_mes": 0.57,
+            "n_obs_hist": 2256,
+            "n_dias_hist": 57,
+            "fp_semana_hist": 4.0526,
+            "n_bloques_mes": 1440,
+            "n_alertas_mes": 53
+          },
+          {
+            "anio_mes": "2024-10",
+            "pi_reciente": 0.026777,
+            "tau_mes": 0.54,
+            "n_obs_hist": 2166,
+            "n_dias_hist": 55,
+            "fp_semana_hist": 7.2545,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 0
+          },
+          {
+            "anio_mes": "2024-11",
+            "pi_reciente": 0.028139,
+            "tau_mes": 0.53,
+            "n_obs_hist": 2310,
+            "n_dias_hist": 56,
+            "fp_semana_hist": 18.75,
+            "n_bloques_mes": 1440,
+            "n_alertas_mes": 0
+          }
+        ],
+        "trazabilidad_recalibracion_60d_maxfp3": [
+          {
+            "anio_mes": "2024-01",
+            "pi_reciente": 0.018056,
+            "tau_mes": 0.45,
+            "n_obs_hist": 720,
+            "n_dias_hist": 17,
+            "fp_semana_hist": 0.0,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 0
+          },
+          {
+            "anio_mes": "2024-02",
+            "pi_reciente": 0.083333,
+            "tau_mes": 0.95,
+            "n_obs_hist": 480,
+            "n_dias_hist": 12,
+            "fp_semana_hist": 0.0,
+            "n_bloques_mes": 1392,
+            "n_alertas_mes": 0
+          },
+          {
+            "anio_mes": "2024-03",
+            "pi_reciente": 0.050403,
+            "tau_mes": 0.64,
+            "n_obs_hist": 1488,
+            "n_dias_hist": 37,
+            "fp_semana_hist": 2.0811,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 0
+          },
+          {
+            "anio_mes": "2024-04",
+            "pi_reciente": 0.023438,
+            "tau_mes": 0.44,
+            "n_obs_hist": 1920,
+            "n_dias_hist": 51,
+            "fp_semana_hist": 1.3725,
+            "n_bloques_mes": 1440,
+            "n_alertas_mes": 101
+          },
+          {
+            "anio_mes": "2024-05",
+            "pi_reciente": 0.006916,
+            "tau_mes": 0.95,
+            "n_obs_hist": 1446,
+            "n_dias_hist": 44,
+            "fp_semana_hist": 0.0,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 0
+          },
+          {
+            "anio_mes": "2024-06",
+            "pi_reciente": 0.033333,
+            "tau_mes": 0.95,
+            "n_obs_hist": 1350,
+            "n_dias_hist": 44,
+            "fp_semana_hist": 0.0,
+            "n_bloques_mes": 1440,
+            "n_alertas_mes": 0
+          },
+          {
+            "anio_mes": "2024-07",
+            "pi_reciente": 0.07892,
+            "tau_mes": 0.95,
+            "n_obs_hist": 1926,
+            "n_dias_hist": 55,
+            "fp_semana_hist": 0.0,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 0
+          },
+          {
+            "anio_mes": "2024-08",
+            "pi_reciente": 0.065254,
+            "tau_mes": 0.95,
+            "n_obs_hist": 2406,
+            "n_dias_hist": 60,
+            "fp_semana_hist": 0.0,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 0
+          },
+          {
+            "anio_mes": "2024-09",
+            "pi_reciente": 0.030142,
+            "tau_mes": 0.58,
+            "n_obs_hist": 2256,
+            "n_dias_hist": 57,
+            "fp_semana_hist": 0.4912,
+            "n_bloques_mes": 1440,
+            "n_alertas_mes": 23
+          },
+          {
+            "anio_mes": "2024-10",
+            "pi_reciente": 0.026777,
+            "tau_mes": 0.55,
+            "n_obs_hist": 2166,
+            "n_dias_hist": 55,
+            "fp_semana_hist": 2.9273,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 0
+          },
+          {
+            "anio_mes": "2024-11",
+            "pi_reciente": 0.028139,
+            "tau_mes": 0.95,
+            "n_obs_hist": 2310,
+            "n_dias_hist": 56,
+            "fp_semana_hist": 0.0,
+            "n_bloques_mes": 1440,
+            "n_alertas_mes": 0
+          }
+        ],
+        "2024_global": {
+          "umbral_fijo_2023_s2": {
+            "n_obs": 10704,
+            "n_positivos": 400,
+            "n_dias": 281,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.54,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.047987,
+                "ic_95": [
+                  0.033452,
+                  0.071177
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.562501,
+                "ic_95": [
+                  0.494304,
+                  0.628119
+                ]
+              },
+              "brier_score": {
+                "valor": 0.291751,
+                "ic_95": [
+                  0.277255,
+                  0.306942
+                ]
+              },
+              "precision": {
+                "valor": 0.040572,
+                "ic_95": [
+                  0.028482,
+                  0.053587
+                ]
+              },
+              "recall": {
+                "valor": 0.6175,
+                "ic_95": [
+                  0.501057,
+                  0.735877
+                ]
+              },
+              "f1": {
+                "valor": 0.076141,
+                "ic_95": [
+                  0.053963,
+                  0.099528
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.037369,
+                "ic_95": [
+                  0.02811,
+                  0.047111
+                ]
+              }
+            }
+          },
+          "recalibrado_mensual_60d": {
+            "n_obs": 10704,
+            "n_positivos": 400,
+            "n_dias": 281,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": "por_fila",
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.045407,
+                "ic_95": [
+                  0.029773,
+                  0.07759
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.502052,
+                "ic_95": [
+                  0.427959,
+                  0.582389
+                ]
+              },
+              "brier_score": {
+                "valor": 0.217685,
+                "ic_95": [
+                  0.200185,
+                  0.237266
+                ]
+              },
+              "precision": {
+                "valor": 0.036324,
+                "ic_95": [
+                  0.021144,
+                  0.052683
+                ]
+              },
+              "recall": {
+                "valor": 0.335,
+                "ic_95": [
+                  0.20416,
+                  0.470518
+                ]
+              },
+              "f1": {
+                "valor": 0.065542,
+                "ic_95": [
+                  0.038285,
+                  0.093435
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.037369,
+                "ic_95": [
+                  0.02811,
+                  0.047111
+                ]
+              }
+            }
+          },
+          "recalibrado_mensual_60d_maxfp3": {
+            "n_obs": 10704,
+            "n_positivos": 400,
+            "n_dias": 281,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": "por_fila",
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.045407,
+                "ic_95": [
+                  0.029773,
+                  0.07759
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.502052,
+                "ic_95": [
+                  0.427959,
+                  0.582389
+                ]
+              },
+              "brier_score": {
+                "valor": 0.217685,
+                "ic_95": [
+                  0.200185,
+                  0.237266
+                ]
+              },
+              "precision": {
+                "valor": 0.016129,
+                "ic_95": [
+                  0.0,
+                  0.056077
+                ]
+              },
+              "recall": {
+                "valor": 0.005,
+                "ic_95": [
+                  0.0,
+                  0.012756
+                ]
+              },
+              "f1": {
+                "valor": 0.007634,
+                "ic_95": [
+                  0.0,
+                  0.019382
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.037369,
+                "ic_95": [
+                  0.02811,
+                  0.047111
+                ]
+              }
+            }
+          },
+          "baseline_tasa_horaria": {
+            "n_obs": 10704,
+            "n_positivos": 400,
+            "n_dias": 281,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.074906,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.056177,
+                "ic_95": [
+                  0.040615,
+                  0.074512
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.621818,
+                "ic_95": [
+                  0.574846,
+                  0.668117
+                ]
+              },
+              "brier_score": {
+                "valor": 0.036153,
+                "ic_95": [
+                  0.028127,
+                  0.044693
+                ]
+              },
+              "precision": {
+                "valor": 0.056801,
+                "ic_95": [
+                  0.039584,
+                  0.07462
+                ]
+              },
+              "recall": {
+                "valor": 0.38,
+                "ic_95": [
+                  0.312845,
+                  0.449291
+                ]
+              },
+              "f1": {
+                "valor": 0.09883,
+                "ic_95": [
+                  0.071127,
+                  0.126461
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.037369,
+                "ic_95": [
+                  0.02811,
+                  0.047111
+                ]
+              }
+            }
+          },
+          "baseline_siempre_positivo": {
+            "n_obs": 10704,
+            "n_positivos": 400,
+            "n_dias": 281,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.0,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.037369,
+                "ic_95": [
+                  0.02811,
+                  0.047111
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.5,
+                "ic_95": [
+                  0.5,
+                  0.5
+                ]
+              },
+              "brier_score": {
+                "valor": 0.036327,
+                "ic_95": [
+                  0.028108,
+                  0.044974
+                ]
+              },
+              "precision": {
+                "valor": 0.037369,
+                "ic_95": [
+                  0.02811,
+                  0.047111
+                ]
+              },
+              "recall": {
+                "valor": 1.0,
+                "ic_95": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "f1": {
+                "valor": 0.072046,
+                "ic_95": [
+                  0.054683,
+                  0.089983
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.037369,
+                "ic_95": [
+                  0.02811,
+                  0.047111
+                ]
+              }
+            },
+            "probabilidad_constante_train": 0.056186
+          },
+          "semana_7_baseline": {
+            "auc_roc": 0.638,
+            "pr_auc": 0.061,
+            "f1": 0.112
+          }
+        },
+        "2024_sin_meses_baja_cobertura": {
+          "umbral_fijo_2023_s2": {
+            "n_obs": 9690,
+            "n_positivos": 360,
+            "n_dias": 251,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.54,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.050999,
+                "ic_95": [
+                  0.034648,
+                  0.078193
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.585129,
+                "ic_95": [
+                  0.515792,
+                  0.655297
+                ]
+              },
+              "brier_score": {
+                "valor": 0.301548,
+                "ic_95": [
+                  0.285125,
+                  0.316994
+                ]
+              },
+              "precision": {
+                "valor": 0.042341,
+                "ic_95": [
+                  0.029814,
+                  0.057535
+                ]
+              },
+              "recall": {
+                "valor": 0.683333,
+                "ic_95": [
+                  0.567535,
+                  0.791674
+                ]
+              },
+              "f1": {
+                "valor": 0.079741,
+                "ic_95": [
+                  0.056946,
+                  0.106599
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.037152,
+                "ic_95": [
+                  0.027506,
+                  0.04792
+                ]
+              }
+            }
+          },
+          "recalibrado_mensual_60d": {
+            "n_obs": 9690,
+            "n_positivos": 360,
+            "n_dias": 251,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": "por_fila",
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.046911,
+                "ic_95": [
+                  0.030066,
+                  0.084215
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.517172,
+                "ic_95": [
+                  0.438703,
+                  0.598906
+                ]
+              },
+              "brier_score": {
+                "valor": 0.230863,
+                "ic_95": [
+                  0.212027,
+                  0.250604
+                ]
+              },
+              "precision": {
+                "valor": 0.039342,
+                "ic_95": [
+                  0.023651,
+                  0.059451
+                ]
+              },
+              "recall": {
+                "valor": 0.372222,
+                "ic_95": [
+                  0.235277,
+                  0.516562
+                ]
+              },
+              "f1": {
+                "valor": 0.071163,
+                "ic_95": [
+                  0.043396,
+                  0.105462
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.037152,
+                "ic_95": [
+                  0.027506,
+                  0.04792
+                ]
+              }
+            }
+          },
+          "recalibrado_mensual_60d_maxfp3": {
+            "n_obs": 9690,
+            "n_positivos": 360,
+            "n_dias": 251,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": "por_fila",
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.046911,
+                "ic_95": [
+                  0.030066,
+                  0.084215
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.517172,
+                "ic_95": [
+                  0.438703,
+                  0.598906
+                ]
+              },
+              "brier_score": {
+                "valor": 0.230863,
+                "ic_95": [
+                  0.212027,
+                  0.250604
+                ]
+              },
+              "precision": {
+                "valor": 0.086957,
+                "ic_95": [
+                  0.0,
+                  0.285714
+                ]
+              },
+              "recall": {
+                "valor": 0.005556,
+                "ic_95": [
+                  0.0,
+                  0.014707
+                ]
+              },
+              "f1": {
+                "valor": 0.010444,
+                "ic_95": [
+                  0.0,
+                  0.02715
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.037152,
+                "ic_95": [
+                  0.027506,
+                  0.04792
+                ]
+              }
+            }
+          },
+          "baseline_tasa_horaria": {
+            "n_obs": 9690,
+            "n_positivos": 360,
+            "n_dias": 251,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.074906,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.056129,
+                "ic_95": [
+                  0.039901,
+                  0.078156
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.617864,
+                "ic_95": [
+                  0.569783,
+                  0.667997
+                ]
+              },
+              "brier_score": {
+                "valor": 0.03598,
+                "ic_95": [
+                  0.027683,
+                  0.04537
+                ]
+              },
+              "precision": {
+                "valor": 0.056106,
+                "ic_95": [
+                  0.039653,
+                  0.076932
+                ]
+              },
+              "recall": {
+                "valor": 0.377778,
+                "ic_95": [
+                  0.308054,
+                  0.451354
+                ]
+              },
+              "f1": {
+                "valor": 0.097701,
+                "ic_95": [
+                  0.070849,
+                  0.130649
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.037152,
+                "ic_95": [
+                  0.027506,
+                  0.04792
+                ]
+              }
+            }
+          },
+          "baseline_siempre_positivo": {
+            "n_obs": 9690,
+            "n_positivos": 360,
+            "n_dias": 251,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.0,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.037152,
+                "ic_95": [
+                  0.027506,
+                  0.04792
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.5,
+                "ic_95": [
+                  0.5,
+                  0.5
+                ]
+              },
+              "brier_score": {
+                "valor": 0.036134,
+                "ic_95": [
+                  0.027572,
+                  0.045692
+                ]
+              },
+              "precision": {
+                "valor": 0.037152,
+                "ic_95": [
+                  0.027506,
+                  0.04792
+                ]
+              },
+              "recall": {
+                "valor": 1.0,
+                "ic_95": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "f1": {
+                "valor": 0.071642,
+                "ic_95": [
+                  0.053539,
+                  0.091457
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.037152,
+                "ic_95": [
+                  0.027506,
+                  0.04792
+                ]
+              }
+            },
+            "probabilidad_constante_train": 0.056186
+          },
+          "semana_7_baseline": {
+            "auc_roc": 0.638,
+            "pr_auc": 0.061,
+            "f1": 0.112
+          }
+        }
+      }
+    },
+    "y_inicio_ventana_2_4h_ablacion_sin_persistencia": {
+      "target": "y_inicio_ventana_2_4h",
+      "n_features": 23,
+      "feature_cols": [
+        "flag_a1_disponible_t",
+        "brecha_term_cara_mw",
+        "ratio_term_ejec_vs_prog",
+        "term_cara_share",
+        "gen_total_mw",
+        "rampa_brecha_2h",
+        "rampa_gen_30m",
+        "rampa_gen_2h",
+        "cmg_troncal_mediana_t",
+        "cmg_troncal_p90_t",
+        "cmg_spread_p90_p50_t",
+        "rampa_cmg_1h",
+        "rampa_cmg_4h",
+        "cmg_zscore_24h",
+        "n_forzados_termicos_activos",
+        "n_forzados_transmision_activos",
+        "n_forzados_termicos_inicio_3h",
+        "n_mantenimientos_prog_termicos_activos",
+        "hora_sin",
+        "hora_cos",
+        "mes_sin",
+        "mes_cos",
+        "es_fin_de_semana"
+      ],
+      "seleccion_pre2024": {
+        "folds_usados_seleccion": [
+          "fold_1_2023_s1",
+          "fold_2_2023_s2"
+        ],
+        "n_candidatos_evaluados": 12,
+        "mejores_por_familia": {
+          "GBTClassifier": {
+            "familia": "GBTClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 3,
+              "maxIter": 60,
+              "stepSize": 0.1
+            },
+            "pr_auc_val_promedio_pre2024": 0.158828,
+            "brecha_overfit_promedio": 0.185561,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.391847,
+                "pr_auc_val": 0.097739,
+                "brecha_overfit": 0.294109
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.29693,
+                "pr_auc_val": 0.219918,
+                "brecha_overfit": 0.077012
+              }
+            }
+          },
+          "RandomForestClassifier": {
+            "familia": "RandomForestClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 5,
+              "numTrees": 50
+            },
+            "pr_auc_val_promedio_pre2024": 0.164125,
+            "brecha_overfit_promedio": 0.123923,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.322085,
+                "pr_auc_val": 0.135228,
+                "brecha_overfit": 0.186857
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.25401,
+                "pr_auc_val": 0.193022,
+                "brecha_overfit": 0.060988
+              }
+            }
+          },
+          "LogisticRegression": {
+            "familia": "LogisticRegression",
+            "scale": true,
+            "params": {
+              "regParam": 0.1,
+              "elasticNetParam": 0.0
+            },
+            "pr_auc_val_promedio_pre2024": 0.13789,
+            "brecha_overfit_promedio": -0.040591,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.098268,
+                "pr_auc_val": 0.110901,
+                "brecha_overfit": -0.012632
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.096331,
+                "pr_auc_val": 0.16488,
+                "brecha_overfit": -0.068549
+              }
+            }
+          }
+        },
+        "ganador": {
+          "familia": "RandomForestClassifier",
+          "scale": false,
+          "params": {
+            "maxDepth": 5,
+            "numTrees": 50
+          },
+          "pr_auc_val_promedio_pre2024": 0.164125,
+          "brecha_overfit_promedio": 0.123923,
+          "folds_seleccion": {
+            "fold_1_2023_s1": {
+              "pr_auc_train": 0.322085,
+              "pr_auc_val": 0.135228,
+              "brecha_overfit": 0.186857
+            },
+            "fold_2_2023_s2": {
+              "pr_auc_train": 0.25401,
+              "pr_auc_val": 0.193022,
+              "brecha_overfit": 0.060988
+            }
+          }
+        },
+        "candidatos": [
+          {
+            "familia": "GBTClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 3,
+              "maxIter": 40,
+              "stepSize": 0.05
+            },
+            "pr_auc_val_promedio_pre2024": 0.156402,
+            "brecha_overfit_promedio": 0.07189,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.239511,
+                "pr_auc_val": 0.101232,
+                "brecha_overfit": 0.138278
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.217072,
+                "pr_auc_val": 0.211571,
+                "brecha_overfit": 0.005501
+              }
+            }
+          },
+          {
+            "familia": "GBTClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 3,
+              "maxIter": 60,
+              "stepSize": 0.1
+            },
+            "pr_auc_val_promedio_pre2024": 0.158828,
+            "brecha_overfit_promedio": 0.185561,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.391847,
+                "pr_auc_val": 0.097739,
+                "brecha_overfit": 0.294109
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.29693,
+                "pr_auc_val": 0.219918,
+                "brecha_overfit": 0.077012
+              }
+            }
+          },
+          {
+            "familia": "GBTClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 5,
+              "maxIter": 40,
+              "stepSize": 0.05
+            },
+            "pr_auc_val_promedio_pre2024": 0.14273,
+            "brecha_overfit_promedio": 0.387673,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.584732,
+                "pr_auc_val": 0.092826,
+                "brecha_overfit": 0.491906
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.476074,
+                "pr_auc_val": 0.192633,
+                "brecha_overfit": 0.283441
+              }
+            }
+          },
+          {
+            "familia": "GBTClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 5,
+              "maxIter": 60,
+              "stepSize": 0.1
+            },
+            "pr_auc_val_promedio_pre2024": 0.133968,
+            "brecha_overfit_promedio": 0.660579,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.865928,
+                "pr_auc_val": 0.065193,
+                "brecha_overfit": 0.800735
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.723166,
+                "pr_auc_val": 0.202743,
+                "brecha_overfit": 0.520423
+              }
+            }
+          },
+          {
+            "familia": "RandomForestClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 5,
+              "numTrees": 50
+            },
+            "pr_auc_val_promedio_pre2024": 0.164125,
+            "brecha_overfit_promedio": 0.123923,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.322085,
+                "pr_auc_val": 0.135228,
+                "brecha_overfit": 0.186857
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.25401,
+                "pr_auc_val": 0.193022,
+                "brecha_overfit": 0.060988
+              }
+            }
+          },
+          {
+            "familia": "RandomForestClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 5,
+              "numTrees": 100
+            },
+            "pr_auc_val_promedio_pre2024": 0.161541,
+            "brecha_overfit_promedio": 0.133834,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.334446,
+                "pr_auc_val": 0.117239,
+                "brecha_overfit": 0.217208
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.256304,
+                "pr_auc_val": 0.205843,
+                "brecha_overfit": 0.050461
+              }
+            }
+          },
+          {
+            "familia": "RandomForestClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 8,
+              "numTrees": 50
+            },
+            "pr_auc_val_promedio_pre2024": 0.159771,
+            "brecha_overfit_promedio": 0.446473,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.67099,
+                "pr_auc_val": 0.110362,
+                "brecha_overfit": 0.560627
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.541499,
+                "pr_auc_val": 0.209181,
+                "brecha_overfit": 0.332319
+              }
+            }
+          },
+          {
+            "familia": "RandomForestClassifier",
+            "scale": false,
+            "params": {
+              "maxDepth": 8,
+              "numTrees": 100
+            },
+            "pr_auc_val_promedio_pre2024": 0.151998,
+            "brecha_overfit_promedio": 0.455858,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.673792,
+                "pr_auc_val": 0.1059,
+                "brecha_overfit": 0.567891
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.54192,
+                "pr_auc_val": 0.198096,
+                "brecha_overfit": 0.343824
+              }
+            }
+          },
+          {
+            "familia": "LogisticRegression",
+            "scale": true,
+            "params": {
+              "regParam": 0.01,
+              "elasticNetParam": 0.0
+            },
+            "pr_auc_val_promedio_pre2024": 0.136738,
+            "brecha_overfit_promedio": -0.037455,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.101338,
+                "pr_auc_val": 0.108189,
+                "brecha_overfit": -0.006851
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.097227,
+                "pr_auc_val": 0.165287,
+                "brecha_overfit": -0.06806
+              }
+            }
+          },
+          {
+            "familia": "LogisticRegression",
+            "scale": true,
+            "params": {
+              "regParam": 0.01,
+              "elasticNetParam": 0.5
+            },
+            "pr_auc_val_promedio_pre2024": 0.137375,
+            "brecha_overfit_promedio": -0.0403,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.097487,
+                "pr_auc_val": 0.110565,
+                "brecha_overfit": -0.013078
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.096661,
+                "pr_auc_val": 0.164184,
+                "brecha_overfit": -0.067523
+              }
+            }
+          },
+          {
+            "familia": "LogisticRegression",
+            "scale": true,
+            "params": {
+              "regParam": 0.1,
+              "elasticNetParam": 0.0
+            },
+            "pr_auc_val_promedio_pre2024": 0.13789,
+            "brecha_overfit_promedio": -0.040591,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.098268,
+                "pr_auc_val": 0.110901,
+                "brecha_overfit": -0.012632
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.096331,
+                "pr_auc_val": 0.16488,
+                "brecha_overfit": -0.068549
+              }
+            }
+          },
+          {
+            "familia": "LogisticRegression",
+            "scale": true,
+            "params": {
+              "regParam": 0.1,
+              "elasticNetParam": 0.5
+            },
+            "pr_auc_val_promedio_pre2024": 0.133326,
+            "brecha_overfit_promedio": -0.049188,
+            "folds_seleccion": {
+              "fold_1_2023_s1": {
+                "pr_auc_train": 0.081888,
+                "pr_auc_val": 0.105918,
+                "brecha_overfit": -0.024029
+              },
+              "fold_2_2023_s2": {
+                "pr_auc_train": 0.086388,
+                "pr_auc_val": 0.160734,
+                "brecha_overfit": -0.074346
+              }
+            }
+          }
+        ]
+      },
+      "modelo_ganador": {
+        "familia": "RandomForestClassifier",
+        "params": {
+          "maxDepth": 5,
+          "numTrees": 50
+        },
+        "scale": false,
+        "pesos_train_final": {
+          "n_tot": 25647,
+          "n_pos": 1441,
+          "n_neg": 24206,
+          "pos_rate": 0.056186,
+          "w_pos": 8.899028,
+          "w_neg": 0.529765
+        },
+        "pr_auc_train_final": 0.256775,
+        "pr_auc_test_final_raw": 0.054192,
+        "brecha_overfit_final": 0.202583,
+        "fold_3_2024_h1_diagnostico": {
+          "splits": {
+            "train": {
+              "bloques_totales": 36520,
+              "bloques_etiquetables": 25647,
+              "pct_cobertura": 70.23,
+              "positivos": 1441,
+              "prevalencia": 0.056186,
+              "min_fecha_hora": "2021-12-01T21:30:00",
+              "max_fecha_hora": "2023-11-18T21:00:00"
+            },
+            "val": {
+              "bloques_totales": 7295,
+              "bloques_etiquetables": 3749,
+              "pct_cobertura": 51.39,
+              "positivos": 130,
+              "prevalencia": 0.034676,
+              "min_fecha_hora": "2024-01-20T21:30:00",
+              "max_fecha_hora": "2024-05-31T23:30:00"
+            }
+          },
+          "pr_auc_train": 0.256775,
+          "pr_auc_val": 0.060134,
+          "brecha_overfit": 0.196641
+        }
+      },
+      "comparativa_familias_test_final_2024_raw": {
+        "GBTClassifier": {
+          "n_obs": 10704,
+          "n_positivos": 400,
+          "n_dias": 281,
+          "n_boot": 1000,
+          "n_boot_validos_auc": 1000,
+          "threshold": 0.5,
+          "metricas": {
+            "pr_auc": {
+              "valor": 0.046575,
+              "ic_95": [
+                0.032419,
+                0.071353
+              ]
+            },
+            "auc_roc": {
+              "valor": 0.535723,
+              "ic_95": [
+                0.470745,
+                0.602323
+              ]
+            },
+            "brier_score": {
+              "valor": 0.334913,
+              "ic_95": [
+                0.31255,
+                0.35842
+              ]
+            },
+            "precision": {
+              "valor": 0.038677,
+              "ic_95": [
+                0.027346,
+                0.051299
+              ]
+            },
+            "recall": {
+              "valor": 0.605,
+              "ic_95": [
+                0.498545,
+                0.718693
+              ]
+            },
+            "f1": {
+              "valor": 0.072705,
+              "ic_95": [
+                0.051774,
+                0.095287
+              ]
+            },
+            "prevalencia": {
+              "valor": 0.037369,
+              "ic_95": [
+                0.02811,
+                0.047111
+              ]
+            }
+          }
+        },
+        "RandomForestClassifier": {
+          "n_obs": 10704,
+          "n_positivos": 400,
+          "n_dias": 281,
+          "n_boot": 1000,
+          "n_boot_validos_auc": 1000,
+          "threshold": 0.5,
+          "metricas": {
+            "pr_auc": {
+              "valor": 0.054192,
+              "ic_95": [
+                0.036844,
+                0.084165
+              ]
+            },
+            "auc_roc": {
+              "valor": 0.578881,
+              "ic_95": [
+                0.510539,
+                0.642544
+              ]
+            },
+            "brier_score": {
+              "valor": 0.275015,
+              "ic_95": [
+                0.26106,
+                0.289762
+              ]
+            },
+            "precision": {
+              "valor": 0.041687,
+              "ic_95": [
+                0.029763,
+                0.054798
+              ]
+            },
+            "recall": {
+              "valor": 0.6425,
+              "ic_95": [
+                0.534246,
+                0.752058
+              ]
+            },
+            "f1": {
+              "valor": 0.078294,
+              "ic_95": [
+                0.056895,
+                0.101565
+              ]
+            },
+            "prevalencia": {
+              "valor": 0.037369,
+              "ic_95": [
+                0.02811,
+                0.047111
+              ]
+            }
+          }
+        },
+        "LogisticRegression": {
+          "n_obs": 10704,
+          "n_positivos": 400,
+          "n_dias": 281,
+          "n_boot": 1000,
+          "n_boot_validos_auc": 1000,
+          "threshold": 0.5,
+          "metricas": {
+            "pr_auc": {
+              "valor": 0.058037,
+              "ic_95": [
+                0.040023,
+                0.082898
+              ]
+            },
+            "auc_roc": {
+              "valor": 0.613868,
+              "ic_95": [
+                0.548529,
+                0.681204
+              ]
+            },
+            "brier_score": {
+              "valor": 0.188304,
+              "ic_95": [
+                0.180922,
+                0.195896
+              ]
+            },
+            "precision": {
+              "valor": 0.067731,
+              "ic_95": [
+                0.044354,
+                0.092219
+              ]
+            },
+            "recall": {
+              "valor": 0.35,
+              "ic_95": [
+                0.251303,
+                0.463358
+              ]
+            },
+            "f1": {
+              "valor": 0.113498,
+              "ic_95": [
+                0.076423,
+                0.150686
+              ]
+            },
+            "prevalencia": {
+              "valor": 0.037369,
+              "ic_95": [
+                0.02811,
+                0.047111
+              ]
+            }
+          }
+        }
+      },
+      "test_final_2024": {
+        "splits": {
+          "train": {
+            "bloques_totales": 36520,
+            "bloques_etiquetables": 25647,
+            "pct_cobertura": 70.23,
+            "positivos": 1441,
+            "prevalencia": 0.056186,
+            "min_fecha_hora": "2021-12-01T21:30:00",
+            "max_fecha_hora": "2023-11-18T21:00:00"
+          },
+          "val": {
+            "bloques_totales": 16080,
+            "bloques_etiquetables": 10704,
+            "pct_cobertura": 66.57,
+            "positivos": 400,
+            "prevalencia": 0.037369,
+            "min_fecha_hora": "2024-01-20T21:30:00",
+            "max_fecha_hora": "2024-11-30T21:00:00"
+          }
+        },
+        "umbral_fijo_heredado_2023_s2": 0.62,
+        "trazabilidad_recalibracion_60d": [
+          {
+            "anio_mes": "2024-01",
+            "pi_reciente": 0.018056,
+            "tau_mes": 0.37,
+            "n_obs_hist": 720,
+            "n_dias_hist": 17,
+            "fp_semana_hist": 3.2941,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 6
+          },
+          {
+            "anio_mes": "2024-02",
+            "pi_reciente": 0.083333,
+            "tau_mes": 0.5,
+            "n_obs_hist": 480,
+            "n_dias_hist": 12,
+            "fp_semana_hist": 48.4167,
+            "n_bloques_mes": 1392,
+            "n_alertas_mes": 245
+          },
+          {
+            "anio_mes": "2024-03",
+            "pi_reciente": 0.050403,
+            "tau_mes": 0.42,
+            "n_obs_hist": 1488,
+            "n_dias_hist": 37,
+            "fp_semana_hist": 33.8649,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 33
+          },
+          {
+            "anio_mes": "2024-04",
+            "pi_reciente": 0.023438,
+            "tau_mes": 0.25,
+            "n_obs_hist": 1920,
+            "n_dias_hist": 51,
+            "fp_semana_hist": 17.2941,
+            "n_bloques_mes": 1440,
+            "n_alertas_mes": 573
+          },
+          {
+            "anio_mes": "2024-05",
+            "pi_reciente": 0.006916,
+            "tau_mes": 0.05,
+            "n_obs_hist": 1446,
+            "n_dias_hist": 44,
+            "fp_semana_hist": 93.2273,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 1463
+          },
+          {
+            "anio_mes": "2024-06",
+            "pi_reciente": 0.033333,
+            "tau_mes": 0.54,
+            "n_obs_hist": 1350,
+            "n_dias_hist": 44,
+            "fp_semana_hist": 59.5,
+            "n_bloques_mes": 1440,
+            "n_alertas_mes": 372
+          },
+          {
+            "anio_mes": "2024-07",
+            "pi_reciente": 0.07892,
+            "tau_mes": 0.36,
+            "n_obs_hist": 1926,
+            "n_dias_hist": 55,
+            "fp_semana_hist": 224.2545,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 1488
+          },
+          {
+            "anio_mes": "2024-08",
+            "pi_reciente": 0.065254,
+            "tau_mes": 0.32,
+            "n_obs_hist": 2406,
+            "n_dias_hist": 60,
+            "fp_semana_hist": 260.5167,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 1474
+          },
+          {
+            "anio_mes": "2024-09",
+            "pi_reciente": 0.030142,
+            "tau_mes": 0.59,
+            "n_obs_hist": 2256,
+            "n_dias_hist": 57,
+            "fp_semana_hist": 0.2456,
+            "n_bloques_mes": 1440,
+            "n_alertas_mes": 0
+          },
+          {
+            "anio_mes": "2024-10",
+            "pi_reciente": 0.026777,
+            "tau_mes": 0.54,
+            "n_obs_hist": 2166,
+            "n_dias_hist": 55,
+            "fp_semana_hist": 4.4545,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 0
+          },
+          {
+            "anio_mes": "2024-11",
+            "pi_reciente": 0.028139,
+            "tau_mes": 0.56,
+            "n_obs_hist": 2310,
+            "n_dias_hist": 56,
+            "fp_semana_hist": 2.0,
+            "n_bloques_mes": 1440,
+            "n_alertas_mes": 0
+          }
+        ],
+        "trazabilidad_recalibracion_60d_maxfp3": [
+          {
+            "anio_mes": "2024-01",
+            "pi_reciente": 0.018056,
+            "tau_mes": 0.39,
+            "n_obs_hist": 720,
+            "n_dias_hist": 17,
+            "fp_semana_hist": 0.8235,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 1
+          },
+          {
+            "anio_mes": "2024-02",
+            "pi_reciente": 0.083333,
+            "tau_mes": 0.95,
+            "n_obs_hist": 480,
+            "n_dias_hist": 12,
+            "fp_semana_hist": 0.0,
+            "n_bloques_mes": 1392,
+            "n_alertas_mes": 0
+          },
+          {
+            "anio_mes": "2024-03",
+            "pi_reciente": 0.050403,
+            "tau_mes": 0.65,
+            "n_obs_hist": 1488,
+            "n_dias_hist": 37,
+            "fp_semana_hist": 2.6486,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 0
+          },
+          {
+            "anio_mes": "2024-04",
+            "pi_reciente": 0.023438,
+            "tau_mes": 0.46,
+            "n_obs_hist": 1920,
+            "n_dias_hist": 51,
+            "fp_semana_hist": 1.6471,
+            "n_bloques_mes": 1440,
+            "n_alertas_mes": 55
+          },
+          {
+            "anio_mes": "2024-05",
+            "pi_reciente": 0.006916,
+            "tau_mes": 0.95,
+            "n_obs_hist": 1446,
+            "n_dias_hist": 44,
+            "fp_semana_hist": 0.0,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 0
+          },
+          {
+            "anio_mes": "2024-06",
+            "pi_reciente": 0.033333,
+            "tau_mes": 0.95,
+            "n_obs_hist": 1350,
+            "n_dias_hist": 44,
+            "fp_semana_hist": 0.0,
+            "n_bloques_mes": 1440,
+            "n_alertas_mes": 0
+          },
+          {
+            "anio_mes": "2024-07",
+            "pi_reciente": 0.07892,
+            "tau_mes": 0.95,
+            "n_obs_hist": 1926,
+            "n_dias_hist": 55,
+            "fp_semana_hist": 0.0,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 0
+          },
+          {
+            "anio_mes": "2024-08",
+            "pi_reciente": 0.065254,
+            "tau_mes": 0.95,
+            "n_obs_hist": 2406,
+            "n_dias_hist": 60,
+            "fp_semana_hist": 0.0,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 0
+          },
+          {
+            "anio_mes": "2024-09",
+            "pi_reciente": 0.030142,
+            "tau_mes": 0.59,
+            "n_obs_hist": 2256,
+            "n_dias_hist": 57,
+            "fp_semana_hist": 0.2456,
+            "n_bloques_mes": 1440,
+            "n_alertas_mes": 0
+          },
+          {
+            "anio_mes": "2024-10",
+            "pi_reciente": 0.026777,
+            "tau_mes": 0.55,
+            "n_obs_hist": 2166,
+            "n_dias_hist": 55,
+            "fp_semana_hist": 1.7818,
+            "n_bloques_mes": 1488,
+            "n_alertas_mes": 0
+          },
+          {
+            "anio_mes": "2024-11",
+            "pi_reciente": 0.028139,
+            "tau_mes": 0.56,
+            "n_obs_hist": 2310,
+            "n_dias_hist": 56,
+            "fp_semana_hist": 2.0,
+            "n_bloques_mes": 1440,
+            "n_alertas_mes": 0
+          }
+        ],
+        "2024_global": {
+          "umbral_fijo_2023_s2": {
+            "n_obs": 10704,
+            "n_positivos": 400,
+            "n_dias": 281,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.62,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.054192,
+                "ic_95": [
+                  0.036844,
+                  0.084165
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.578881,
+                "ic_95": [
+                  0.510539,
+                  0.642544
+                ]
+              },
+              "brier_score": {
+                "valor": 0.275015,
+                "ic_95": [
+                  0.26106,
+                  0.289762
+                ]
+              },
+              "precision": {
+                "valor": 0.052951,
+                "ic_95": [
+                  0.034874,
+                  0.07316
+                ]
+              },
+              "recall": {
+                "valor": 0.415,
+                "ic_95": [
+                  0.307626,
+                  0.525947
+                ]
+              },
+              "f1": {
+                "valor": 0.093918,
+                "ic_95": [
+                  0.063355,
+                  0.126433
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.037369,
+                "ic_95": [
+                  0.02811,
+                  0.047111
+                ]
+              }
+            }
+          },
+          "recalibrado_mensual_60d": {
+            "n_obs": 10704,
+            "n_positivos": 400,
+            "n_dias": 281,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": "por_fila",
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.048673,
+                "ic_95": [
+                  0.030283,
+                  0.075408
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.514628,
+                "ic_95": [
+                  0.441683,
+                  0.590902
+                ]
+              },
+              "brier_score": {
+                "valor": 0.204892,
+                "ic_95": [
+                  0.187801,
+                  0.222496
+                ]
+              },
+              "precision": {
+                "valor": 0.039639,
+                "ic_95": [
+                  0.024819,
+                  0.055512
+                ]
+              },
+              "recall": {
+                "valor": 0.395,
+                "ic_95": [
+                  0.272381,
+                  0.524082
+                ]
+              },
+              "f1": {
+                "valor": 0.072047,
+                "ic_95": [
+                  0.045782,
+                  0.098873
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.037369,
+                "ic_95": [
+                  0.02811,
+                  0.047111
+                ]
+              }
+            }
+          },
+          "recalibrado_mensual_60d_maxfp3": {
+            "n_obs": 10704,
+            "n_positivos": 400,
+            "n_dias": 281,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": "por_fila",
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.048673,
+                "ic_95": [
+                  0.030283,
+                  0.075408
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.514628,
+                "ic_95": [
+                  0.441683,
+                  0.590902
+                ]
+              },
+              "brier_score": {
+                "valor": 0.204892,
+                "ic_95": [
+                  0.187801,
+                  0.222496
+                ]
+              },
+              "precision": {
+                "valor": 0.0,
+                "ic_95": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "recall": {
+                "valor": 0.0,
+                "ic_95": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "f1": {
+                "valor": 0.0,
+                "ic_95": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.037369,
+                "ic_95": [
+                  0.02811,
+                  0.047111
+                ]
+              }
+            }
+          },
+          "baseline_tasa_horaria": {
+            "n_obs": 10704,
+            "n_positivos": 400,
+            "n_dias": 281,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.074906,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.056177,
+                "ic_95": [
+                  0.040615,
+                  0.074512
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.621818,
+                "ic_95": [
+                  0.574846,
+                  0.668117
+                ]
+              },
+              "brier_score": {
+                "valor": 0.036153,
+                "ic_95": [
+                  0.028127,
+                  0.044693
+                ]
+              },
+              "precision": {
+                "valor": 0.056801,
+                "ic_95": [
+                  0.039584,
+                  0.07462
+                ]
+              },
+              "recall": {
+                "valor": 0.38,
+                "ic_95": [
+                  0.312845,
+                  0.449291
+                ]
+              },
+              "f1": {
+                "valor": 0.09883,
+                "ic_95": [
+                  0.071127,
+                  0.126461
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.037369,
+                "ic_95": [
+                  0.02811,
+                  0.047111
+                ]
+              }
+            }
+          },
+          "baseline_siempre_positivo": {
+            "n_obs": 10704,
+            "n_positivos": 400,
+            "n_dias": 281,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.0,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.037369,
+                "ic_95": [
+                  0.02811,
+                  0.047111
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.5,
+                "ic_95": [
+                  0.5,
+                  0.5
+                ]
+              },
+              "brier_score": {
+                "valor": 0.036327,
+                "ic_95": [
+                  0.028108,
+                  0.044974
+                ]
+              },
+              "precision": {
+                "valor": 0.037369,
+                "ic_95": [
+                  0.02811,
+                  0.047111
+                ]
+              },
+              "recall": {
+                "valor": 1.0,
+                "ic_95": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "f1": {
+                "valor": 0.072046,
+                "ic_95": [
+                  0.054683,
+                  0.089983
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.037369,
+                "ic_95": [
+                  0.02811,
+                  0.047111
+                ]
+              }
+            },
+            "probabilidad_constante_train": 0.056186
+          },
+          "semana_7_baseline": {
+            "auc_roc": 0.638,
+            "pr_auc": 0.061,
+            "f1": 0.112
+          }
+        },
+        "2024_sin_meses_baja_cobertura": {
+          "umbral_fijo_2023_s2": {
+            "n_obs": 9690,
+            "n_positivos": 360,
+            "n_dias": 251,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.62,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.058067,
+                "ic_95": [
+                  0.038182,
+                  0.093566
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.600722,
+                "ic_95": [
+                  0.538197,
+                  0.6664
+                ]
+              },
+              "brier_score": {
+                "valor": 0.283518,
+                "ic_95": [
+                  0.268237,
+                  0.298661
+                ]
+              },
+              "precision": {
+                "valor": 0.056328,
+                "ic_95": [
+                  0.037081,
+                  0.080731
+                ]
+              },
+              "recall": {
+                "valor": 0.461111,
+                "ic_95": [
+                  0.348993,
+                  0.566002
+                ]
+              },
+              "f1": {
+                "valor": 0.100393,
+                "ic_95": [
+                  0.067798,
+                  0.140811
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.037152,
+                "ic_95": [
+                  0.027506,
+                  0.04792
+                ]
+              }
+            }
+          },
+          "recalibrado_mensual_60d": {
+            "n_obs": 9690,
+            "n_positivos": 360,
+            "n_dias": 251,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": "por_fila",
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.050436,
+                "ic_95": [
+                  0.030613,
+                  0.079735
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.52981,
+                "ic_95": [
+                  0.453086,
+                  0.607808
+                ]
+              },
+              "brier_score": {
+                "valor": 0.217053,
+                "ic_95": [
+                  0.198758,
+                  0.235704
+                ]
+              },
+              "precision": {
+                "valor": 0.042507,
+                "ic_95": [
+                  0.026957,
+                  0.062453
+                ]
+              },
+              "recall": {
+                "valor": 0.438889,
+                "ic_95": [
+                  0.315972,
+                  0.566788
+                ]
+              },
+              "f1": {
+                "valor": 0.077508,
+                "ic_95": [
+                  0.050018,
+                  0.109591
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.037152,
+                "ic_95": [
+                  0.027506,
+                  0.04792
+                ]
+              }
+            }
+          },
+          "recalibrado_mensual_60d_maxfp3": {
+            "n_obs": 9690,
+            "n_positivos": 360,
+            "n_dias": 251,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": "por_fila",
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.050436,
+                "ic_95": [
+                  0.030613,
+                  0.079735
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.52981,
+                "ic_95": [
+                  0.453086,
+                  0.607808
+                ]
+              },
+              "brier_score": {
+                "valor": 0.217053,
+                "ic_95": [
+                  0.198758,
+                  0.235704
+                ]
+              },
+              "precision": {
+                "valor": 0.0,
+                "ic_95": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "recall": {
+                "valor": 0.0,
+                "ic_95": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "f1": {
+                "valor": 0.0,
+                "ic_95": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.037152,
+                "ic_95": [
+                  0.027506,
+                  0.04792
+                ]
+              }
+            }
+          },
+          "baseline_tasa_horaria": {
+            "n_obs": 9690,
+            "n_positivos": 360,
+            "n_dias": 251,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.074906,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.056129,
+                "ic_95": [
+                  0.039901,
+                  0.078156
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.617864,
+                "ic_95": [
+                  0.569783,
+                  0.667997
+                ]
+              },
+              "brier_score": {
+                "valor": 0.03598,
+                "ic_95": [
+                  0.027683,
+                  0.04537
+                ]
+              },
+              "precision": {
+                "valor": 0.056106,
+                "ic_95": [
+                  0.039653,
+                  0.076932
+                ]
+              },
+              "recall": {
+                "valor": 0.377778,
+                "ic_95": [
+                  0.308054,
+                  0.451354
+                ]
+              },
+              "f1": {
+                "valor": 0.097701,
+                "ic_95": [
+                  0.070849,
+                  0.130649
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.037152,
+                "ic_95": [
+                  0.027506,
+                  0.04792
+                ]
+              }
+            }
+          },
+          "baseline_siempre_positivo": {
+            "n_obs": 9690,
+            "n_positivos": 360,
+            "n_dias": 251,
+            "n_boot": 1000,
+            "n_boot_validos_auc": 1000,
+            "threshold": 0.0,
+            "metricas": {
+              "pr_auc": {
+                "valor": 0.037152,
+                "ic_95": [
+                  0.027506,
+                  0.04792
+                ]
+              },
+              "auc_roc": {
+                "valor": 0.5,
+                "ic_95": [
+                  0.5,
+                  0.5
+                ]
+              },
+              "brier_score": {
+                "valor": 0.036134,
+                "ic_95": [
+                  0.027572,
+                  0.045692
+                ]
+              },
+              "precision": {
+                "valor": 0.037152,
+                "ic_95": [
+                  0.027506,
+                  0.04792
+                ]
+              },
+              "recall": {
+                "valor": 1.0,
+                "ic_95": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "f1": {
+                "valor": 0.071642,
+                "ic_95": [
+                  0.053539,
+                  0.091457
+                ]
+              },
+              "prevalencia": {
+                "valor": 0.037152,
+                "ic_95": [
+                  0.027506,
+                  0.04792
+                ]
+              }
+            },
+            "probabilidad_constante_train": 0.056186
+          },
+          "semana_7_baseline": {
+            "auc_roc": 0.638,
+            "pr_auc": 0.061,
+            "f1": 0.112
+          }
+        }
+      }
+    }
+  }
+}

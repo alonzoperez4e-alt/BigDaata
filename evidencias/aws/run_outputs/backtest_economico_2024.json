@@ -1,0 +1,178 @@
+{
+  "anio_evaluado": 2024,
+  "meta_objetivo_especifico_3_pct": [
+    2.0,
+    4.0
+  ],
+  "dias_observables_2024": 281,
+  "regimenes": {
+    "recalibrado_60d_f1": {
+      "viable_operativamente": true,
+      "nota_viabilidad": "Regimen recomendado balanceado (F1)",
+      "fp_por_semana": 18.76,
+      "episodios_fp_por_semana": 3.71,
+      "episodios_reales": {
+        "episodios_totales": 81,
+        "episodios_anticipados": 55,
+        "episodios_omitidos_fn": 26,
+        "recall_episodios": 0.679,
+        "bloques_evento_en_anticipados": 763,
+        "bloques_evento_en_omitidos": 224
+      },
+      "exposicion_base_soles": {
+        "exposicion_bruta_total_2024": 19079554.64,
+        "exposicion_bruta_anticipados": 15966327.02,
+        "exposicion_bruta_omitidos_fn": 3113227.62,
+        "sobrecosto_neto_total_2024": 15223546.2,
+        "sobrecosto_neto_anticipados": 12321451.23,
+        "sobrecosto_neto_omitidos_fn": 2902094.97,
+        "pct_exposicion_bruta_cubierta": 83.68,
+        "pct_sobrecosto_neto_cubierto": 80.94
+      },
+      "escenarios_mitigacion": [
+        {
+          "escenario": "conservador",
+          "alpha": 0.05,
+          "ahorro_bruto_soles": 798316.35,
+          "pct_ahorro_sobre_exposicion_bruta": 4.18,
+          "ahorro_neto_soles": 616072.56,
+          "pct_ahorro_sobre_sobrecosto_neto": 4.05,
+          "ahorro_bruto_soles_por_dia_observable": 2840.98,
+          "cumple_meta_2a4_pct": true
+        },
+        {
+          "escenario": "base",
+          "alpha": 0.1,
+          "ahorro_bruto_soles": 1596632.7,
+          "pct_ahorro_sobre_exposicion_bruta": 8.37,
+          "ahorro_neto_soles": 1232145.12,
+          "pct_ahorro_sobre_sobrecosto_neto": 8.09,
+          "ahorro_bruto_soles_por_dia_observable": 5681.97,
+          "cumple_meta_2a4_pct": true
+        },
+        {
+          "escenario": "optimista",
+          "alpha": 0.15,
+          "ahorro_bruto_soles": 2394949.05,
+          "pct_ahorro_sobre_exposicion_bruta": 12.55,
+          "ahorro_neto_soles": 1848217.68,
+          "pct_ahorro_sobre_sobrecosto_neto": 12.14,
+          "ahorro_bruto_soles_por_dia_observable": 8522.95,
+          "cumple_meta_2a4_pct": true
+        }
+      ]
+    },
+    "recalibrado_60d_max_fp_3_sem": {
+      "viable_operativamente": true,
+      "nota_viabilidad": "Regimen conservador bajo fatiga <=3 FP/sem",
+      "fp_por_semana": 1.97,
+      "episodios_fp_por_semana": 0.82,
+      "episodios_reales": {
+        "episodios_totales": 81,
+        "episodios_anticipados": 33,
+        "episodios_omitidos_fn": 48,
+        "recall_episodios": 0.4074,
+        "bloques_evento_en_anticipados": 636,
+        "bloques_evento_en_omitidos": 351
+      },
+      "exposicion_base_soles": {
+        "exposicion_bruta_total_2024": 19079554.64,
+        "exposicion_bruta_anticipados": 9687645.92,
+        "exposicion_bruta_omitidos_fn": 9391908.72,
+        "sobrecosto_neto_total_2024": 15223546.2,
+        "sobrecosto_neto_anticipados": 6782883.76,
+        "sobrecosto_neto_omitidos_fn": 8440662.44,
+        "pct_exposicion_bruta_cubierta": 50.78,
+        "pct_sobrecosto_neto_cubierto": 44.56
+      },
+      "escenarios_mitigacion": [
+        {
+          "escenario": "conservador",
+          "alpha": 0.05,
+          "ahorro_bruto_soles": 484382.3,
+          "pct_ahorro_sobre_exposicion_bruta": 2.54,
+          "ahorro_neto_soles": 339144.19,
+          "pct_ahorro_sobre_sobrecosto_neto": 2.23,
+          "ahorro_bruto_soles_por_dia_observable": 1723.78,
+          "cumple_meta_2a4_pct": true
+        },
+        {
+          "escenario": "base",
+          "alpha": 0.1,
+          "ahorro_bruto_soles": 968764.59,
+          "pct_ahorro_sobre_exposicion_bruta": 5.08,
+          "ahorro_neto_soles": 678288.38,
+          "pct_ahorro_sobre_sobrecosto_neto": 4.46,
+          "ahorro_bruto_soles_por_dia_observable": 3447.56,
+          "cumple_meta_2a4_pct": true
+        },
+        {
+          "escenario": "optimista",
+          "alpha": 0.15,
+          "ahorro_bruto_soles": 1453146.89,
+          "pct_ahorro_sobre_exposicion_bruta": 7.62,
+          "ahorro_neto_soles": 1017432.56,
+          "pct_ahorro_sobre_sobrecosto_neto": 6.68,
+          "ahorro_bruto_soles_por_dia_observable": 5171.34,
+          "cumple_meta_2a4_pct": true
+        }
+      ]
+    },
+    "umbral_fijo_2023_s2": {
+      "viable_operativamente": false,
+      "nota_viabilidad": "Referencia de contraste: inviable por fatiga operativa (101.81 FP/semana)",
+      "fp_por_semana": 101.81,
+      "episodios_fp_por_semana": 8.42,
+      "episodios_reales": {
+        "episodios_totales": 81,
+        "episodios_anticipados": 79,
+        "episodios_omitidos_fn": 2,
+        "recall_episodios": 0.9753,
+        "bloques_evento_en_anticipados": 983,
+        "bloques_evento_en_omitidos": 4
+      },
+      "exposicion_base_soles": {
+        "exposicion_bruta_total_2024": 19079554.64,
+        "exposicion_bruta_anticipados": 19041926.59,
+        "exposicion_bruta_omitidos_fn": 37628.05,
+        "sobrecosto_neto_total_2024": 15223546.2,
+        "sobrecosto_neto_anticipados": 15188262.89,
+        "sobrecosto_neto_omitidos_fn": 35283.31,
+        "pct_exposicion_bruta_cubierta": 99.8,
+        "pct_sobrecosto_neto_cubierto": 99.77
+      },
+      "escenarios_mitigacion": [
+        {
+          "escenario": "conservador",
+          "alpha": 0.05,
+          "ahorro_bruto_soles": 952096.33,
+          "pct_ahorro_sobre_exposicion_bruta": 4.99,
+          "ahorro_neto_soles": 759413.14,
+          "pct_ahorro_sobre_sobrecosto_neto": 4.99,
+          "ahorro_bruto_soles_por_dia_observable": 3388.24,
+          "cumple_meta_2a4_pct": true
+        },
+        {
+          "escenario": "base",
+          "alpha": 0.1,
+          "ahorro_bruto_soles": 1904192.66,
+          "pct_ahorro_sobre_exposicion_bruta": 9.98,
+          "ahorro_neto_soles": 1518826.29,
+          "pct_ahorro_sobre_sobrecosto_neto": 9.98,
+          "ahorro_bruto_soles_por_dia_observable": 6776.49,
+          "cumple_meta_2a4_pct": true
+        },
+        {
+          "escenario": "optimista",
+          "alpha": 0.15,
+          "ahorro_bruto_soles": 2856288.99,
+          "pct_ahorro_sobre_exposicion_bruta": 14.97,
+          "ahorro_neto_soles": 2278239.43,
+          "pct_ahorro_sobre_sobrecosto_neto": 14.97,
+          "ahorro_bruto_soles_por_dia_observable": 10164.73,
+          "cumple_meta_2a4_pct": true
+        }
+      ]
+    }
+  }
+}

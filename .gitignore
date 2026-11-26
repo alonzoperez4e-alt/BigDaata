@@ -24,3 +24,7 @@ lake_v2/
 lake_v2_gold.zip
 .venv_wsl/
 dist/
+infra/terraform/.terraform/
+infra/terraform/*.tfstate*
+infra/terraform/terraform.tfvars
+infra/terraform/tfplan
