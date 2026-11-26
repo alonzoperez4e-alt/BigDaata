@@ -4,19 +4,25 @@ Tarea 4.2 – Pruebas de la capa de consultas del Dashboard (`src/dashboard/quer
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 import pytest
 
+REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
 from src.dashboard.queries import (
+    get_active_data_source_label,
     get_auditoria_modelo,
     get_cobertura_y_deriva,
     get_exposicion_normalizada,
     get_kpis_ejecutivos,
     get_serie_alerta_30min,
+    get_storage_config,
 )
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
 QUERIES_FILE = REPO_ROOT / "src" / "dashboard" / "queries.py"
 SUMMARY_JSON = REPO_ROOT / "evidencias_serving" / "star_schema_summary.json"
 RECON_TOL = 0.01
@@ -97,4 +103,52 @@ def test_auditoria_modelo_retorna_11_meses():
     assert "pr_auc_modelo" in df_aud.columns
     assert "pr_auc_baseline" in df_aud.columns
     assert "fp_por_semana_estrategia" in df_aud.columns
+
+
+def test_storage_config_defaults_to_local(monkeypatch):
+    for var in (
+        "COES_S3_BUCKET",
+        "COES_S3_PREFIX",
+        "AWS_ACCESS_KEY_ID",
+        "AWS_SECRET_ACCESS_KEY",
+        "AWS_DEFAULT_REGION",
+    ):
+        monkeypatch.delenv(var, raising=False)
+
+    cfg = get_storage_config()
+    assert cfg["mode"] == "local"
+    assert cfg["bucket"] == ""
+    assert get_active_data_source_label() == "Local (lake_v2)"
+
+
+def test_storage_config_resolves_s3_from_env(monkeypatch):
+    monkeypatch.setenv("COES_S3_BUCKET", "coes-sein-bigdata-datalake")
+    monkeypatch.delenv("COES_S3_PREFIX", raising=False)
+    monkeypatch.delenv("AWS_DEFAULT_REGION", raising=False)
+
+    cfg = get_storage_config()
+    assert cfg["mode"] == "s3"
+    assert cfg["bucket"] == "coes-sein-bigdata-datalake"
+    assert cfg["s3_uri_prefix"] == "s3://coes-sein-bigdata-datalake/serving/star_schema/"
+    assert cfg["aws_region"] == "us-east-1"
+    assert get_active_data_source_label() == "AWS S3 (Read-Only · TLS)"
+
+
+def test_dashboard_requirements_excludes_heavy_ml():
+    req_path = REPO_ROOT / "src" / "dashboard" / "requirements.txt"
+    assert req_path.is_file()
+    content = req_path.read_text(encoding="utf-8").lower()
+    for pkg in ("duckdb", "streamlit", "plotly", "pandas", "pyarrow"):
+        assert pkg in content, f"Falta {pkg} en src/dashboard/requirements.txt"
+    for heavy in ("pyspark", "shap", "scikit-learn", "matplotlib"):
+        assert heavy not in content, f"Dependencia pesada '{heavy}' prohibida en src/dashboard/requirements.txt"
+
+
+def test_shap_assets_exist_for_cloud():
+    from src.dashboard.app import SHAP_FIG_FILENAMES, _resolve_shap_figure
+
+    for fname in SHAP_FIG_FILENAMES:
+        resolved = _resolve_shap_figure(fname)
+        assert resolved is not None and resolved.is_file(), f"Falta grafica SHAP: {fname}"
+        assert (REPO_ROOT / "evidencias" / "aws" / "run_outputs" / "shap" / fname).is_file()
 

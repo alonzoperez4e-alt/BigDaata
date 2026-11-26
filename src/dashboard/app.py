@@ -23,12 +23,55 @@ if str(REPO_ROOT) not in sys.path:
 
 from src.dashboard.queries import (  # noqa: E402
     DEFAULT_SERVING_DIR,
+    get_active_data_source_label,
     get_auditoria_modelo,
     get_cobertura_y_deriva,
     get_exposicion_normalizada,
     get_kpis_ejecutivos,
     get_serie_alerta_30min,
 )
+
+SHAP_FIG_FILENAMES = (
+    "fig_4_3_shap_top5_global.png",
+    "fig_4_3_shap_beeswarm_2024.png",
+)
+
+
+def _resolve_shap_figure(filename: str) -> Path | None:
+    """Resuelve ruta de graficas SHAP relativa a REPO_ROOT con fallback a evidencias AWS."""
+    candidatos = (
+        REPO_ROOT / "evidencias_modelo" / "shap" / filename,
+        REPO_ROOT / "evidencias" / "aws" / "run_outputs" / "shap" / filename,
+    )
+    for path in candidatos:
+        if path.is_file():
+            return path
+    return None
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def _cached_kpis(strategy: str, alpha: float, serving_dir: str) -> dict:
+    return get_kpis_ejecutivos(strategy=strategy, alpha=alpha, serving_dir=serving_dir)
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def _cached_serie(fecha_inicio: date, fecha_fin: date, strategy: str, serving_dir: str) -> pd.DataFrame:
+    return get_serie_alerta_30min(fecha_inicio, fecha_fin, strategy=strategy, serving_dir=serving_dir)
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def _cached_exposicion(granularidad: str, serving_dir: str) -> pd.DataFrame:
+    return get_exposicion_normalizada(granularidad, serving_dir=serving_dir)  # type: ignore[arg-type]
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def _cached_cobertura(serving_dir: str) -> pd.DataFrame:
+    return get_cobertura_y_deriva(serving_dir=serving_dir)
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def _cached_auditoria(strategy: str, serving_dir: str) -> pd.DataFrame:
+    return get_auditoria_modelo(strategy=strategy, serving_dir=serving_dir)
 
 
 def _parse_args() -> argparse.Namespace:
@@ -193,8 +236,8 @@ def _render_vista_1(df_serie: pd.DataFrame, strategy: str) -> None:
 
 def _render_vista_2(serving_dir: str, alpha: float, kpis: dict) -> None:
     st.subheader("Vista 2 — Exposición Económica y Sobrecosto Normalizado")
-    df_anual = get_exposicion_normalizada("anual", serving_dir)
-    df_mensual = get_exposicion_normalizada("mensual", serving_dir)
+    df_anual = _cached_exposicion("anual", serving_dir)
+    df_mensual = _cached_exposicion("mensual", serving_dir)
 
     col_a, col_b = st.columns(2)
     with col_a:
@@ -249,7 +292,7 @@ def _render_vista_2(serving_dir: str, alpha: float, kpis: dict) -> None:
     st.markdown("**Impacto económico del Backtest 2024 por tasa de mitigación (α)**")
     escenarios = []
     for a_val, nombre in [(0.05, "Conservador (5%)"), (0.10, "Base (10%)"), (0.15, "Optimista (15%)")]:
-        k_a = get_kpis_ejecutivos(kpis["strategy"], a_val, serving_dir)
+        k_a = _cached_kpis(kpis["strategy"], a_val, serving_dir)
         escenarios.append(
             {
                 "Escenario": nombre,
@@ -266,7 +309,7 @@ def _render_vista_2(serving_dir: str, alpha: float, kpis: dict) -> None:
 
 def _render_vista_3(serving_dir: str) -> None:
     st.subheader("Vista 3 — Transparencia de Cobertura y Deriva (Gobierno del Dato)")
-    df_cov = get_cobertura_y_deriva(serving_dir)
+    df_cov = _cached_cobertura(serving_dir)
 
     col_a, col_b = st.columns(2)
     with col_a:
@@ -346,7 +389,7 @@ def _render_vista_3(serving_dir: str) -> None:
 
 def _render_vista_4(serving_dir: str, strategy: str) -> None:
     st.subheader("Vista 4 — Auditoría del Modelo vs. Línea Base")
-    df_aud = get_auditoria_modelo(strategy, serving_dir)
+    df_aud = _cached_auditoria(strategy, serving_dir)
 
     col_a, col_b = st.columns(2)
     with col_a:
@@ -419,6 +462,20 @@ def _render_vista_4(serving_dir: str, strategy: str) -> None:
         hide_index=True,
     )
 
+    st.markdown("**Explicabilidad Global SHAP (2024 — Top-5 Factores)**")
+    shap_cols = st.columns(2)
+    titulos_shap = (
+        "Importancia Global SHAP (Top-10 / Top-5)",
+        "Distribución Beeswarm SHAP (2024)",
+    )
+    for idx, (fname, titulo) in enumerate(zip(SHAP_FIG_FILENAMES, titulos_shap)):
+        fig_path = _resolve_shap_figure(fname)
+        with shap_cols[idx]:
+            if fig_path is not None:
+                st.image(str(fig_path), caption=titulo, use_container_width=True)
+            else:
+                st.caption(f"Gráfica no disponible: {fname}")
+
 
 def main() -> None:
     args = _parse_args()
@@ -433,6 +490,7 @@ def main() -> None:
 
     with st.sidebar:
         st.header("Controles Operativos")
+        st.info(f"Origen de datos: **{get_active_data_source_label(serving_dir)}**")
         strategy = st.selectbox(
             "Estrategia de Umbral",
             options=["recalibrado_60d_max_fp_3_sem", "recalibrado_60d_f1"],
@@ -458,7 +516,7 @@ def main() -> None:
         else:
             fecha_inicio, fecha_fin = date(2024, 10, 1), date(2024, 10, 15)
 
-    kpis = get_kpis_ejecutivos(strategy=strategy, alpha=alpha, serving_dir=serving_dir)
+    kpis = _cached_kpis(strategy=strategy, alpha=alpha, serving_dir=serving_dir)
     _render_kpis(kpis)
     st.divider()
 
@@ -472,7 +530,7 @@ def main() -> None:
     )
 
     with tab1:
-        df_serie = get_serie_alerta_30min(fecha_inicio, fecha_fin, strategy=strategy, serving_dir=serving_dir)
+        df_serie = _cached_serie(fecha_inicio, fecha_fin, strategy=strategy, serving_dir=serving_dir)
         _render_vista_1(df_serie, strategy)
     with tab2:
         _render_vista_2(serving_dir, alpha, kpis)

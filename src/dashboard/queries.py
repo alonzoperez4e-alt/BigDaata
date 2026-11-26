@@ -1,10 +1,12 @@
 """
-Capa de consultas desacoplada para el Dashboard Operativo-Analítico (Tarea 4.2).
+Capa de consultas desacoplada para el Dashboard Operativo-Analítico (Tarea 4.2 / Fase C).
 Usa exclusivamente DuckDB y las vistas semánticas definidas en
-`src/serving/semantic_views.sql` sobre `lake_v2/serving/star_schema/`.
+`src/serving/semantic_views.sql` sobre almacenamiento local (`lake_v2/serving/star_schema/`)
+o remoto en AWS S3 Read-Only con TLS obligatorio.
 """
 from __future__ import annotations
 
+import os
 from datetime import date
 from pathlib import Path
 from typing import Literal
@@ -15,6 +17,8 @@ import pandas as pd
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_SERVING_DIR = REPO_ROOT / "lake_v2" / "serving" / "star_schema"
 DEFAULT_SQL_PATH = REPO_ROOT / "src" / "serving" / "semantic_views.sql"
+DEFAULT_S3_PREFIX = "serving/star_schema"
+DEFAULT_AWS_REGION = "us-east-1"
 
 VALID_STRATEGIES = ("recalibrado_60d_max_fp_3_sem", "recalibrado_60d_f1")
 
@@ -32,6 +36,84 @@ _STRATEGY_COL_MAP = {
 }
 
 
+def _read_setting(key: str, default: str = "") -> str:
+    """Lee un parámetro primero desde os.environ y como respaldo desde st.secrets."""
+    env_val = os.environ.get(key)
+    if env_val is not None and str(env_val).strip() != "":
+        return str(env_val).strip()
+    try:
+        import streamlit as st
+
+        secrets = getattr(st, "secrets", None)
+        if secrets is not None and key in secrets:
+            sec_val = secrets[key]
+            if sec_val is not None and str(sec_val).strip() != "":
+                return str(sec_val).strip()
+    except Exception:
+        pass
+    return default
+
+
+def get_storage_config() -> dict[str, str]:
+    """Resuelve configuración de almacenamiento (Local vs. AWS S3 Read-Only)."""
+    bucket = _read_setting("COES_S3_BUCKET", "").strip()
+    prefix = _read_setting("COES_S3_PREFIX", DEFAULT_S3_PREFIX).strip("/") or DEFAULT_S3_PREFIX
+    access_key = _read_setting("AWS_ACCESS_KEY_ID", "")
+    secret_key = _read_setting("AWS_SECRET_ACCESS_KEY", "")
+    region = _read_setting("AWS_DEFAULT_REGION", DEFAULT_AWS_REGION) or DEFAULT_AWS_REGION
+
+    if bucket:
+        return {
+            "mode": "s3",
+            "bucket": bucket,
+            "prefix": prefix,
+            "s3_uri_prefix": f"s3://{bucket}/{prefix}/",
+            "aws_access_key_id": access_key,
+            "aws_secret_access_key": secret_key,
+            "aws_region": region,
+        }
+    return {
+        "mode": "local",
+        "bucket": "",
+        "prefix": prefix,
+        "s3_uri_prefix": "",
+        "aws_access_key_id": "",
+        "aws_secret_access_key": "",
+        "aws_region": region,
+    }
+
+
+def _is_default_serving_dir(serving_dir: str | Path | None) -> bool:
+    if serving_dir is None:
+        return True
+    s = str(serving_dir).strip()
+    if not s:
+        return True
+    if s.startswith("s3://"):
+        return False
+    p = Path(s)
+    if not p.is_absolute():
+        p = (REPO_ROOT / p).resolve()
+    else:
+        p = p.resolve()
+    return p == DEFAULT_SERVING_DIR.resolve()
+
+
+def get_active_data_source_label(serving_dir: str | Path | None = None) -> str:
+    """Retorna la etiqueta legible del origen de datos activo sin exponer credenciales."""
+    if serving_dir is not None and str(serving_dir).strip().startswith("s3://"):
+        return "AWS S3 (Read-Only · TLS)"
+    if _is_default_serving_dir(serving_dir):
+        cfg = get_storage_config()
+        if cfg["mode"] == "s3":
+            return "AWS S3 (Read-Only · TLS)"
+    return "Local (lake_v2)"
+
+
+def _escape_sql_literal(value: str) -> str:
+    return value.replace("'", "''")
+
+
 def _validate_strategy(strategy: str) -> dict[str, str]:
     if strategy not in _STRATEGY_COL_MAP:
         raise ValueError(
@@ -41,23 +123,58 @@ def _validate_strategy(strategy: str) -> dict[str, str]:
 
 
 def _get_connection(
-    serving_dir: str | Path = DEFAULT_SERVING_DIR,
+    serving_dir: str | Path | None = DEFAULT_SERVING_DIR,
     sql_path: str | Path = DEFAULT_SQL_PATH,
 ) -> duckdb.DuckDBPyConnection:
     """Crea una conexión DuckDB en memoria y registra las vistas de semantic_views.sql."""
-    serving_path = Path(serving_dir)
-    if not serving_path.is_absolute():
-        serving_path = (REPO_ROOT / serving_path).resolve()
     sql_file = Path(sql_path)
     if not sql_file.is_absolute():
         sql_file = (REPO_ROOT / sql_file).resolve()
-
     sql_text = sql_file.read_text(encoding="utf-8")
-    # Reemplaza la ruta relativa por la ruta absoluta/parametrizada de serving_dir
-    target_prefix = f"{serving_path.as_posix().rstrip('/')}/"
-    sql_text = sql_text.replace("lake_v2/serving/star_schema/", target_prefix)
+
+    cfg = get_storage_config()
+    explicit_s3 = serving_dir is not None and str(serving_dir).strip().startswith("s3://")
+    use_s3 = explicit_s3 or (_is_default_serving_dir(serving_dir) and cfg["mode"] == "s3")
 
     con = duckdb.connect(database=":memory:")
+    if use_s3:
+        target_prefix = (
+            f"{str(serving_dir).strip().rstrip('/')}/" if explicit_s3 else cfg["s3_uri_prefix"]
+        )
+        con.execute("INSTALL httpfs; LOAD httpfs;")
+        region_esc = _escape_sql_literal(cfg["aws_region"])
+        if cfg["aws_access_key_id"] and cfg["aws_secret_access_key"]:
+            key_esc = _escape_sql_literal(cfg["aws_access_key_id"])
+            sec_esc = _escape_sql_literal(cfg["aws_secret_access_key"])
+            con.execute(
+                f"""
+                CREATE OR REPLACE SECRET coes_s3 (
+                    TYPE S3,
+                    KEY_ID '{key_esc}',
+                    SECRET '{sec_esc}',
+                    REGION '{region_esc}',
+                    USE_SSL true
+                );
+                """
+            )
+        else:
+            con.execute(
+                f"""
+                CREATE OR REPLACE SECRET coes_s3 (
+                    TYPE S3,
+                    PROVIDER CREDENTIAL_CHAIN,
+                    REGION '{region_esc}',
+                    USE_SSL true
+                );
+                """
+            )
+    else:
+        serving_path = Path(serving_dir if serving_dir is not None else DEFAULT_SERVING_DIR)
+        if not serving_path.is_absolute():
+            serving_path = (REPO_ROOT / serving_path).resolve()
+        target_prefix = f"{serving_path.as_posix().rstrip('/')}/"
+
+    sql_text = sql_text.replace("lake_v2/serving/star_schema/", target_prefix)
     con.execute(sql_text)
     return con
 
@@ -65,7 +182,7 @@ def _get_connection(
 def get_kpis_ejecutivos(
     strategy: str = "recalibrado_60d_max_fp_3_sem",
     alpha: float = 0.10,
-    serving_dir: str | Path = DEFAULT_SERVING_DIR,
+    serving_dir: str | Path | None = DEFAULT_SERVING_DIR,
 ) -> dict:
     """
     Retorna los 5 KPIs ejecutivos y métricas de respaldo calculados desde
@@ -208,7 +325,7 @@ def get_serie_alerta_30min(
     fecha_inicio: str | date,
     fecha_fin: str | date,
     strategy: str = "recalibrado_60d_max_fp_3_sem",
-    serving_dir: str | Path = DEFAULT_SERVING_DIR,
+    serving_dir: str | Path | None = DEFAULT_SERVING_DIR,
 ) -> pd.DataFrame:
     """
     Retorna la serie temporal de 30 minutos desde `vw_alerta_temprana_30min`,
@@ -269,7 +386,7 @@ def get_serie_alerta_30min(
 
 def get_exposicion_normalizada(
     granularidad: Literal["mensual", "anual"] = "mensual",
-    serving_dir: str | Path = DEFAULT_SERVING_DIR,
+    serving_dir: str | Path | None = DEFAULT_SERVING_DIR,
 ) -> pd.DataFrame:
     """
     Retorna exposición bruta y sobrecosto neto normalizados por día observable,
@@ -319,7 +436,7 @@ def get_exposicion_normalizada(
 
 
 def get_cobertura_y_deriva(
-    serving_dir: str | Path = DEFAULT_SERVING_DIR,
+    serving_dir: str | Path | None = DEFAULT_SERVING_DIR,
 ) -> pd.DataFrame:
     """
     Retorna cobertura de observabilidad, prevalencia, PSI máximo top-5,
@@ -355,7 +472,7 @@ def get_cobertura_y_deriva(
 
 def get_auditoria_modelo(
     strategy: str = "recalibrado_60d_max_fp_3_sem",
-    serving_dir: str | Path = DEFAULT_SERVING_DIR,
+    serving_dir: str | Path | None = DEFAULT_SERVING_DIR,
 ) -> pd.DataFrame:
     """
     Retorna la auditoría mensual del modelo `rf_v1_2024_walkforward` frente
@@ -402,4 +519,3 @@ def get_auditoria_modelo(
     """
     with _get_connection(serving_dir) as con:
         return con.execute(query).df()
-
