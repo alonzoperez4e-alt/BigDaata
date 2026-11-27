@@ -191,3 +191,64 @@ def test_simulador_demo_completa_y_rafaga(tmp_path):
         check=True,
     )
     assert len(list(out_rafaga.glob("*.json"))) == 6
+
+
+def test_muestras_y_portal_ingesta_e2e(tmp_path):
+    from src.streaming.portal_ingesta import (
+        REQUIRED_MODEL_COLS,
+        cargar_dataframe_desde_bytes,
+        ingestar_dataframe_a_inbox,
+        validar_columnas_entrada,
+    )
+
+    samples_dir = REPO_ROOT / "data" / "demo_samples"
+    expected_rows = {
+        "01_bloque_normal.csv": 1,
+        "02_bloque_vigilancia.csv": 1,
+        "03_bloque_estres_critico.csv": 1,
+        "04_lote_jornada_4h.csv": 8,
+    }
+    for fname, n_rows in expected_rows.items():
+        path = samples_dir / fname
+        assert path.is_file(), f"Falta muestra requerida: {path}"
+        df_s = cargar_dataframe_desde_bytes(path.read_bytes(), fname)
+        assert len(df_s) == n_rows
+        assert validar_columnas_entrada(df_s) == []
+        for col in REQUIRED_MODEL_COLS:
+            assert col in df_s.columns
+        assert df_s["evento_termico_nop"].isna().all()
+        assert df_s["inicio_termico_nop"].isna().all()
+
+    os.environ.pop("SPARK_HOME", None)
+    os.environ.setdefault("PYSPARK_PYTHON", sys.executable)
+    os.environ.setdefault("PYSPARK_DRIVER_PYTHON", sys.executable)
+
+    inbox = tmp_path / "inbox"
+    out_dir = tmp_path / "streaming_alerts"
+    ckpt = tmp_path / "checkpoint"
+
+    sample_crit = samples_dir / "03_bloque_estres_critico.csv"
+    df_crit = cargar_dataframe_desde_bytes(sample_crit.read_bytes(), sample_crit.name)
+    json_dest = ingestar_dataframe_a_inbox(
+        df_crit,
+        inbox_dir=inbox,
+        origen_archivo=sample_crit.name,
+        suffix="upload",
+    )
+    assert json_dest.is_file()
+    assert json_dest.name.endswith("_upload.json")
+
+    ejecutar_streaming(
+        inbox_dir=inbox,
+        model_path=MODEL_PATH,
+        schema_source=SCHEMA_SOURCE,
+        output_dir=out_dir,
+        checkpoint_dir=ckpt,
+        once=True,
+    )
+
+    df_alertas = get_alertas_streaming(limit=10, serving_dir=out_dir)
+    assert len(df_alertas) == 1
+    assert df_alertas.iloc[0]["origen_archivo"] == "03_bloque_estres_critico.csv"
+    assert df_alertas.iloc[0]["estado_alerta"] == "ALERTA_CRITICA"
+    assert float(df_alertas.iloc[0]["brecha_term_cara_mw"]) > 100.0

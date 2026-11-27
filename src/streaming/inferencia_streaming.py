@@ -102,6 +102,7 @@ def esquema_explicito_fallback() -> T.StructType:
             T.StructField("n_obs_ventana_2_4h", I, True),
             T.StructField("y_ventana_2_4h", I, True),
             T.StructField("y_inicio_ventana_2_4h", I, True),
+            T.StructField("origen_archivo", S, True),
         ]
     )
 
@@ -110,7 +111,10 @@ def resolver_esquema_fijo(spark: SparkSession, schema_source: Path) -> T.StructT
     """Obtiene el esquema fijo desde Parquet historico o usa el esquema explicito."""
     if schema_source.exists():
         raw_schema = spark.read.parquet(str(schema_source)).schema
-        return T.StructType([T.StructField(f.name, f.dataType, True) for f in raw_schema.fields])
+        fields = [T.StructField(f.name, f.dataType, True) for f in raw_schema.fields]
+        if not any(f.name == "origen_archivo" for f in fields):
+            fields.append(T.StructField("origen_archivo", T.StringType(), True))
+        return T.StructType(fields)
     return esquema_explicito_fallback()
 
 
@@ -139,6 +143,15 @@ def construir_procesador_lote(
 
         scored = modelo.transform(batch_df)
         prob_col = vector_to_array(F.col("probability"))[1].cast("double")
+        archivo_col = F.regexp_extract(F.input_file_name(), r"([^/\\]+)$", 1)
+        origen_col = (
+            F.coalesce(
+                F.nullif(F.trim(F.col("origen_archivo").cast("string")), F.lit("")),
+                archivo_col,
+            )
+            if "origen_archivo" in scored.columns
+            else archivo_col
+        )
 
         enriquecido = (
             scored.withColumn("prob_evento", prob_col)
@@ -152,6 +165,7 @@ def construir_procesador_lote(
             .withColumn("ingested_at_utc", F.current_timestamp())
             .withColumn("umbral_operativo", F.lit(float(umbral)).cast("double"))
             .withColumn("modelo_version", F.lit(MODELO_VERSION))
+            .withColumn("origen_archivo", origen_col)
         )
 
         cols_salida = [
@@ -163,6 +177,7 @@ def construir_procesador_lote(
             "modelo_version",
             "batch_id",
             "ingested_at_utc",
+            "origen_archivo",
             "etiqueta_observable",
             "motivo_censura",
             "flag_a1_disponible_t",

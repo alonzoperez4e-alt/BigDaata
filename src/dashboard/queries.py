@@ -33,6 +33,10 @@ STREAMING_EXPECTED_COLS = [
     "batch_id",
     "ingested_at_utc",
     "modelo_version",
+    "origen_archivo",
+    "brecha_term_cara_mw",
+    "ratio_term_ejec_vs_prog",
+    "cmg_spread_p90_p50_t",
 ]
 
 VALID_STRATEGIES = ("recalibrado_60d_max_fp_3_sem", "recalibrado_60d_f1")
@@ -587,7 +591,7 @@ def get_alertas_streaming(
                 CAST(fecha_hora AS TIMESTAMP) AS fecha_hora,
                 CAST(ingested_at_utc AS TIMESTAMP) AS ingested_at_utc
             )
-            FROM read_parquet(?)
+            FROM read_parquet(?, union_by_name=true)
             ORDER BY ingested_at_utc DESC, fecha_hora DESC
             LIMIT ?
             """,
@@ -627,6 +631,9 @@ def get_alertas_streaming(
 
     if df.empty:
         return pd.DataFrame(columns=STREAMING_EXPECTED_COLS)
+    for col in STREAMING_EXPECTED_COLS:
+        if col not in df.columns:
+            df[col] = None
     df["fecha_hora"] = pd.to_datetime(df["fecha_hora"])
     df["ingested_at_utc"] = pd.to_datetime(df["ingested_at_utc"])
     return df

@@ -628,14 +628,16 @@ def _render_vista_5_contenido(serving_dir: str | Path | None) -> None:
         c
         for c in (
             "fecha_hora",
+            "origen_archivo",
             "prob_evento",
             "umbral_operativo",
             "estado_alerta",
+            "brecha_term_cara_mw",
+            "ratio_term_ejec_vs_prog",
+            "cmg_spread_p90_p50_t",
             "batch_id",
             "ingested_at_utc",
             "modelo_version",
-            "ratio_term_ejec_vs_prog",
-            "cmg_spread_p90_p50_t",
         )
         if c in df_live.columns
     ]
