@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import argparse
 import sys
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 
 import pandas as pd
@@ -73,11 +73,6 @@ def _cached_cobertura(serving_dir: str) -> pd.DataFrame:
 @st.cache_data(ttl=3600, show_spinner=False)
 def _cached_auditoria(strategy: str, serving_dir: str) -> pd.DataFrame:
     return get_auditoria_modelo(strategy=strategy, serving_dir=serving_dir)
-
-
-@st.cache_data(ttl=5, show_spinner=False)
-def _cached_alertas_streaming(limit: int = 200, serving_dir: str | None = None) -> pd.DataFrame:
-    return get_alertas_streaming(limit=limit, serving_dir=serving_dir)
 
 
 def _parse_args() -> argparse.Namespace:
@@ -497,24 +492,21 @@ def _resolve_streaming_dir(serving_dir: str | Path | None) -> str | Path | None:
     return p
 
 
-def _render_vista_5(serving_dir: str | Path | None) -> None:
-    st.subheader("Vista 5 — Monitor en Vivo (Capa de Velocidad · Arquitectura Lambda)")
-    st.caption(
-        "Arquitectura Lambda activa: **Capa por Lotes** (AWS Glue 4.0 · `serving/star_schema/`) + "
-        "**Capa de Velocidad** (PySpark Structured Streaming · `serving/streaming_alerts/`)."
-    )
-
+def _render_vista_5_contenido(serving_dir: str | Path | None) -> None:
     col_btn, col_info = st.columns([1, 3])
     with col_btn:
-        if st.button("🔄 Refrescar flujo en vivo", use_container_width=True):
-            _cached_alertas_streaming.clear()
+        st.button("🔄 Refrescar ahora", use_container_width=True, key="btn_refresh_live_now")
 
     stream_dir = _resolve_streaming_dir(serving_dir)
     stream_dir_arg = str(stream_dir) if stream_dir is not None else None
-    df_live = _cached_alertas_streaming(limit=200, serving_dir=stream_dir_arg)
+    df_live = get_alertas_streaming(limit=200, serving_dir=stream_dir_arg)
+    hora_act = datetime.now().strftime("%H:%M:%S")
 
     with col_info:
-        st.caption(f"Origen monitorizado: `{get_active_data_source_label(serving_dir)}` · prefijo `serving/streaming_alerts/`")
+        st.caption(
+            f"Última actualización: **{hora_act}** · "
+            f"Origen: `{get_active_data_source_label(serving_dir)}` · prefijo `serving/streaming_alerts/`"
+        )
 
     if df_live.empty:
         err_kind = df_live.attrs.get("error_kind")
@@ -550,34 +542,71 @@ def _render_vista_5(serving_dir: str | Path | None) -> None:
     k3.metric("Última probabilidad", f"{ultima_prob:.4f}")
     k4.metric("Último micro-lote (UTC)", f"batch_{ultimo_batch:05d}", ultima_ingesta)
 
-    # Gráfico de evolución de probabilidad vs. umbral operativo
+    # Gráfico de evolución de probabilidad por 3 estados vs. umbral operativo
     df_plot = df_live.sort_values("fecha_hora").reset_index(drop=True)
     umbral_val = float(df_plot["umbral_operativo"].iloc[-1])
+    umbral_vig = umbral_val * 0.80
 
     fig_live = go.Figure()
+    fig_live.add_hrect(
+        y0=0.0,
+        y1=umbral_vig,
+        fillcolor="rgba(44, 160, 44, 0.08)",
+        line_width=0,
+        annotation_text="NORMAL",
+        annotation_position="inside bottom left",
+    )
+    fig_live.add_hrect(
+        y0=umbral_vig,
+        y1=umbral_val,
+        fillcolor="rgba(255, 165, 0, 0.14)",
+        line_width=0,
+        annotation_text="VIGILANCIA",
+        annotation_position="inside left",
+    )
+    fig_live.add_hrect(
+        y0=umbral_val,
+        y1=1.05,
+        fillcolor="rgba(214, 39, 40, 0.10)",
+        line_width=0,
+        annotation_text="ALERTA_CRITICA",
+        annotation_position="inside top left",
+    )
+
     fig_live.add_trace(
         go.Scatter(
             x=df_plot["fecha_hora"],
             y=df_plot["prob_evento"],
-            mode="lines+markers",
-            name="Probabilidad evento (streaming)",
+            mode="lines",
+            name="Trayectoria prob_evento",
             line=dict(color="#1f77b4", width=2),
-            marker=dict(size=6, color="#1f77b4"),
         )
     )
 
-    crit_df = df_plot[df_plot["estado_alerta"] == "ALERTA_CRITICA"]
-    if not crit_df.empty:
-        fig_live.add_trace(
-            go.Scatter(
-                x=crit_df["fecha_hora"],
-                y=crit_df["prob_evento"],
-                mode="markers",
-                name="ALERTA_CRITICA",
-                marker=dict(color="#d62728", size=11, symbol="diamond"),
+    estados_cfg = (
+        ("NORMAL", "#2ca02c", 7, "circle"),
+        ("VIGILANCIA", "#ff9800", 9, "triangle-up"),
+        ("ALERTA_CRITICA", "#d62728", 11, "diamond"),
+    )
+    for estado, color, size, symbol in estados_cfg:
+        sub = df_plot[df_plot["estado_alerta"] == estado]
+        if not sub.empty:
+            fig_live.add_trace(
+                go.Scatter(
+                    x=sub["fecha_hora"],
+                    y=sub["prob_evento"],
+                    mode="markers",
+                    name=estado,
+                    marker=dict(color=color, size=size, symbol=symbol),
+                )
             )
-        )
 
+    fig_live.add_hline(
+        y=umbral_vig,
+        line_dash="dot",
+        line_color="#ff9800",
+        annotation_text=f"Inicio vigilancia ({umbral_vig:.2f})",
+    )
     fig_live.add_hline(
         y=umbral_val,
         line_dash="dash",
@@ -586,10 +615,11 @@ def _render_vista_5(serving_dir: str | Path | None) -> None:
     )
     fig_live.update_layout(
         title="Evolución de Probabilidad en Flujo vs. Umbral Operativo",
+        xaxis_title="Fecha / Hora (bloque 30 min)",
         yaxis_title="Probabilidad evento (2–4 h)",
         yaxis_range=[0, 1.05],
-        height=400,
-        legend=dict(orientation="h", y=1.10),
+        height=420,
+        legend=dict(orientation="h", y=1.12),
     )
     st.plotly_chart(fig_live, use_container_width=True)
 
@@ -610,6 +640,33 @@ def _render_vista_5(serving_dir: str | Path | None) -> None:
         if c in df_live.columns
     ]
     st.dataframe(df_live[cols_tabla], use_container_width=True, hide_index=True)
+
+
+@st.fragment(run_every=5)
+def _fragment_vista_5_auto(serving_dir: str | Path | None) -> None:
+    _render_vista_5_contenido(serving_dir)
+
+
+@st.fragment
+def _fragment_vista_5_manual(serving_dir: str | Path | None) -> None:
+    _render_vista_5_contenido(serving_dir)
+
+
+def _render_vista_5(serving_dir: str | Path | None) -> None:
+    st.subheader("Vista 5 — Monitor en Vivo (Capa de Velocidad · Arquitectura Lambda)")
+    st.caption(
+        "Arquitectura Lambda activa: **Capa por Lotes** (AWS Glue 4.0 · `serving/star_schema/`) + "
+        "**Capa de Velocidad** (PySpark Structured Streaming · `serving/streaming_alerts/`)."
+    )
+    auto_refresh = st.toggle(
+        "Auto-refresco automático (cada 5 s)",
+        value=True,
+        key="live_auto_refresh_toggle",
+    )
+    if auto_refresh:
+        _fragment_vista_5_auto(serving_dir)
+    else:
+        _fragment_vista_5_manual(serving_dir)
 
 
 def main() -> None:

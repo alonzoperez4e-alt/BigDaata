@@ -222,8 +222,7 @@ def test_get_alertas_streaming_distingue_403_vs_404(monkeypatch, caplog):
 def test_app_usa_cache_selectivo_en_pestana_5():
     app_src = (REPO_ROOT / "src" / "dashboard" / "app.py").read_text(encoding="utf-8")
     assert "st.cache_data.clear()" not in app_src
-    assert "_cached_alertas_streaming.clear()" in app_src
-    assert "@st.cache_data(ttl=5, show_spinner=False)" in app_src
+    assert "@st.fragment(run_every=5)" in app_src
     assert "@st.cache_data(ttl=3600, show_spinner=False)" in app_src
 
 

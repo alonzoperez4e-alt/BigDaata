@@ -141,3 +141,53 @@ def test_get_alertas_streaming_vacio_y_con_datos(tmp_path, monkeypatch):
     assert df_res.iloc[0]["batch_id"] == 1
     assert df_res.iloc[0]["estado_alerta"] == "ALERTA_CRITICA"
     assert df_res.iloc[1]["batch_id"] == 0
+
+
+def test_simulador_demo_completa_y_rafaga(tmp_path):
+    import json
+    import subprocess
+
+    out_demo = tmp_path / "demo_inbox"
+    proc = subprocess.run(
+        [
+            sys.executable,
+            str(REPO_ROOT / "scripts" / "simular_llegada_bloques.py"),
+            "--modo",
+            "demo_completa",
+            "--intervalo",
+            "0",
+            "--out-dir",
+            str(out_demo),
+        ],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    assert "FASE 1" in proc.stdout and "FASE 4" in proc.stdout
+
+    archivos = sorted(out_demo.glob("*.json"))
+    assert len(archivos) == 16
+
+    timestamps = []
+    for f in archivos:
+        data = json.loads(f.read_text(encoding="utf-8"))
+        timestamps.append(pd.Timestamp(data["fecha_hora"]))
+
+    for prev_ts, next_ts in zip(timestamps, timestamps[1:]):
+        assert (next_ts - prev_ts) == pd.Timedelta(minutes=30)
+
+    out_rafaga = tmp_path / "rafaga_inbox"
+    subprocess.run(
+        [
+            sys.executable,
+            str(REPO_ROOT / "scripts" / "simular_llegada_bloques.py"),
+            "--modo",
+            "rafaga",
+            "--out-dir",
+            str(out_rafaga),
+        ],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    assert len(list(out_rafaga.glob("*.json"))) == 6
