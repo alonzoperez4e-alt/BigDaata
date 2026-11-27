@@ -16,9 +16,21 @@ import pandas as pd
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_SERVING_DIR = REPO_ROOT / "lake_v2" / "serving" / "star_schema"
+DEFAULT_STREAMING_DIR = REPO_ROOT / "lake_v2" / "serving" / "streaming_alerts"
 DEFAULT_SQL_PATH = REPO_ROOT / "src" / "serving" / "semantic_views.sql"
 DEFAULT_S3_PREFIX = "serving/star_schema"
+DEFAULT_STREAMING_S3_PREFIX = "serving/streaming_alerts"
 DEFAULT_AWS_REGION = "us-east-1"
+
+STREAMING_EXPECTED_COLS = [
+    "fecha_hora",
+    "prob_evento",
+    "umbral_operativo",
+    "estado_alerta",
+    "batch_id",
+    "ingested_at_utc",
+    "modelo_version",
+]
 
 VALID_STRATEGIES = ("recalibrado_60d_max_fp_3_sem", "recalibrado_60d_f1")
 
@@ -122,6 +134,37 @@ def _validate_strategy(strategy: str) -> dict[str, str]:
     return _STRATEGY_COL_MAP[strategy]
 
 
+def _configure_s3_duckdb(con: duckdb.DuckDBPyConnection, cfg: dict[str, str]) -> None:
+    """Configura httpfs y secreto S3 con TLS obligatorio en DuckDB."""
+    con.execute("INSTALL httpfs; LOAD httpfs;")
+    region_esc = _escape_sql_literal(cfg["aws_region"])
+    if cfg["aws_access_key_id"] and cfg["aws_secret_access_key"]:
+        key_esc = _escape_sql_literal(cfg["aws_access_key_id"])
+        sec_esc = _escape_sql_literal(cfg["aws_secret_access_key"])
+        con.execute(
+            f"""
+            CREATE OR REPLACE SECRET coes_s3 (
+                TYPE S3,
+                KEY_ID '{key_esc}',
+                SECRET '{sec_esc}',
+                REGION '{region_esc}',
+                USE_SSL true
+            );
+            """
+        )
+    else:
+        con.execute(
+            f"""
+            CREATE OR REPLACE SECRET coes_s3 (
+                TYPE S3,
+                PROVIDER CREDENTIAL_CHAIN,
+                REGION '{region_esc}',
+                USE_SSL true
+            );
+            """
+        )
+
+
 def _get_connection(
     serving_dir: str | Path | None = DEFAULT_SERVING_DIR,
     sql_path: str | Path = DEFAULT_SQL_PATH,
@@ -141,33 +184,7 @@ def _get_connection(
         target_prefix = (
             f"{str(serving_dir).strip().rstrip('/')}/" if explicit_s3 else cfg["s3_uri_prefix"]
         )
-        con.execute("INSTALL httpfs; LOAD httpfs;")
-        region_esc = _escape_sql_literal(cfg["aws_region"])
-        if cfg["aws_access_key_id"] and cfg["aws_secret_access_key"]:
-            key_esc = _escape_sql_literal(cfg["aws_access_key_id"])
-            sec_esc = _escape_sql_literal(cfg["aws_secret_access_key"])
-            con.execute(
-                f"""
-                CREATE OR REPLACE SECRET coes_s3 (
-                    TYPE S3,
-                    KEY_ID '{key_esc}',
-                    SECRET '{sec_esc}',
-                    REGION '{region_esc}',
-                    USE_SSL true
-                );
-                """
-            )
-        else:
-            con.execute(
-                f"""
-                CREATE OR REPLACE SECRET coes_s3 (
-                    TYPE S3,
-                    PROVIDER CREDENTIAL_CHAIN,
-                    REGION '{region_esc}',
-                    USE_SSL true
-                );
-                """
-            )
+        _configure_s3_duckdb(con, cfg)
     else:
         serving_path = Path(serving_dir if serving_dir is not None else DEFAULT_SERVING_DIR)
         if not serving_path.is_absolute():
@@ -519,3 +536,63 @@ def get_auditoria_modelo(
     """
     with _get_connection(serving_dir) as con:
         return con.execute(query).df()
+
+
+def get_alertas_streaming(
+    limit: int = 200,
+    serving_dir: str | Path | None = None,
+) -> pd.DataFrame:
+    """
+    Lee alertas en tiempo real de la Capa de Velocidad (`serving/streaming_alerts/*.parquet`)
+    en modo dual S3/Local. Retorna DataFrame vacio si aun no existen micro-lotes.
+    """
+    if limit <= 0:
+        raise ValueError(f"limit debe ser > 0, recibido: {limit}")
+
+    cfg = get_storage_config()
+    explicit_s3 = serving_dir is not None and str(serving_dir).strip().startswith("s3://")
+    use_default = _is_default_serving_dir(serving_dir)
+    use_s3 = explicit_s3 or (use_default and cfg["mode"] == "s3")
+
+    con = duckdb.connect(database=":memory:")
+    try:
+        if use_s3:
+            _configure_s3_duckdb(con, cfg)
+            if explicit_s3:
+                glob_uri = f"{str(serving_dir).strip().rstrip('/')}/*.parquet"
+            else:
+                glob_uri = f"s3://{cfg['bucket']}/{DEFAULT_STREAMING_S3_PREFIX}/*.parquet"
+        else:
+            local_dir = (
+                DEFAULT_STREAMING_DIR
+                if use_default
+                else Path(serving_dir)  # type: ignore[arg-type]
+            )
+            if not local_dir.is_absolute():
+                local_dir = (REPO_ROOT / local_dir).resolve()
+            if not local_dir.exists() or not any(local_dir.glob("*.parquet")):
+                return pd.DataFrame(columns=STREAMING_EXPECTED_COLS)
+            glob_uri = f"{local_dir.as_posix().rstrip('/')}/*.parquet"
+
+        df = con.execute(
+            """
+            SELECT * REPLACE (
+                CAST(fecha_hora AS TIMESTAMP) AS fecha_hora,
+                CAST(ingested_at_utc AS TIMESTAMP) AS ingested_at_utc
+            )
+            FROM read_parquet(?)
+            ORDER BY ingested_at_utc DESC, fecha_hora DESC
+            LIMIT ?
+            """,
+            [glob_uri, int(limit)],
+        ).df()
+    except (duckdb.IOException, duckdb.Error):
+        return pd.DataFrame(columns=STREAMING_EXPECTED_COLS)
+    finally:
+        con.close()
+
+    if df.empty:
+        return pd.DataFrame(columns=STREAMING_EXPECTED_COLS)
+    df["fecha_hora"] = pd.to_datetime(df["fecha_hora"])
+    df["ingested_at_utc"] = pd.to_datetime(df["ingested_at_utc"])
+    return df

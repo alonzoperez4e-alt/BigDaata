@@ -24,6 +24,7 @@ if str(REPO_ROOT) not in sys.path:
 from src.dashboard.queries import (  # noqa: E402
     DEFAULT_SERVING_DIR,
     get_active_data_source_label,
+    get_alertas_streaming,
     get_auditoria_modelo,
     get_cobertura_y_deriva,
     get_exposicion_normalizada,
@@ -477,6 +478,121 @@ def _render_vista_4(serving_dir: str, strategy: str) -> None:
                 st.caption(f"Gráfica no disponible: {fname}")
 
 
+def _resolve_streaming_dir(serving_dir: str | Path | None) -> str | Path | None:
+    if serving_dir is None:
+        return None
+    s = str(serving_dir).strip()
+    if s.startswith("s3://"):
+        return s.replace("serving/star_schema", "serving/streaming_alerts")
+    p = Path(s)
+    if p.resolve() == DEFAULT_SERVING_DIR.resolve():
+        return None
+    if p.name == "star_schema":
+        return p.parent / "streaming_alerts"
+    return p
+
+
+def _render_vista_5(serving_dir: str | Path | None) -> None:
+    st.subheader("Vista 5 — Monitor en Vivo (Capa de Velocidad · Arquitectura Lambda)")
+    st.caption(
+        "Arquitectura Lambda activa: **Capa por Lotes** (AWS Glue 4.0 · `serving/star_schema/`) + "
+        "**Capa de Velocidad** (PySpark Structured Streaming · `serving/streaming_alerts/`)."
+    )
+
+    col_btn, col_info = st.columns([1, 3])
+    with col_btn:
+        if st.button("🔄 Refrescar flujo en vivo", use_container_width=True):
+            st.cache_data.clear()
+
+    stream_dir = _resolve_streaming_dir(serving_dir)
+    df_live = get_alertas_streaming(limit=200, serving_dir=stream_dir)
+
+    with col_info:
+        st.caption(f"Origen monitorizado: `{get_active_data_source_label(serving_dir)}` · prefijo `serving/streaming_alerts/`")
+
+    if df_live.empty:
+        st.info(
+            "⏳ Monitor en espera de micro-lotes desde `serving/streaming_alerts/`. "
+            "Ejecuta el productor (`simular_llegada_bloques.py`) y el motor de streaming "
+            "(`inferencia_streaming.py`) para observar alertas en tiempo real."
+        )
+        return
+
+    # 4 KPIs en vivo
+    n_bloques = len(df_live)
+    n_crit = int((df_live["estado_alerta"] == "ALERTA_CRITICA").sum())
+    ultima_prob = float(df_live.iloc[0]["prob_evento"])
+    ultimo_batch = int(df_live.iloc[0]["batch_id"])
+    ultima_ingesta = pd.Timestamp(df_live.iloc[0]["ingested_at_utc"]).strftime("%Y-%m-%d %H:%M:%S")
+
+    k1, k2, k3, k4 = st.columns(4)
+    k1.metric("Bloques procesados", f"{n_bloques:,}")
+    k2.metric("Alertas críticas", f"{n_crit:,}")
+    k3.metric("Última probabilidad", f"{ultima_prob:.4f}")
+    k4.metric("Último micro-lote (UTC)", f"batch_{ultimo_batch:05d}", ultima_ingesta)
+
+    # Gráfico de evolución de probabilidad vs. umbral operativo
+    df_plot = df_live.sort_values("fecha_hora").reset_index(drop=True)
+    umbral_val = float(df_plot["umbral_operativo"].iloc[-1])
+
+    fig_live = go.Figure()
+    fig_live.add_trace(
+        go.Scatter(
+            x=df_plot["fecha_hora"],
+            y=df_plot["prob_evento"],
+            mode="lines+markers",
+            name="Probabilidad evento (streaming)",
+            line=dict(color="#1f77b4", width=2),
+            marker=dict(size=6, color="#1f77b4"),
+        )
+    )
+
+    crit_df = df_plot[df_plot["estado_alerta"] == "ALERTA_CRITICA"]
+    if not crit_df.empty:
+        fig_live.add_trace(
+            go.Scatter(
+                x=crit_df["fecha_hora"],
+                y=crit_df["prob_evento"],
+                mode="markers",
+                name="ALERTA_CRITICA",
+                marker=dict(color="#d62728", size=11, symbol="diamond"),
+            )
+        )
+
+    fig_live.add_hline(
+        y=umbral_val,
+        line_dash="dash",
+        line_color="#d62728",
+        annotation_text=f"Umbral operativo ({umbral_val:.2f})",
+    )
+    fig_live.update_layout(
+        title="Evolución de Probabilidad en Flujo vs. Umbral Operativo",
+        yaxis_title="Probabilidad evento (2–4 h)",
+        yaxis_range=[0, 1.05],
+        height=400,
+        legend=dict(orientation="h", y=1.10),
+    )
+    st.plotly_chart(fig_live, use_container_width=True)
+
+    st.markdown("**Últimos eventos procesados (más reciente primero)**")
+    cols_tabla = [
+        c
+        for c in (
+            "fecha_hora",
+            "prob_evento",
+            "umbral_operativo",
+            "estado_alerta",
+            "batch_id",
+            "ingested_at_utc",
+            "modelo_version",
+            "ratio_term_ejec_vs_prog",
+            "cmg_spread_p90_p50_t",
+        )
+        if c in df_live.columns
+    ]
+    st.dataframe(df_live[cols_tabla], use_container_width=True, hide_index=True)
+
+
 def main() -> None:
     args = _parse_args()
     serving_dir = args.serving_dir
@@ -520,12 +636,13 @@ def main() -> None:
     _render_kpis(kpis)
     st.divider()
 
-    tab1, tab2, tab3, tab4 = st.tabs(
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(
         [
             "1. Sala de Alerta Temprana (2–4 h)",
             "2. Exposición y Sobrecosto Normalizado",
             "3. Cobertura y Deriva (Gobierno del Dato)",
             "4. Auditoría Modelo vs. Baseline",
+            "5. Monitor en Vivo (Capa de Velocidad)",
         ]
     )
 
@@ -538,6 +655,8 @@ def main() -> None:
         _render_vista_3(serving_dir)
     with tab4:
         _render_vista_4(serving_dir, strategy)
+    with tab5:
+        _render_vista_5(serving_dir)
 
 
 if __name__ == "__main__":

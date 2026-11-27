@@ -65,21 +65,27 @@ resource "aws_iam_user_policy" "dashboard_serving_readonly" {
     Version = "2012-10-17"
     Statement = [
       {
-        Sid      = "ListServingStarSchemaPrefix"
+        Sid      = "ListServingPrefixes"
         Effect   = "Allow"
         Action   = ["s3:ListBucket"]
         Resource = aws_s3_bucket.datalake.arn
         Condition = {
           StringLike = {
-            "s3:prefix" = ["serving/star_schema/*"]
+            "s3:prefix" = [
+              "serving/star_schema/*",
+              "serving/streaming_alerts/*"
+            ]
           }
         }
       },
       {
-        Sid      = "ReadServingStarSchemaObjects"
-        Effect   = "Allow"
-        Action   = ["s3:GetObject"]
-        Resource = "${aws_s3_bucket.datalake.arn}/serving/star_schema/*"
+        Sid    = "ReadServingObjects"
+        Effect = "Allow"
+        Action = ["s3:GetObject"]
+        Resource = [
+          "${aws_s3_bucket.datalake.arn}/serving/star_schema/*",
+          "${aws_s3_bucket.datalake.arn}/serving/streaming_alerts/*"
+        ]
       }
     ]
   })
