@@ -152,3 +152,78 @@ def test_shap_assets_exist_for_cloud():
         assert resolved is not None and resolved.is_file(), f"Falta grafica SHAP: {fname}"
         assert (REPO_ROOT / "evidencias" / "aws" / "run_outputs" / "shap" / fname).is_file()
 
+
+def test_configure_s3_duckdb_timeouts_y_load_primero():
+    import duckdb
+    from src.dashboard.queries import _configure_s3_duckdb
+
+    executed = []
+
+    class _FakeCon:
+        def execute(self, sql):
+            executed.append(sql.strip())
+
+    cfg = {
+        "aws_region": "us-east-1",
+        "aws_access_key_id": "",
+        "aws_secret_access_key": "",
+    }
+    _configure_s3_duckdb(_FakeCon(), cfg)
+    assert executed[0] == "LOAD httpfs;"
+    assert "SET http_timeout = 5000; SET http_retries = 1;" in executed
+    assert all("INSTALL httpfs" not in s for s in executed)
+
+    executed_fallback = []
+
+    class _FakeConMissingExt:
+        def execute(self, sql):
+            executed_fallback.append(sql.strip())
+            if sql.strip() == "LOAD httpfs;":
+                raise duckdb.IOException("Extension httpfs not found")
+
+    _configure_s3_duckdb(_FakeConMissingExt(), cfg)
+    assert executed_fallback[0] == "LOAD httpfs;"
+    assert executed_fallback[1] == "INSTALL httpfs; LOAD httpfs;"
+    assert "SET http_timeout = 5000; SET http_retries = 1;" in executed_fallback
+
+
+def test_get_alertas_streaming_distingue_403_vs_404(monkeypatch, caplog):
+    import duckdb
+    import src.dashboard.queries as q
+
+    monkeypatch.setenv("COES_S3_BUCKET", "coes-sein-bigdata-datalake")
+    monkeypatch.setattr(q, "_configure_s3_duckdb", lambda con, cfg: None)
+
+    class _FakeConError:
+        def __init__(self, msg):
+            self._msg = msg
+
+        def execute(self, sql, params=None):
+            raise duckdb.IOException(self._msg)
+
+        def close(self):
+            pass
+
+    monkeypatch.setattr(q.duckdb, "connect", lambda database=":memory:": _FakeConError("HTTP Error: 403 Forbidden"))
+    with caplog.at_level("INFO"):
+        df_403 = q.get_alertas_streaming()
+    assert df_403.empty
+    assert df_403.attrs.get("error_kind") == "403_FORBIDDEN"
+    assert "403" in caplog.text
+
+    caplog.clear()
+    monkeypatch.setattr(q.duckdb, "connect", lambda database=":memory:": _FakeConError("No files found that match the pattern"))
+    with caplog.at_level("INFO"):
+        df_404 = q.get_alertas_streaming()
+    assert df_404.empty
+    assert df_404.attrs.get("error_kind") == "EMPTY_OR_404"
+
+
+def test_app_usa_cache_selectivo_en_pestana_5():
+    app_src = (REPO_ROOT / "src" / "dashboard" / "app.py").read_text(encoding="utf-8")
+    assert "st.cache_data.clear()" not in app_src
+    assert "_cached_alertas_streaming.clear()" in app_src
+    assert "@st.cache_data(ttl=5, show_spinner=False)" in app_src
+    assert "@st.cache_data(ttl=3600, show_spinner=False)" in app_src
+
+

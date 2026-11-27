@@ -75,6 +75,11 @@ def _cached_auditoria(strategy: str, serving_dir: str) -> pd.DataFrame:
     return get_auditoria_modelo(strategy=strategy, serving_dir=serving_dir)
 
 
+@st.cache_data(ttl=5, show_spinner=False)
+def _cached_alertas_streaming(limit: int = 200, serving_dir: str | None = None) -> pd.DataFrame:
+    return get_alertas_streaming(limit=limit, serving_dir=serving_dir)
+
+
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument("--serving-dir", default=str(DEFAULT_SERVING_DIR))
@@ -502,15 +507,29 @@ def _render_vista_5(serving_dir: str | Path | None) -> None:
     col_btn, col_info = st.columns([1, 3])
     with col_btn:
         if st.button("🔄 Refrescar flujo en vivo", use_container_width=True):
-            st.cache_data.clear()
+            _cached_alertas_streaming.clear()
 
     stream_dir = _resolve_streaming_dir(serving_dir)
-    df_live = get_alertas_streaming(limit=200, serving_dir=stream_dir)
+    stream_dir_arg = str(stream_dir) if stream_dir is not None else None
+    df_live = _cached_alertas_streaming(limit=200, serving_dir=stream_dir_arg)
 
     with col_info:
         st.caption(f"Origen monitorizado: `{get_active_data_source_label(serving_dir)}` · prefijo `serving/streaming_alerts/`")
 
     if df_live.empty:
+        err_kind = df_live.attrs.get("error_kind")
+        if err_kind == "403_FORBIDDEN":
+            st.error(
+                "Error de permisos S3 (403 Forbidden) al leer `serving/streaming_alerts/`. "
+                "Verifica la política IAM de lectura para el prefijo de streaming."
+            )
+            return
+        if err_kind == "DUCKDB_ERROR":
+            st.warning(
+                "No se pudo consultar `serving/streaming_alerts/` por timeout o error temporal de red. "
+                "Revisa los logs del servidor."
+            )
+            return
         st.info(
             "⏳ Monitor en espera de micro-lotes desde `serving/streaming_alerts/`. "
             "Ejecuta el productor (`simular_llegada_bloques.py`) y el motor de streaming "

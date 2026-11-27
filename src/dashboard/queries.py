@@ -6,6 +6,7 @@ o remoto en AWS S3 Read-Only con TLS obligatorio.
 """
 from __future__ import annotations
 
+import logging
 import os
 from datetime import date
 from pathlib import Path
@@ -13,6 +14,8 @@ from typing import Literal
 
 import duckdb
 import pandas as pd
+
+logger = logging.getLogger(__name__)
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_SERVING_DIR = REPO_ROOT / "lake_v2" / "serving" / "star_schema"
@@ -135,8 +138,12 @@ def _validate_strategy(strategy: str) -> dict[str, str]:
 
 
 def _configure_s3_duckdb(con: duckdb.DuckDBPyConnection, cfg: dict[str, str]) -> None:
-    """Configura httpfs y secreto S3 con TLS obligatorio en DuckDB."""
-    con.execute("INSTALL httpfs; LOAD httpfs;")
+    """Configura httpfs, timeouts cortos y secreto S3 con TLS obligatorio en DuckDB."""
+    try:
+        con.execute("LOAD httpfs;")
+    except duckdb.Error:
+        con.execute("INSTALL httpfs; LOAD httpfs;")
+    con.execute("SET http_timeout = 5000; SET http_retries = 1;")
     region_esc = _escape_sql_literal(cfg["aws_region"])
     if cfg["aws_access_key_id"] and cfg["aws_secret_access_key"]:
         key_esc = _escape_sql_literal(cfg["aws_access_key_id"])
@@ -586,8 +593,35 @@ def get_alertas_streaming(
             """,
             [glob_uri, int(limit)],
         ).df()
-    except (duckdb.IOException, duckdb.Error):
-        return pd.DataFrame(columns=STREAMING_EXPECTED_COLS)
+    except (duckdb.IOException, duckdb.Error) as exc:
+        msg = str(exc)
+        msg_lower = msg.lower()
+        empty_df = pd.DataFrame(columns=STREAMING_EXPECTED_COLS)
+        if "403" in msg_lower or "forbidden" in msg_lower or "access denied" in msg_lower:
+            logger.error(
+                "Error de permisos S3 (403) al consultar alertas streaming en %s: %s",
+                glob_uri if use_s3 else serving_dir,
+                msg,
+            )
+            empty_df.attrs["error_kind"] = "403_FORBIDDEN"
+            empty_df.attrs["error_detail"] = msg
+            return empty_df
+        if "no files found" in msg_lower or "404" in msg_lower or "not found" in msg_lower:
+            logger.info(
+                "Sin micro-lotes disponibles todavia en %s (%s).",
+                glob_uri if use_s3 else serving_dir,
+                msg,
+            )
+            empty_df.attrs["error_kind"] = "EMPTY_OR_404"
+            return empty_df
+        logger.warning(
+            "Error DuckDB al consultar alertas streaming en %s: %s",
+            glob_uri if use_s3 else serving_dir,
+            msg,
+        )
+        empty_df.attrs["error_kind"] = "DUCKDB_ERROR"
+        empty_df.attrs["error_detail"] = msg
+        return empty_df
     finally:
         con.close()
 
